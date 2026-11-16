@@ -8,12 +8,14 @@
 El inicio es la página que se va a **presentar** y la que recibe la búsqueda principal, "firma remota". Hoy `/` es la página de muestra del spec 002: tiene casi todo el contenido, pero también la sección "Sistema visual" y la isla de prueba, y le faltan las ventajas, las preguntas frecuentes y el cierre.
 
 **Objetivo medible:** que un visitante entienda en el primer pantallazo qué es la firma remota, y que en un solo scroll sepa:
+
 - que hay dos productos y que necesita los dos;
 - cuánto cuestan;
 - cómo funciona;
 - dónde comprar.
 
 **Fuera de alcance**
+
 - Las páginas `/certificado-digital/`, `/firmas/` y `/preguntas-frecuentes/`: tienen sus propios specs (004, 005, 006). Hasta que existan, el inicio **no enlaza a ellas** para no llevar a una 404.
 - El blog y las páginas legales.
 
@@ -23,17 +25,17 @@ Solo con datos confirmados (`site.md`) o placeholders registrados (`pendientes.m
 
 ### Secciones, en orden
 
-| # | Sección | Contenido | Fuente |
-|---|---|---|---|
-| — | **Header** | Logotipo · menú (Productos, Cómo funciona, Preguntas) con anclas · "Comprar" | `Header.astro` (spec 002) |
-| 1 | **Hero** | Etiqueta "Firma remota · Perú" · `h1` "Firma tus documentos *desde la nube.*" · subtítulo · "Comprar" + "Cómo funciona" · nota "Te atendemos por WhatsApp · Precios con IGV incluido" · documento que se firma solo | Spec 002 (se mantiene) |
-| 2 | **Qué es / ventajas** *(nueva)* | `h2` "Tu firma, *sin instalar nada.*" · 3 ventajas · comparación con el certificado tradicional | Ver abajo |
-| 3 | **Los dos productos** | Certificado y bolsa de firmas, con precio e "Incluye IGV" | Collection `productos` (P01, P02) |
-| 4 | **Necesitas los dos** | Certificado + firmas = puedes firmar | Spec 002 (se mantiene) |
-| 5 | **Cómo funciona** | 3 pasos, el último con el código OTP | Spec 002 (se mantiene) |
-| 6 | **Preguntas frecuentes** *(nueva)* | 6 preguntas en acordeón | Collection `faqs` (nueva) |
-| 7 | **CTA de cierre** *(nuevo)* | `h2` + una línea + "Comprar" + "Escríbenos por WhatsApp" | Ver abajo |
-| — | **Footer** | Spec 002, en tinta negra | `Footer.astro` |
+| #   | Sección                            | Contenido                                                                                                                                                                                                           | Fuente                            |
+| --- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| —   | **Header**                         | Logotipo · menú (Productos, Cómo funciona, Preguntas) con anclas · "Comprar"                                                                                                                                        | `Header.astro` (spec 002)         |
+| 1   | **Hero**                           | Etiqueta "Firma remota · Perú" · `h1` "Firma tus documentos _desde la nube._" · subtítulo · "Comprar" + "Cómo funciona" · nota "Te atendemos por WhatsApp · Precios con IGV incluido" · documento que se firma solo | Spec 002 (se mantiene)            |
+| 2   | **Qué es / ventajas** _(nueva)_    | `h2` "Tu firma, _sin instalar nada._" · 3 ventajas · comparación con el certificado tradicional                                                                                                                     | Ver abajo                         |
+| 3   | **Los dos productos**              | Certificado y bolsa de firmas, con precio e "Incluye IGV"                                                                                                                                                           | Collection `productos` (P01, P02) |
+| 4   | **Necesitas los dos**              | Certificado + firmas = puedes firmar                                                                                                                                                                                | Spec 002 (se mantiene)            |
+| 5   | **Cómo funciona**                  | 3 pasos, el último con el código OTP                                                                                                                                                                                | Spec 002 (se mantiene)            |
+| 6   | **Preguntas frecuentes** _(nueva)_ | 6 preguntas en acordeón                                                                                                                                                                                             | Collection `faqs` (nueva)         |
+| 7   | **CTA de cierre** _(nuevo)_        | `h2` + una línea + "Comprar" + "Escríbenos por WhatsApp"                                                                                                                                                            | Ver abajo                         |
+| —   | **Footer**                         | Spec 002, en tinta negra                                                                                                                                                                                            | `Footer.astro`                    |
 
 Sale de la página la sección **"Sistema visual"** y la isla de prueba (ver §3, "Página interna").
 
@@ -41,33 +43,34 @@ Sale de la página la sección **"Sistema visual"** y la isla de prueba (ver §3
 
 **2 · Ventajas**
 
-| Ventaja | Texto |
-|---|---|
-| Sin instalar nada | No hay archivos, programas ni token. Tu certificado vive en la nube. |
-| Desde donde estés | Firmas con tu usuario y contraseña, desde cualquier lugar con internet. |
-| Doble verificación | Cada firma se confirma con tu PIN y un código que llega a tu WhatsApp. |
+| Ventaja            | Texto                                                                   |
+| ------------------ | ----------------------------------------------------------------------- |
+| Sin instalar nada  | No hay archivos, programas ni token. Tu certificado vive en la nube.    |
+| Desde donde estés  | Firmas con tu usuario y contraseña, desde cualquier lugar con internet. |
+| Doble verificación | Cada firma se confirma con tu PIN y un código que llega a tu WhatsApp.  |
 
 **Comparación** (dos columnas, sin precios):
 
-| | Certificado tradicional | Firma remota |
-|---|---|---|
-| Dónde está | En un archivo instalado o en un token | En la nube |
+|               | Certificado tradicional                        | Firma remota               |
+| ------------- | ---------------------------------------------- | -------------------------- |
+| Dónde está    | En un archivo instalado o en un token          | En la nube                 |
 | Qué necesitas | La computadora o el token donde está instalado | Usuario, PIN y tu WhatsApp |
-| Para empezar | Descargar, instalar y configurar | Recibes tu acceso y listo |
+| Para empezar  | Descargar, instalar y configurar               | Recibes tu acceso y listo  |
 
 **6 · Preguntas frecuentes.** Solo las que se pueden responder con datos confirmados. Las respuestas que dependen de pendientes se marcan.
 
-| Pregunta | Respuesta | Datos |
-|---|---|---|
-| ¿Qué es la firma remota? | Es una firma digital que no se descarga ni se instala: tu certificado vive en la nube y firmas tus documentos con tu usuario, tu PIN y un código que llega a tu WhatsApp. | Confirmado |
-| ¿Qué necesito para firmar? | Dos cosas: un certificado digital y firmas disponibles. Si te falta una de las dos, no puedes firmar. | Confirmado |
-| ¿Puedo usar un certificado de otro proveedor? | Sí. Puedes comprarnos solo las firmas y usarlas con tu certificado, o comprarnos el certificado y gestionar tus firmas por otro lado. | Confirmado |
-| ¿Las firmas vencen? | No. Las firmas que compras no vencen; se descuentan a medida que firmas. | Confirmado |
-| ¿Cuánto cuesta? | El certificado digital cuesta US$ 20.00 y la bolsa mínima de 10 firmas, US$ 10.00. Los precios incluyen IGV. | **P01, P02** (salen de la collection, no escritos a mano) |
-| ¿La firma remota tiene validez legal? | Sí. La firma digital tiene la misma validez que la firma manuscrita según la Ley N.° 27269, Ley de Firmas y Certificados Digitales. | **P11, P12** (texto a revisar) |
+| Pregunta                                      | Respuesta                                                                                                                                                                 | Datos                                                     |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| ¿Qué es la firma remota?                      | Es una firma digital que no se descarga ni se instala: tu certificado vive en la nube y firmas tus documentos con tu usuario, tu PIN y un código que llega a tu WhatsApp. | Confirmado                                                |
+| ¿Qué necesito para firmar?                    | Dos cosas: un certificado digital y firmas disponibles. Si te falta una de las dos, no puedes firmar.                                                                     | Confirmado                                                |
+| ¿Puedo usar un certificado de otro proveedor? | Sí. Puedes comprarnos solo las firmas y usarlas con tu certificado, o comprarnos el certificado y gestionar tus firmas por otro lado.                                     | Confirmado                                                |
+| ¿Las firmas vencen?                           | No. La cantidad de firmas que compras no vencen; se descuentan a medida que firmas.                                                                                       | Confirmado                                                |
+| ¿Cuánto cuesta?                               | El certificado digital cuesta US$ 20.00 y la bolsa mínima de 10 firmas, US$ 10.00. Los precios incluyen IGV.                                                              | **P01, P02** (salen de la collection, no escritos a mano) |
+| ¿La firma remota tiene validez legal?         | Sí. La firma digital tiene la misma validez que la firma manuscrita según la Ley N.° 27269, Ley de Firmas y Certificados Digitales.                                       | **P11, P12** (texto a revisar)                            |
 
 **7 · CTA de cierre** (fondo navy):
-- `h2`: "Empieza a firmar *desde la nube.*"
+
+- `h2`: "Empieza a firmar _desde la nube._"
 - Línea: "Escríbenos y te ayudamos a elegir tu certificado y tus firmas."
 - Botones: "Comprar" (primario) + "Escríbenos por WhatsApp" (secundario oscuro). Los dos llevan al WhatsApp general (P17).
 
@@ -82,40 +85,45 @@ Sale de la página la sección **"Sistema visual"** y la isla de prueba (ver §3
   - los de cada producto llevan el mensaje de ese producto.
 
   Se abren en una pestaña nueva.
+
 - **Página interna "Sistema visual":** la muestra de colores, tipografía y botones pasa a `/sistema-visual/`, siempre con `noindex` y fuera del sitemap, para que el equipo la tenga a mano. La isla de prueba del 001 se elimina.
 
 ## 4. SEO
 
-| Campo | Valor |
-|---|---|
-| URL | `/` |
-| `title` | Firma remota: firma tus documentos desde la nube \| firmaremota.pe |
-| `description` | Firma digital en la nube, sin descargar ni instalar nada. Certificado digital para persona natural y jurídica y firmas desde US$ 10. Te atendemos por WhatsApp. *(149 caracteres)* |
-| `h1` | Firma tus documentos desde la nube. |
-| `h2` | Uno por sección: ventajas, productos, necesitas los dos, cómo funciona, preguntas, cierre |
-| Schema JSON-LD | `Organization` + `WebSite` (globales) · `Service` "Firma remota" con sus dos `Offer` · `FAQPage` con las 6 preguntas visibles |
-| Keywords objetivo | firma remota · firma digital en la nube · firma digital sin token · certificado digital Perú |
-| Imagen OG | La de por defecto (P19) |
+| Campo             | Valor                                                                                                                                                                              |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| URL               | `/`                                                                                                                                                                                |
+| `title`           | Firma remota: firma tus documentos desde la nube \| firmaremota.pe                                                                                                                 |
+| `description`     | Firma digital en la nube, sin descargar ni instalar nada. Certificado digital para persona natural y jurídica y firmas desde US$ 10. Te atendemos por WhatsApp. _(149 caracteres)_ |
+| `h1`              | Firma tus documentos desde la nube.                                                                                                                                                |
+| `h2`              | Uno por sección: ventajas, productos, necesitas los dos, cómo funciona, preguntas, cierre                                                                                          |
+| Schema JSON-LD    | `Organization` + `WebSite` (globales) · `Service` "Firma remota" con sus dos `Offer` · `FAQPage` con las 6 preguntas visibles                                                      |
+| Keywords objetivo | firma remota · firma digital en la nube · firma digital sin token · certificado digital Perú                                                                                       |
+| Imagen OG         | La de por defecto (P19)                                                                                                                                                            |
 
 ## 5. Criterios de aceptación
 
 **Contenido**
+
 - [x] Están las 7 secciones en el orden de §2 y ya no aparecen ni "Sistema visual" ni la isla de prueba.
 - [x] Precios, WhatsApp y razón social salen de los datos, no escritos en la página. La respuesta "¿Cuánto cuesta?" también.
 - [x] Ningún enlace lleva a una página que todavía no existe.
 
 **Comportamiento**
+
 - [x] Las anclas del header llevan a su sección y el título no queda tapado por el header.
 - [x] Las preguntas frecuentes se abren de a una, funcionan con teclado y sin JS.
 - [x] La comparación se lee bien en 375px (sin scroll horizontal).
 - [x] Sin JS y con "reducir movimiento", todo el contenido se ve completo.
 
 **SEO**
+
 - [x] Un `h1` y un `h2` por sección, sin saltos de nivel.
 - [x] El JSON-LD incluye `Service` y `FAQPage`, y las preguntas del `FAQPage` son exactamente las visibles.
 - [x] `/sistema-visual/` tiene `noindex` siempre y no aparece en el sitemap aunque el sitio sea indexable.
 
 **Calidad**
+
 - [x] Sin desborde lateral en 375, 768, 1024 y 1280px; secciones alineadas al contenedor.
 - [x] Lighthouse móvil ≥ 90 en las cuatro categorías (SEO medido con `INDEXABLE=true`).
 - [x] `pnpm build` sin errores ni advertencias.
@@ -127,6 +135,7 @@ Sale de la página la sección **"Sistema visual"** y la isla de prueba (ver §3
 3. **P20:** todos los "Comprar" usan el botón azul primario e ir a WhatsApp. Sigue pendiente tu aprobación de esa excepción a la regla de Girasol.
 
 ---
+
 <!-- Desde aquí, solo cuando el spec está `aprobado`. -->
 
 ## 6. Plan técnico

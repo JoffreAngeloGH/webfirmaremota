@@ -19,6 +19,7 @@ El usuario respondió casi todos los datos pendientes (`specs/pendientes.md`, se
 **Objetivo medible:** que `pnpm pendientes` liste solo **P19** (logo de firmaremota.pe) y que ningún dato de prueba (`+51 999 999 999`, `RAZÓN SOCIAL S.A.C.`, `20XXXXXXXXX`, planes de 3 años) quede en la web.
 
 **Fuera de alcance**
+
 - El logo de firmaremota.pe (P19) y el logo de INDECOPI (P22): siguen pendientes.
 - Activar la indexación (`INDEXABLE=true`): mientras P19 tenga su marca, el build indexable sigue fallando a propósito. Lo decide el usuario después.
 - La página `/preguntas-frecuentes/`.
@@ -41,37 +42,39 @@ El usuario respondió casi todos los datos pendientes (`specs/pendientes.md`, se
 Quitar todas las marcas `PENDIENTE` de P13, P14, P17 (también en `src/lib/seo/schema.ts`). **Mantener** la de P19 (`ogImage`).
 
 **`src/content/productos.yaml`**
+
 - **Certificado (4 planes):** natural 1 año US$ 20.00 · natural 2 años US$ 34.00 · jurídica 1 año US$ 20.00 · jurídica 2 años US$ 34.00. Todos `incluyeIgv: true`, `moneda: USD`.
 - **Se eliminan** `certificado-natural-3` y `certificado-juridica-3`.
 - **Firmas (8 bolsas):** campo nuevo `precioUnitario`; `precio` es el total.
 
-| id | cantidad | precioUnitario | precio (total) |
-|---|---|---|---|
-| firmas-10 | 10 | 1.00 | 10.00 |
-| firmas-50 | 50 | 1.00 | 50.00 |
-| firmas-100 | 100 | 0.95 | 95.00 |
-| firmas-500 | 500 | 0.90 | 450.00 |
-| firmas-1000 | 1000 | 0.85 | 850.00 |
-| firmas-5000 | 5000 | 0.75 | 3750.00 |
-| firmas-10000 | 10000 | 0.65 | 6500.00 |
-| firmas-20000 | 20000 | 0.50 | 10000.00 |
+| id           | cantidad | precioUnitario | precio (total) |
+| ------------ | -------- | -------------- | -------------- |
+| firmas-10    | 10       | 1.00           | 10.00          |
+| firmas-50    | 50       | 1.00           | 50.00          |
+| firmas-100   | 100      | 0.95           | 95.00          |
+| firmas-500   | 500      | 0.90           | 450.00         |
+| firmas-1000  | 1000     | 0.85           | 850.00         |
+| firmas-5000  | 5000     | 0.75           | 3750.00        |
+| firmas-10000 | 10000    | 0.65           | 6500.00        |
+| firmas-20000 | 20000    | 0.50           | 10000.00       |
 
 - Esquema (`src/content.config.ts`): en el tipo `firmas`, `precioUnitario: z.number().positive()` y un `refine` que **rompa el build** si `precio !== cantidad × precioUnitario` (redondeado a 2 decimales).
 - `nombre`: "Bolsa de 10 firmas", "Bolsa de 1 000 firmas"… (miles con espacio, como en español).
 - Quitar las marcas P01, P02 y P03.
 
 **`src/content/requisitos.yaml`** (P07, P08). Cada ítem pasa a tener `texto`, `detalle` opcional, `icono` y `condicion` opcional. Se agrega por titular una `intro`.
+
 - **Intro (ambos):** "Prepara estos documentos antes de iniciar tu flujo de validación en línea. Es un proceso rápido, diseñado para completarse en minutos."
 - **Natural:**
-  - DNI y/o CE vigente — *Ambas caras.*
-  - Contrato — *Leer antes de la validación.*
+  - DNI y/o CE vigente — _Ambas caras._
+  - Contrato — _Leer antes de la validación._
   - Validación de identidad
 - **Jurídica:**
-  - DNI y/o CE vigente — *Ambas caras.*
-  - Validación de RUC en SUNAT — *Se valida en SUNAT; si no cumple, adjuntar Ficha RUC QR (máx. 15 días).*
-  - Vigencia de poder — *Con una antigüedad menor a 90 días.*
-  - Contrato — *Leer antes de la validación.*
-  - Lista de suscriptores — *Firmada por el representante legal.* · `condicion`: "Solo si es vinculado a empresa"
+  - DNI y/o CE vigente — _Ambas caras._
+  - Validación de RUC en SUNAT — _Se valida en SUNAT; si no cumple, adjuntar Ficha RUC QR (máx. 15 días)._
+  - Vigencia de poder — _Con una antigüedad menor a 90 días._
+  - Contrato — _Leer antes de la validación._
+  - Lista de suscriptores — _Firmada por el representante legal._ · `condicion`: "Solo si es vinculado a empresa"
   - Validación de identidad
 - Íconos: reutilizar `src/lib/iconos.ts` (`dni`, `documento`, `documento-sello`) y agregar los que falten: `contrato`, `identidad` (rostro o persona con check), `lista`.
 - Quitar las marcas P07 y P08. Ya no hay "correo" ni "celular con WhatsApp" como requisitos.
@@ -80,6 +83,7 @@ Quitar todas las marcas `PENDIENTE` de P13, P14, P17 (también en `src/lib/seo/s
 ### 2.2 Textos que cambian por el plan de 3 años
 
 Buscar y corregir todas las menciones (`grep -rn "3 años\|1, 2 o 3\|1–3\|1 a 3\|3 vigencias"` en `src/`):
+
 - `src/pages/index.astro`: el punto "Vigencia de 1, 2 o 3 años" pasa a **"Vigencia de 1 o 2 años"**.
 - `src/components/illustrations/CredencialDigital.astro`: "Vigencia 1–3 años" pasa a **"Vigencia 1–2 años"**.
 - `src/pages/certificado-digital.astro`: la `description` "de 1 a 3 años" pasa a **"de 1 o 2 años"** (o calculada con las vigencias de la collection).
@@ -107,13 +111,14 @@ Buscar y corregir todas las menciones (`grep -rn "3 años\|1, 2 o 3\|1–3\|1 a 
 - Se elimina "Pronto habrá bolsas más grandes".
 - **Inicio, tarjeta de firmas:**
   - El precio grande sigue siendo el de la bolsa mínima (US$ 10.00).
-  - Los puntos pasan a: "Desde 10 firmas" · "Hasta 20 000 firmas, desde US$ 0.50 c/u" · "Las firmas no vencen" · "Sirven con tu certificado, sea nuestro o de otro proveedor".
+  - Los puntos pasan a: "Desde 10 firmas" · "Hasta 20 000 firmas, desde US$ 0.50 c/u" · "Las firmas no vencen" · "Sirven con tu certificado digital comprado a nosotros".
   - El enlace "Ver bolsas de firmas" se mantiene.
 
 ### 2.5 Confianza: acreditación, base legal y pagos
 
 **Sección "Acreditación"** (nueva, `Acreditacion.astro`; textos en `src/config/secciones.ts`). Va en el **inicio** (entre "Cómo funciona" y "Preguntas") y en **`/certificado-digital/`** (antes de "Requisitos").
-- Etiqueta "Respaldo" · `h2` "Firma con *validez legal.*"
+
+- Etiqueta "Respaldo" · `h2` "Firma con _validez legal._"
 - Intro: "Los certificados los emite GIRASOL PE S.C.R.L., Entidad de Certificación acreditada ante INDECOPI, conforme a la Ley N.° 27269, Ley de Firmas y Certificados Digitales, y su Reglamento (D.S. N.° 052-2008-PCM)."
 - Tres hitos, en tarjetas o en una línea de tiempo corta:
   - **2020** · Entidad de Registro acreditada ante INDECOPI
@@ -122,10 +127,12 @@ Buscar y corregir todas las menciones (`grep -rn "3 años\|1, 2 o 3\|1–3\|1 a 
 - **Sello de texto** (P12, sin logo; P22 pendiente): un sello circular o rectangular con "Entidad de Certificación · Acreditada ante INDECOPI", en el estilo de `Sello.astro`. Dejar un lugar reconocible para el logo y un comentario `// P22: logo de INDECOPI cuando llegue el archivo` en la **página**, sin marca `PENDIENTE` (para no bloquear `pnpm pendientes`; P22 se sigue en `specs/pendientes.md`).
 
 **Medios de pago** (P06). Una franja pequeña, como `MediosPago.astro`, bajo la matriz de `/certificado-digital/` y bajo la tabla de `/firmas/`:
+
 - Texto: "Pagas como prefieras: trabajamos con el BCP y aceptamos tarjetas de crédito y débito. También puedes pagar en línea con Izipay, Culqi o Yape."
 - Los nombres van como **chips de texto en mono, sin logos de las marcas** (no hay archivos ni permiso de uso).
 
 **Footer**
+
 - Columna "Contacto": WhatsApp `+51 919 283 658` y correo `comercial@girasol.pe` (`mailto:`).
 - Se quita "Un producto de Girasol".
 - Columna "Empresa": `GIRASOL PE S.C.R.L.` · RUC `20605042512`.
@@ -136,14 +143,14 @@ Buscar y corregir todas las menciones (`grep -rn "3 años\|1, 2 o 3\|1–3\|1 a 
 
 Actualizar `src/content/faqs.yaml`. Las variables de las respuestas se calculan en `src/lib/faqs.ts`, desde la collection.
 
-| id | Pregunta | Respuesta | Páginas |
-|---|---|---|---|
-| `cuanto-cuesta` (cambia) | ¿Cuánto cuesta? | "El certificado digital cuesta {precio_cert_1} por 1 año o {precio_cert_2} por 2 años. Las firmas se venden en bolsas desde {cantidad_bolsa_min} firmas ({precio_bolsa_min}), y el precio por firma baja hasta {precio_firma_min} en las bolsas más grandes. Todos los precios incluyen IGV." | inicio, certificado-digital, firmas |
-| `validez-legal` (cambia) | ¿La firma remota tiene validez legal? | "Sí. La firma digital tiene la misma validez que la firma manuscrita según la Ley N.° 27269, Ley de Firmas y Certificados Digitales, y su Reglamento (D.S. N.° 052-2008-PCM). Los certificados los emite GIRASOL PE S.C.R.L., Entidad de Certificación acreditada ante INDECOPI." | inicio, certificado-digital |
-| `que-cuenta-como-firma` (nueva, P04) | ¿Qué cuenta como una firma? | "Cada firma que haces descuenta una de tu bolsa. Si un documento lleva 3 firmas, se descuentan 3." | firmas |
-| `como-pagar` (nueva, P06) | ¿Cómo puedo pagar? | "Trabajamos con el BCP y aceptamos tarjetas de crédito y débito. También puedes pagar en línea con Izipay, Culqi o Yape. Tu asesor te indica los datos al confirmar la compra." | inicio, certificado-digital, firmas |
-| `cuanto-tarda` (nueva, P09) | ¿Cuánto tarda en estar listo mi acceso? | "Es inmediato: después de conversar con tu asesor y completar la validación, recibes tu usuario y contraseña." | inicio, certificado-digital |
-| `que-puedo-firmar` (nueva, P05) | ¿Qué documentos puedo firmar? | "Con el certificado de persona natural firmas a tu nombre contratos, solicitudes y cualquier documento PDF. Con el de persona jurídica firmas contratos, actas y documentos legales en nombre de la empresa." | certificado-digital |
+| id                                   | Pregunta                                | Respuesta                                                                                                                                                                                                                                                                                     | Páginas                             |
+| ------------------------------------ | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `cuanto-cuesta` (cambia)             | ¿Cuánto cuesta?                         | "El certificado digital cuesta {precio_cert_1} por 1 año o {precio_cert_2} por 2 años. Las firmas se venden en bolsas desde {cantidad_bolsa_min} firmas ({precio_bolsa_min}), y el precio por firma baja hasta {precio_firma_min} en las bolsas más grandes. Todos los precios incluyen IGV." | inicio, certificado-digital, firmas |
+| `validez-legal` (cambia)             | ¿La firma remota tiene validez legal?   | "Sí. La firma digital tiene la misma validez que la firma manuscrita según la Ley N.° 27269, Ley de Firmas y Certificados Digitales, y su Reglamento (D.S. N.° 052-2008-PCM). Los certificados los emite GIRASOL PE S.C.R.L., Entidad de Certificación acreditada ante INDECOPI."             | inicio, certificado-digital         |
+| `que-cuenta-como-firma` (nueva, P04) | ¿Qué cuenta como una firma?             | "Cada firma que haces descuenta una de tu bolsa. Si un documento lleva 3 firmas, se descuentan 3."                                                                                                                                                                                            | firmas                              |
+| `como-pagar` (nueva, P06)            | ¿Cómo puedo pagar?                      | "Trabajamos con el BCP y aceptamos tarjetas de crédito y débito. También puedes pagar en línea con Izipay, Culqi o Yape. Tu asesor te indica los datos al confirmar la compra."                                                                                                               | inicio, certificado-digital, firmas |
+| `cuanto-tarda` (nueva, P09)          | ¿Cuánto tarda en estar listo mi acceso? | "Es inmediato: después de conversar con tu asesor y completar la validación, recibes tu usuario y contraseña."                                                                                                                                                                                | inicio, certificado-digital         |
+| `que-puedo-firmar` (nueva, P05)      | ¿Qué documentos puedo firmar?           | "Con el certificado de persona natural firmas a tu nombre contratos, solicitudes y cualquier documento PDF. Con el de persona jurídica firmas contratos, actas y documentos legales en nombre de la empresa."                                                                                 | certificado-digital                 |
 
 - Quitar las marcas P11 y P12 de `faqs.yaml`.
 - **Variables nuevas** en `faqs.ts`: `precio_cert_1`, `precio_cert_2`, `cantidad_bolsa_min`, `precio_bolsa_min`, `precio_firma_min`. Una variable desconocida ya rompe el build: mantener ese comportamiento.
@@ -152,12 +159,14 @@ Actualizar `src/content/faqs.yaml`. Las variables de las respuestas se calculan 
 ### 2.7 Páginas legales
 
 **`/terminos-y-condiciones/`** (P15)
+
 - Contenido **idéntico** a https://girasol.pe/terminos/: 15 secciones, actualizado el 27 de abril de 2026.
   - Copiarlo a `src/content/legales/terminos-y-condiciones.md`, en Markdown y conservando títulos, listas y datos de contacto.
   - Frontmatter: `titulo`, `actualizado: 2026-04-27`, `fuente: https://girasol.pe/terminos/`.
 - **No** inventar, resumir ni reescribir: si una parte no se puede leer bien, dejar `<!-- REVISAR: … -->` y avisar al usuario.
 
 **`/politica-de-privacidad/`** (P16)
+
 - Texto completo de la **Política y Plan de Privacidad V1.6** (GIRASOL PE S.C.R.L., código ECTSAER-POLPL-04062026, 04/06/2026), transcrito a `src/content/legales/politica-de-privacidad.md`.
   - El PDF original está en `C:\Users\joffr\Downloads\POLITICA_Y_PLAN_DE_PRIVACIDAD_V1.6.pdf` (16 páginas); la herramienta de lectura de archivos lo lee como texto.
   - Las tablas del PDF (definiciones, persona de contacto, historial de versiones) pasan a tablas Markdown.
@@ -165,6 +174,7 @@ Actualizar `src/content/faqs.yaml`. Las variables de las respuestas se calculan 
 - **Copiar el PDF a** `public/legal/politica-y-plan-de-privacidad-v1.6.pdf` y poner un botón "Descargar PDF oficial (firmado)" arriba de la página.
 
 **Para las dos páginas**
+
 - Collection nueva `legales` (`glob` sobre `src/content/legales/*.md`) con `titulo`, `actualizado` (fecha), `fuente` opcional, `version` opcional y `pdf` opcional.
 - Layout `LegalLayout.astro` (o una página `[slug].astro` con `getStaticPaths`):
   - Migas de pan, `h1`, fecha "Actualizado el …".
@@ -177,10 +187,12 @@ Actualizar `src/content/faqs.yaml`. Las variables de las respuestas se calculan 
 ## 3. Comportamiento
 
 ### 3.1 Datos y build
+
 - Si `precio` no coincide con `cantidad × precioUnitario`, el build falla con un mensaje claro.
 - `pnpm pendientes` lista **solo P19**.
 
 ### 3.2 Selector de bolsas (isla React)
+
 - **`src/components/islands/SelectorBolsas.tsx`** (`client:visible`). Sigue el patrón de `CertificadoPlanes.tsx`:
   - Renderizado en el servidor con la bolsa mínima: **sin JS se ve completo** y su botón funciona.
   - `MotionConfig reducedMotion="user"`.
@@ -194,24 +206,27 @@ Actualizar `src/content/faqs.yaml`. Las variables de las respuestas se calculan 
 - Al soltar, el botón "Comprar" cambia al mensaje de esa bolsa.
 
 ### 3.3 Anclas y resaltado
+
 - `src/lib/destacar.ts` ya resalta `[data-destacable]`. Las filas `#bolsa-N` lo usan sin cambios.
 - Con "reducir movimiento", sin scroll suave pero con anillo.
 
 ### 3.4 Páginas legales
+
 - El índice lateral marca la sección visible (opcional, sin dependencias). Si se hace, con IntersectionObserver y sin animaciones.
 - Las tablas largas, en móvil, se desplazan **dentro** de su contenedor (`overflow-x-auto`) sin desbordar la página.
 
 ### 3.5 Reglas de siempre
+
 Constitución §7 (sin JS y con "reducir movimiento", todo en su estado final) y reparto del color del spec 002 (azul tinta solo en lo que se pulsa; ámbar decorativo, como texto solo sobre navy o `fr-ink`).
 
 ## 4. SEO
 
-| Página | Schema |
-|---|---|
-| `/` | `Organization` (sin `parentOrganization`; `legalName` GIRASOL PE S.C.R.L., `taxID` 20605042512, `email` comercial@girasol.pe, `contactPoint` con el WhatsApp real) + `WebSite` + `Service` con **4 planes + 8 bolsas** + `FAQPage` |
-| `/certificado-digital/` | 4 `Product`/`Offer` + `BreadcrumbList` + `FAQPage` |
-| `/firmas/` | Un `Product` "Firmas digitales" con 8 `Offer` (una por bolsa) **o** 8 `Product` (como prefieras, que sea coherente) + `BreadcrumbList` + `FAQPage` |
-| Legales | `BreadcrumbList` (y `WebPage` si se quiere) |
+| Página                  | Schema                                                                                                                                                                                                                             |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/`                     | `Organization` (sin `parentOrganization`; `legalName` GIRASOL PE S.C.R.L., `taxID` 20605042512, `email` comercial@girasol.pe, `contactPoint` con el WhatsApp real) + `WebSite` + `Service` con **4 planes + 8 bolsas** + `FAQPage` |
+| `/certificado-digital/` | 4 `Product`/`Offer` + `BreadcrumbList` + `FAQPage`                                                                                                                                                                                 |
+| `/firmas/`              | Un `Product` "Firmas digitales" con 8 `Offer` (una por bolsa) **o** 8 `Product` (como prefieras, que sea coherente) + `BreadcrumbList` + `FAQPage`                                                                                 |
+| Legales                 | `BreadcrumbList` (y `WebPage` si se quiere)                                                                                                                                                                                        |
 
 - Las `description` de producto se calculan con la collection.
 - Con `INDEXABLE=true`, el sitemap incluye las dos páginas legales, aunque el build indexable falla igual por P19, como está previsto. Para comprobar el sitemap, usar `pnpm astro build` directo con `INDEXABLE=true`, que salta el chequeo.
@@ -219,11 +234,13 @@ Constitución §7 (sin JS y con "reducir movimiento", todo en su estado final) y
 ## 5. Criterios de aceptación
 
 **Datos**
+
 - [x] El WhatsApp real (`51919283658`) está en todos los enlaces `wa.me` y en el schema. No quedan `999 999 999`, `RAZÓN SOCIAL`, `20XXXXXXXXX` ni "3 años" en `src/` (comprobar con `grep`).
 - [x] 4 planes de certificado (US$ 20 y US$ 34) y 8 bolsas con sus totales exactos. Un total mal escrito en el YAML rompe el build (probarlo y revertir).
 - [x] `pnpm pendientes` lista solo P19.
 
 **Páginas**
+
 - [x] `/firmas/`: el selector recorre las 8 bolsas con mouse y teclado, y cambian el total, el precio por firma, el ahorro y el mensaje de WhatsApp. La tabla muestra las 8 con sus anclas. Sin JS se ve la bolsa mínima con su botón.
 - [x] `/certificado-digital/`: matriz de 2 columnas, textos P05, requisitos nuevos con detalle y la etiqueta "Solo si es vinculado a empresa", sección de acreditación y franja de pagos.
 - [x] Inicio: la sección de acreditación y los puntos nuevos en la tarjeta de firmas.
@@ -233,6 +250,7 @@ Constitución §7 (sin JS y con "reducir movimiento", todo en su estado final) y
 - [x] Las preguntas nuevas aparecen en sus páginas y el `FAQPage` coincide con lo visible.
 
 **Calidad**
+
 - [x] Sin desborde lateral en 375, 768, 1024 y 1280 px en todas las páginas, incluidas las legales con tablas.
 - [x] Sin JS y con "reducir movimiento", todo visible y en su estado final.
 - [x] Lighthouse móvil ≥ 90 en las cuatro categorías en `/`, `/certificado-digital/`, `/firmas/` y `/politica-de-privacidad/`.
@@ -243,6 +261,7 @@ Constitución §7 (sin JS y con "reducir movimiento", todo en su estado final) y
 ## 6. Plan técnico
 
 **Archivos nuevos**
+
 ```
 src/components/islands/SelectorBolsas.tsx
 src/components/sections/Acreditacion.astro
@@ -260,6 +279,7 @@ src/pages/terminos-y-condiciones.astro + politica-de-privacidad.astro   (si no s
 **Al terminar, actualizar `specs/pendientes.md`:** anotar en cada confirmado "Aplicado en el código (spec 007)".
 
 **Reglas y trampas conocidas de este proyecto (leer antes de escribir código)**
+
 - Constitución: `specs/constitution.md`. Identidad y reparto del color: `specs/features/002-identidad-visual/spec.md` §2–3. Tokens `fr-*`; nada de valores literales si hay token.
 - **Sin textos fijos en `src/components/sections/`:** llegan por props, desde `src/config/secciones.ts` o desde una collection.
 - **No usar `transition-all`** en elementos que anima GSAP (`data-reveal`, `data-anim`). Para hovers: `transition-[translate,box-shadow]`.
@@ -296,14 +316,15 @@ Verificado con Chrome sin interfaz (puppeteer-core) y Lighthouse 12 móvil sobre
 
 **Lighthouse móvil**
 
-| Página | Perf. | Accesib. | Buenas prácticas | SEO | LCP | CLS | TBT |
-|---|---|---|---|---|---|---|---|
-| `/` | 96 | 100 | 100 | 100 | 2466 ms | 0 | 100 ms |
-| `/certificado-digital/` | 97 | 100 | 100 | 100 | 2451 ms | 0 | 70 ms |
-| `/firmas/` | 97 | 100 | 100 | 100 | 2437 ms | 0 | 20 ms |
-| `/politica-de-privacidad/` | 98 | 100 | 100 | 100 | 2267 ms | 0 | 10 ms |
+| Página                     | Perf. | Accesib. | Buenas prácticas | SEO | LCP     | CLS | TBT    |
+| -------------------------- | ----- | -------- | ---------------- | --- | ------- | --- | ------ |
+| `/`                        | 96    | 100      | 100              | 100 | 2466 ms | 0   | 100 ms |
+| `/certificado-digital/`    | 97    | 100      | 100              | 100 | 2451 ms | 0   | 70 ms  |
+| `/firmas/`                 | 97    | 100      | 100              | 100 | 2437 ms | 0   | 20 ms  |
+| `/politica-de-privacidad/` | 98    | 100      | 100              | 100 | 2267 ms | 0   | 10 ms  |
 
 **Comprobaciones**
+
 - `pnpm build`: 0 errores y 0 advertencias. `pnpm pendientes` lista solo P19 (P22 se sigue en `pendientes.md`, sin marca en el código, como pide el spec).
 - **Greps en `src/`** de `999 999`, `51999999999`, `RAZÓN SOCIAL`, `20XXXXXXXXX`, `Un producto de Girasol`, `natural-3`, `juridica-3` y `3 años`: sin resultados, salvo **una línea del texto legal de los términos** copiada tal cual de girasol.pe ("Los certificados tienen una vigencia de 1 año a 3 años…"), que habla del catálogo general de GIRASOL y no de este sitio. Todos los enlaces `wa.me` de las 5 páginas usan `51919283658`.
 - **Build roto a propósito:** con el total de la bolsa de 500 firmas en `449.00` el build falla con "Bolsa de 500 firmas: precio 449 no es cantidad × precioUnitario (500 × 0.9 = 450)". Revertido.
@@ -316,10 +337,12 @@ Verificado con Chrome sin interfaz (puppeteer-core) y Lighthouse 12 móvil sobre
 - **Sin desborde** en 375, 768, 1024 y 1280 px en las 5 páginas (20 combinaciones). En 375 px la tabla ancha de la política se desplaza dentro de su caja. El espacio hero → sección siguiente de la 006 se mantiene (90/74, 92/71 y 60/81 px a 1440/375).
 
 **Páginas legales**
+
 - **Términos:** el HTML de girasol.pe/terminos/ se descargó con `curl` y se convirtió a Markdown con un script local (no con un resumidor). El texto resultante tiene las mismas 1373 palabras que el original y 15 secciones, con fecha 27/04/2026.
 - **Política:** el PDF se extrajo con `pdftotext` (UTF-8) y el Markdown se armó con un script que toma cada párrafo directamente del texto extraído; comparado por palabras con el PDF, solo difiere en "1.INTRODUCCIÓN" → "1. INTRODUCCIÓN". Las tablas (carátula, historial, certificados, definiciones, contacto) se reconstruyeron con `pdftotext -table`. El PDF se copió a `public/legal/` y responde 200 (987 110 bytes). El índice del PDF no se copia. Sin `<!-- REVISAR -->`: todo se leyó bien.
 
 **Decisiones**
+
 - Términos: los encabezados de las 15 secciones (en el original, 14 `h3` y un `h2`) pasan todos a `##`, para que el índice lateral los liste; se conserva su capitalización ("Aceptación De Términos"). Se omite el glifo "•" que el original escribe al inicio de cada viñeta, porque Markdown ya pone la viñeta.
 - Frontmatter de `legales`: además de los campos del spec se agregan `descripcion` (meta description) y `tituloSeo` (título del `<title>`, distinto del `h1`). La página muestra también la fuente cuando existe.
 - Ruta única `src/pages/[legal].astro` + `LegalLayout.astro`; el slug es el nombre del archivo.
@@ -333,6 +356,7 @@ Verificado con Chrome sin interfaz (puppeteer-core) y Lighthouse 12 móvil sobre
 - El comentario de P22 (logo de INDECOPI) está en `index.astro` y `certificado-digital.astro`, con un slot `logo` libre en `Acreditacion.astro`.
 
 **Pendiente / a revisar**
+
 - **Indexación:** `INDEXABLE=true pnpm build` sigue fallando a propósito por P19. Para publicar falta el logo y favicon de firmaremota.pe.
 - **P22:** el logo de INDECOPI sigue pendiente (sello de texto mientras tanto).
 - **PDF de privacidad:** no se pudo ver como imagen (no hay renderizador de páginas en esta máquina); las tablas se reconstruyeron desde las coordenadas del texto. Conviene una lectura visual de las tablas de la página contra el PDF, sobre todo el historial de versiones. El PDF tiene 15 páginas, no 16.

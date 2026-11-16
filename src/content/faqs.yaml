@@ -5,68 +5,70 @@
 
 - id: que-es-la-firma-remota
   pregunta: ¿Qué es la firma remota?
-  respuesta: 'Es una firma digital que no se descarga ni se instala: tu certificado vive en la nube y firmas tus documentos con tu usuario, tu PIN y un código que llega a tu WhatsApp.'
+  respuesta: "Es una firma digital que no se descarga ni se instala: tu certificado vive en la nube y firmas tus documentos con tu usuario, tu PIN y un código que llega a tu WhatsApp."
   paginas: [inicio, certificado-digital]
   orden: 1
 
 - id: que-necesito-para-firmar
   pregunta: ¿Qué necesito para firmar?
-  respuesta: 'Dos cosas: un certificado digital y firmas disponibles. Si te falta una de las dos, no puedes firmar.'
-  paginas: [inicio, certificado-digital, persona-natural, persona-juridica, firmas]
+  respuesta: "Dos cosas: un certificado digital y firmas disponibles. Si te falta una de las dos, no puedes firmar."
+  paginas:
+    [inicio, certificado-digital, persona-natural, persona-juridica, firmas]
   orden: 2
 
 - id: certificado-de-otro-proveedor
   pregunta: ¿Puedo usar un certificado de otro proveedor?
-  respuesta: 'Sí. Puedes comprarnos solo las firmas y usarlas con tu certificado, o comprarnos el certificado y gestionar tus firmas por otro lado.'
+  respuesta: "Sí. Puedes comprarnos solo las firmas y usarlas con tu certificado, o comprarnos el certificado y gestionar tus firmas por otro lado."
   paginas: [inicio, certificado-digital, firmas]
   orden: 3
 
 - id: las-firmas-vencen
   pregunta: ¿Las firmas vencen?
-  respuesta: 'No. Las firmas que compras no vencen; se descuentan a medida que firmas.'
+  respuesta: "No. La cantidad de firmas que compras no vencen; se descuentan a medida que firmas."
   paginas: [inicio, firmas]
   orden: 4
 
 # Los precios salen de la collection productos.
 - id: cuanto-cuesta
   pregunta: ¿Cuánto cuesta?
-  respuesta: 'El certificado digital cuesta {precio_cert_1} por 1 año o {precio_cert_2} por 2 años. Las firmas se venden en bolsas desde {cantidad_bolsa_min} firmas ({precio_bolsa_min}), y el precio por firma baja hasta {precio_firma_min} en las bolsas más grandes. Todos los precios incluyen IGV.'
+  respuesta: "El certificado digital cuesta {precio_cert_1} por 1 año o {precio_cert_2} por 2 años. Las firmas se venden en bolsas desde {cantidad_bolsa_min} firmas ({precio_bolsa_min}), y el precio por firma baja hasta {precio_firma_min} en las bolsas más grandes. Todos los precios incluyen IGV."
   paginas: [inicio, certificado-digital, firmas]
   orden: 5
 
 - id: validez-legal
   pregunta: ¿La firma remota tiene validez legal?
-  respuesta: 'Sí. La firma digital tiene la misma validez que la firma manuscrita según la Ley N.° 27269, Ley de Firmas y Certificados Digitales, y su Reglamento (D.S. N.° 052-2008-PCM). Los certificados los emite GIRASOL PE S.C.R.L., Entidad de Certificación acreditada ante INDECOPI.'
+  respuesta: "Sí. La firma digital tiene la misma validez que la firma manuscrita según la Ley N.° 27269, Ley de Firmas y Certificados Digitales, y su Reglamento (D.S. N.° 052-2008-PCM). Los certificados los emite GIRASOL PE S.C.R.L., Entidad de Certificación acreditada ante INDECOPI."
   paginas: [inicio, certificado-digital, persona-natural, persona-juridica]
   orden: 6
 
 - id: como-pagar
   pregunta: ¿Cómo puedo pagar?
-  respuesta: 'Trabajamos con el BCP y aceptamos tarjetas de crédito y débito. También puedes pagar en línea con Izipay, Culqi o Yape. Tu asesor te indica los datos al confirmar la compra.'
-  paginas: [inicio, certificado-digital, persona-natural, persona-juridica, firmas]
+  respuesta: "Trabajamos con el BCP y aceptamos tarjetas de crédito y débito. También puedes pagar en línea con Izipay, Culqi o Yape. Tu asesor te indica los datos al confirmar la compra."
+  paginas:
+    [inicio, certificado-digital, persona-natural, persona-juridica, firmas]
   orden: 7
 
 - id: cuanto-tarda
   pregunta: ¿Cuánto tarda en estar listo mi acceso?
-  respuesta: 'Aproximadamente 1 hora después de completar tu solicitud y la validación de identidad recibes tu usuario y contraseña.'
+  respuesta: "Aproximadamente 1 hora después de completar tu solicitud y la validación de identidad recibes tu usuario y contraseña."
   paginas: [inicio, certificado-digital]
   orden: 8
 
 - id: que-cuenta-como-firma
   pregunta: ¿Qué cuenta como una firma?
-  respuesta: 'Cada firma que haces descuenta una de tu bolsa. Si un documento lleva 3 firmas, se descuentan 3.'
+  respuesta: "Cada firma que haces descuenta una de tu bolsa. Si un documento lleva 3 firmas, se descuentan 3."
   paginas: [firmas]
   orden: 9
 
 - id: que-puedo-firmar
   pregunta: ¿Qué documentos puedo firmar?
-  respuesta: 'Con el certificado de persona natural firmas a tu nombre contratos, solicitudes y cualquier documento PDF. Con el de persona jurídica firmas contratos, actas y documentos legales en nombre de la empresa.'
+  respuesta: "Con el certificado de persona natural firmas a tu nombre contratos, solicitudes y cualquier documento PDF. Con el de persona jurídica firmas contratos, actas y documentos legales en nombre de la empresa."
   paginas: [certificado-digital]
   orden: 10
 
 - id: natural-o-juridica
   pregunta: ¿Qué diferencia hay entre persona natural y persona jurídica?
-  respuesta: 'El certificado de persona natural es para firmar a tu nombre. El de persona jurídica es para firmar en nombre de una empresa, como su representante legal.'
+  respuesta: "El certificado de persona natural es para firmar a tu nombre. El de persona jurídica es para firmar en nombre de una empresa, como su representante legal."
   paginas: [certificado-digital]
   orden: 11
 
@@ -75,36 +77,36 @@
 # paga después de hablar con el asesor. `orden` negativo: van antes de las preguntas generales en esas páginas.
 - id: natural-para-que-sirve
   pregunta: ¿Para qué sirve el certificado digital para persona natural?
-  respuesta: 'Para firmar cualquier documento PDF a tu nombre, con validez legal: contratos, acuerdos, cartas o declaraciones. Tu firma digital reemplaza a la manuscrita, así que ya no tienes que imprimir, firmar y escanear.'
+  respuesta: "Para firmar cualquier documento PDF a tu nombre, con validez legal: contratos, acuerdos, cartas o declaraciones. Tu firma digital reemplaza a la manuscrita, así que ya no tienes que imprimir, firmar y escanear."
   paginas: [persona-natural]
   orden: -4
 
 - id: juridica-para-que-sirve
   pregunta: ¿Para qué sirve el certificado digital para persona jurídica?
-  respuesta: 'Para firmar cualquier documento PDF en nombre de tu empresa, como representante legal, gerente u otro cargo con poderes. Quien recibe el documento sabe que lo firma la empresa, lo que da respaldo legal a tus contratos y acuerdos comerciales.'
+  respuesta: "Para firmar cualquier documento PDF en nombre de tu empresa, como representante legal, gerente u otro cargo con poderes. Quien recibe el documento sabe que lo firma la empresa, lo que da respaldo legal a tus contratos y acuerdos comerciales."
   paginas: [persona-juridica]
   orden: -4
 
 - id: natural-requisitos
   pregunta: ¿Qué requisitos necesito para solicitarlo?
-  respuesta: 'Para este certificado necesitas: DNI y/o CE vigente, contrato y validación de identidad. En la sección de requisitos tienes el detalle de cada uno.'
+  respuesta: "Para este certificado necesitas: DNI y/o CE vigente, contrato y validación de identidad. En la sección de requisitos tienes el detalle de cada uno."
   paginas: [persona-natural]
   orden: -3
 
 - id: juridica-requisitos
   pregunta: ¿Qué requisitos necesito para solicitarlo?
-  respuesta: 'Para este certificado necesitas: DNI y/o CE vigente, validación de RUC en SUNAT, vigencia de poder, contrato y otros documentos. En la sección de requisitos tienes el detalle de cada uno.'
+  respuesta: "Para este certificado necesitas: DNI y/o CE vigente, validación de RUC en SUNAT, vigencia de poder, contrato y otros documentos. En la sección de requisitos tienes el detalle de cada uno."
   paginas: [persona-juridica]
   orden: -3
 
 - id: validacion-de-identidad
   pregunta: ¿Cómo realizo la validación de identidad?
-  respuesta: 'Tienes dos opciones. En línea: desde nuestra plataforma escaneas un QR o abres un enlace y haces todo desde tu celular, incluida la firma del contrato. Asistida: si prefieres acompañamiento, eliges fecha y hora en la plataforma y una operadora de Girasol te atiende por videollamada: te hace las preguntas de validación y te guía hasta terminar.'
+  respuesta: "Tienes dos opciones. En línea: desde nuestra plataforma escaneas un QR o abres un enlace y haces todo desde tu celular, incluida la firma del contrato. Asistida: si prefieres acompañamiento, eliges fecha y hora en la plataforma y una operadora de Girasol te atiende por videollamada: te hace las preguntas de validación y te guía hasta terminar."
   paginas: [persona-natural, persona-juridica]
   orden: -2
 
 - id: demora-de-la-emision
   pregunta: ¿Cuánto tiempo demora la emisión?
-  respuesta: 'Depende de cuánto tardes en completar la solicitud. Una vez que terminas la validación de identidad, la emisión de tu certificado demora aproximadamente una hora.'
+  respuesta: "Depende de cuánto tardes en completar la solicitud. Una vez que terminas la validación de identidad, la emisión de tu certificado demora aproximadamente una hora."
   paginas: [persona-natural, persona-juridica]
   orden: -1

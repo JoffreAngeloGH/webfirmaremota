@@ -81,7 +81,7 @@ const piezaFirmas: PiezaFirmas = {
 		`Desde ${formatCantidad(firmas.cantidad)} firmas`,
 		`Hasta ${formatCantidad(masGrande.cantidad)} firmas, desde ${formatPrice(masBarata.precioUnitario, masBarata.moneda)} c/u`,
 		'Las firmas no vencen',
-		'Sirven con tu certificado, sea nuestro o de otro proveedor',
+		'Sirven con tu certificado comprado a nosotros',
 	],
 	cta: { label: 'Comprar firmas', href: productWhatsappUrl(firmas) },
 	enlace: { label: 'Ver bolsas de firmas', href: '/firmas/' },
@@ -126,7 +126,7 @@ const description =
 				caption: 'Comparación entre el certificado tradicional y la firma remota',
 				columnas: ['Certificado tradicional', 'Firma remota'],
 				filas: [
-					{ label: 'Dónde está', a: 'En un archivo instalado o en un token', b: 'En la nube' },
+					{ label: 'Dónde está', a: 'En un archivo instalado o en tu equipo local o token', b: 'En la nube' },
 					{ label: 'Qué necesitas', a: 'La computadora o el token donde está instalado', b: 'Usuario, PIN y tu WhatsApp' },
 					{ label: 'Para empezar', a: 'Descargar, instalar y configurar', b: 'Recibes tu acceso y listo' },
 				],

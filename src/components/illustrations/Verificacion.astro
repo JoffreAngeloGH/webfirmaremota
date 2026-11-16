@@ -1,0 +1,52 @@
+---
+/**
+ * Ventaja 3 (spec 004, iteración 2): en el celular se ingresa el PIN, llega el código por WhatsApp
+ * y la firma queda confirmada con un escudo. Decorativa.
+ */
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+const teclas = [0, 1, 2].flatMap((f) => [0, 1, 2].map((c) => ({ x: 92 + c * 18, y: 92 + f * 13 })));
+---
+
+<svg data-anim="verificacion" class:list={['fr-ilus', className]} viewBox="0 0 240 150" fill="none" aria-hidden="true">
+	<!-- Celular -->
+	<g data-parte="celular">
+		<rect x="78" y="14" width="84" height="130" rx="14" fill="var(--fr-color-navy)" opacity="0.06" transform="translate(4 5)"></rect>
+		<rect x="78" y="14" width="84" height="130" rx="14" fill="var(--fr-color-sheet)" stroke="var(--fr-color-navy)" stroke-width="2.2"></rect>
+		<rect x="84" y="22" width="72" height="114" rx="9" fill="var(--fr-color-paper)"></rect>
+		<path d="M112 19h16" stroke="var(--fr-color-navy)" stroke-width="2" stroke-linecap="round"></path>
+		<!-- PIN -->
+		<rect x="92" y="58" width="56" height="5" rx="2.5" fill="var(--fr-color-line)"></rect>
+		<g fill="var(--fr-color-navy)">
+			<circle data-parte="pin" cx="102" cy="74" r="4"></circle>
+			<circle data-parte="pin" cx="115" cy="74" r="4"></circle>
+			<circle data-parte="pin" cx="128" cy="74" r="4"></circle>
+			<circle data-parte="pin" cx="141" cy="74" r="4"></circle>
+		</g>
+		<!-- Teclado -->
+		<g fill="var(--fr-color-line)">
+			{teclas.map((t) => <rect x={t.x} y={t.y} width="14" height="9" rx="3" />)}
+		</g>
+	</g>
+
+	<!-- Notificación de WhatsApp con el código -->
+	<g data-parte="aviso">
+		<rect x="104" y="28" width="122" height="36" rx="9" fill="var(--fr-color-navy)" opacity="0.08" transform="translate(3 4)"></rect>
+		<rect x="104" y="28" width="122" height="36" rx="9" fill="var(--fr-color-sheet)" stroke="var(--fr-color-line-strong)" stroke-width="1.4"></rect>
+		<circle cx="119" cy="46" r="7" fill="var(--fr-color-girasol)"></circle>
+		<path d="M115.5 49.5l1-3a4 4 0 1 1 1.6 1.6z" fill="var(--fr-color-sheet)"></path>
+		<rect x="132" y="36" width="34" height="4" rx="2" fill="var(--fr-color-line-strong)"></rect>
+		<text x="132" y="56" font-size="13" letter-spacing="2.4" fill="var(--fr-color-navy)" style="font-family: var(--fr-font-mono)">
+			<tspan data-parte="digito">4</tspan><tspan data-parte="digito">8</tspan><tspan data-parte="digito">2</tspan><tspan data-parte="digito">1</tspan><tspan data-parte="digito">9</tspan><tspan data-parte="digito">0</tspan>
+		</text>
+	</g>
+
+	<!-- Escudo de confirmación -->
+	<g data-parte="escudo">
+		<path d="M56 78c8 5.5 16.5 8 25 8v20c0 15.5-11 25-25 31-14-6-25-15.5-25-31V86c8.5 0 17-2.5 25-8Z" fill="var(--fr-color-navy)" opacity="0.08" transform="translate(3 4)"></path>
+		<path d="M56 78c8 5.5 16.5 8 25 8v20c0 15.5-11 25-25 31-14-6-25-15.5-25-31V86c8.5 0 17-2.5 25-8Z" fill="var(--fr-color-girasol)" stroke="var(--fr-color-navy)" stroke-width="2" stroke-linejoin="round"></path>
+		<path data-parte="check" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" d="M47 107l6.5 6.5L66 100" stroke="var(--fr-color-navy)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+	</g>
+</svg>

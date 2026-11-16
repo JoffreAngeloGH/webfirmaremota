@@ -1,0 +1,47 @@
+---
+/**
+ * Encabezado de sección: etiqueta + h2 con una palabra en serif + intro opcional (spec 002/003).
+ * La palabra en serif va en navy sobre papel y en ámbar sobre fondos oscuros.
+ */
+import Etiqueta from '@/components/brand/Etiqueta.astro';
+
+interface Props {
+	etiqueta: string;
+	titulo: string;
+	/** Palabra(s) final(es) del título en serif cursiva. */
+	acento?: string;
+	intro?: string;
+	tono?: 'light' | 'dark';
+	align?: 'left' | 'center';
+	class?: string;
+	/** id del h2, para aria-labelledby de la sección. */
+	id?: string;
+}
+const { etiqueta, titulo, acento, intro, tono = 'light', align = 'left', class: className, id } = Astro.props;
+---
+
+<div class:list={['max-w-2xl', align === 'center' && 'mx-auto text-center', className]}>
+	<Etiqueta tono={tono}>{etiqueta}</Etiqueta>
+	<h2
+		id={id}
+		class:list={[
+			'mt-4 mb-0 text-[2rem] leading-[1.08] font-extrabold tracking-[-0.025em] md:text-[2.75rem]',
+			tono === 'dark' && 'text-white',
+		]}
+	>
+		{titulo}{' '}
+		{
+			acento && (
+				<span
+					class:list={[
+						'font-fr-serif font-normal tracking-normal italic',
+						tono === 'dark' ? 'text-fr-girasol' : 'text-fr-navy',
+					]}
+				>
+					{acento}
+				</span>
+			)
+		}
+	</h2>
+	{intro && <p class:list={['mt-4 mb-0 md:text-lg', tono === 'dark' ? 'text-white/70' : 'text-fr-muted']}>{intro}</p>}
+</div>

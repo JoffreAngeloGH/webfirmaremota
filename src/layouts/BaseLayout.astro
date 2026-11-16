@@ -1,0 +1,53 @@
+---
+import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
+import type { Thing } from 'schema-dts';
+import '@/styles/global.css';
+import { site } from '@/config/site';
+import SEO, { type SeoProps } from '@/components/seo/SEO.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import { graph, organizationSchema, websiteSchema } from '@/lib/seo/schema';
+
+interface Props extends SeoProps {
+	/** Nodos JSON-LD propios de la página (Product, FAQPage, BreadcrumbList…). */
+	schema?: Thing[];
+}
+
+const { schema = [], ...seo } = Astro.props;
+const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
+---
+
+<!doctype html>
+<html lang={site.lang}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#0E035C" />
+		<!-- Marca que hay JS: algunas animaciones solo se pausan/ocultan si JS las va a reproducir. -->
+		<script is:inline>document.documentElement.classList.add('js');</script>
+		<Font cssVariable="--ff-outfit" preload />
+		<Font cssVariable="--ff-instrument-serif" preload />
+		<Font cssVariable="--ff-jetbrains-mono" />
+		<SEO {...seo} />
+		<JsonLd data={jsonLd} />
+		<ClientRouter />
+	</head>
+	<body class="min-h-dvh">
+		<slot />
+		<script>
+			import { destroyReveal, initReveal } from '@/lib/reveal';
+			import { destroyIlustraciones, initIlustraciones } from '@/lib/ilustraciones';
+			document.addEventListener('astro:page-load', () => {
+				document.documentElement.classList.add('js');
+				initReveal();
+				initIlustraciones();
+			});
+			document.addEventListener('astro:before-swap', () => {
+				destroyReveal();
+				destroyIlustraciones();
+			});
+		</script>
+	</body>
+</html>

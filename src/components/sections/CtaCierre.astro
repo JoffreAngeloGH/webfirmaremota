@@ -1,0 +1,37 @@
+---
+import { buttonVariants } from '@/components/ui/button';
+import Firma from '@/components/brand/Firma.astro';
+
+interface Props {
+	id: string;
+	titulo: string;
+	acento?: string;
+	texto: string;
+	cta: { label: string; href: string };
+	ctaSecundario?: { label: string; href: string };
+}
+const { id, titulo, acento, texto, cta, ctaSecundario } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="relative overflow-hidden bg-fr-navy text-white">
+	<div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:22px_22px]"></div>
+	<div data-reveal class="gs-container gs-section relative flex flex-col items-center text-center">
+		<h2 id={`${id}-titulo`} class="m-0 max-w-3xl text-[2.25rem] leading-[1.05] font-extrabold tracking-[-0.03em] text-white md:text-[3.25rem]">
+			{titulo}{' '}
+			{acento && <span class="font-fr-serif font-normal tracking-normal text-fr-girasol italic">{acento}</span>}
+		</h2>
+		<p class="mt-5 mb-0 max-w-xl text-white/70 md:text-lg">{texto}</p>
+		<div class="mt-9 flex flex-wrap justify-center gap-3">
+			<a href={cta.href} target="_blank" rel="noopener noreferrer" class={buttonVariants()}>{cta.label}</a>
+			{
+				ctaSecundario && (
+					<a href={ctaSecundario.href} target="_blank" rel="noopener noreferrer" class={buttonVariants({ variant: 'outline-dark' })}>
+						{ctaSecundario.label}
+					</a>
+				)
+			}
+		</div>
+		<!-- Firma grande que se dibuja al llegar a la sección (spec 004) -->
+		<Firma alVer delay={0.2} class="mt-10 w-full max-w-md text-white/85" />
+	</div>
+</section>

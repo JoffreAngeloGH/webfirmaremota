@@ -1,0 +1,60 @@
+---
+/**
+ * Ventaja 2 (spec 004, iteración 2): la nube sincroniza con laptop, tablet y celular,
+ * y la misma firma se escribe en los tres. Decorativa.
+ */
+import FirmaMini from '@/components/brand/FirmaMini.astro';
+
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+// Puntos donde las líneas de sincronización tocan cada equipo.
+const lineas = ['M120 40C120 56 52 52 52 70', 'M120 40C120 58 128 62 128 78', 'M120 40C120 58 196 56 196 84'];
+---
+
+<svg data-anim="dispositivos" class:list={['fr-ilus', className]} viewBox="0 0 240 150" fill="none" aria-hidden="true">
+	<!-- Líneas de sincronización -->
+	<g stroke="var(--fr-color-line-strong)" stroke-width="1.6" stroke-dasharray="3 4">
+		{lineas.map((d) => <path d={d} />)}
+	</g>
+	<g stroke="var(--fr-color-girasol)" stroke-width="2.2" stroke-linecap="round">
+		{lineas.map((d) => <path data-parte="pulso" d={d} pathLength="1" stroke-dasharray="0.12 1" stroke-dashoffset="-1" />)}
+	</g>
+
+	<!-- Nube -->
+	<g data-parte="nube">
+		<path d="M136 40h-32a14 14 0 1 1 4.6-27.2 17 17 0 0 1 30.4 7.3A10.4 10.4 0 0 1 136 40Z" fill="var(--fr-color-sheet)" stroke="var(--fr-color-navy)" stroke-width="2" stroke-linejoin="round"></path>
+		<path d="M114 28l4 4 8-8" stroke="var(--fr-color-girasol)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+	</g>
+
+	<!-- Laptop -->
+	<g data-parte="equipo">
+		<rect x="12" y="70" width="80" height="52" rx="5" fill="var(--fr-color-navy)" opacity="0.06" transform="translate(3 4)"></rect>
+		<rect x="12" y="70" width="80" height="52" rx="5" fill="var(--fr-color-sheet)" stroke="var(--fr-color-navy)" stroke-width="2"></rect>
+		<rect x="19" y="77" width="66" height="38" rx="2" fill="var(--fr-color-paper)"></rect>
+		<path d="M4 126h96l-6 7H10z" fill="var(--fr-color-paper-2)" stroke="var(--fr-color-navy)" stroke-width="2" stroke-linejoin="round"></path>
+		<path d="M25 84h30M25 89h22" stroke="var(--fr-color-line-strong)" stroke-width="2" stroke-linecap="round"></path>
+		<FirmaMini x={42} y={92} ancho={38} grosor={3} />
+	</g>
+
+	<!-- Tablet -->
+	<g data-parte="equipo">
+		<rect x="106" y="78" width="46" height="62" rx="6" fill="var(--fr-color-navy)" opacity="0.06" transform="translate(3 4)"></rect>
+		<rect x="106" y="78" width="46" height="62" rx="6" fill="var(--fr-color-sheet)" stroke="var(--fr-color-navy)" stroke-width="2"></rect>
+		<rect x="111" y="84" width="36" height="46" rx="2" fill="var(--fr-color-paper)"></rect>
+		<path d="M116 90h22M116 95h16" stroke="var(--fr-color-line-strong)" stroke-width="2" stroke-linecap="round"></path>
+		<FirmaMini x={114} y={104} ancho={30} grosor={3.4} />
+		<circle cx="129" cy="135" r="1.6" fill="var(--fr-color-navy)"></circle>
+	</g>
+
+	<!-- Celular -->
+	<g data-parte="equipo">
+		<rect x="180" y="84" width="34" height="58" rx="7" fill="var(--fr-color-navy)" opacity="0.06" transform="translate(3 4)"></rect>
+		<rect x="180" y="84" width="34" height="58" rx="7" fill="var(--fr-color-sheet)" stroke="var(--fr-color-navy)" stroke-width="2"></rect>
+		<rect x="184" y="92" width="26" height="42" rx="2" fill="var(--fr-color-paper)"></rect>
+		<path d="M193 88h8" stroke="var(--fr-color-navy)" stroke-width="1.6" stroke-linecap="round"></path>
+		<path d="M188 98h14M188 102h10" stroke="var(--fr-color-line-strong)" stroke-width="1.8" stroke-linecap="round"></path>
+		<FirmaMini x={186} y={108} ancho={22} grosor={4} />
+	</g>
+</svg>

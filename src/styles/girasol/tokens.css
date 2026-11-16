@@ -1,0 +1,124 @@
+/* Generado por la skill girasol-design (scripts/build.mjs) desde tokens/tokens.json. No editar a mano. */
+:root {
+  /* Primario de marca. Logo, títulos, fondos fuertes (CTA de cierre, header de ticket). */
+  --gs-color-navy: #0E035C;
+  --gs-color-navy-rgb: 14 3 92;
+  /* Texto fuerte sobre claro y paneles oscuros secundarios. */
+  --gs-color-ink: #1F263E;
+  --gs-color-ink-rgb: 31 38 62;
+  /* Color de acción: botones primarios, links, eyebrows, foco, estados activos. */
+  --gs-color-action: #4489E8;
+  --gs-color-action-rgb: 68 137 232;
+  /* Final del degradado de acción. No usar solo. */
+  --gs-color-action-light: #5BA1EC;
+  --gs-color-action-light-rgb: 91 161 236;
+  /* Acento luminoso: punto del logo, checks y detalles sobre fondo oscuro, glows. */
+  --gs-color-sky: #65AFFF;
+  --gs-color-sky-rgb: 101 175 255;
+  /* Texto secundario: párrafos, subtítulos, descripciones. */
+  --gs-color-muted: #475569;
+  --gs-color-muted-rgb: 71 85 105;
+  /* Fondo base de página. */
+  --gs-color-surface: #FAFAFA;
+  --gs-color-surface-rgb: 250 250 250;
+  /* Tarjetas y superficies elevadas. */
+  --gs-color-white: #FFFFFF;
+  --gs-color-white-rgb: 255 255 255;
+  /* Tinte azul más suave: fondos de sección y de hero. */
+  --gs-color-tint-50: #F4F9FF;
+  --gs-color-tint-50-rgb: 244 249 255;
+  /* Tinte azul medio: centro de degradados, recortes del ticket. */
+  --gs-color-tint-100: #EEF5FF;
+  --gs-color-tint-100-rgb: 238 245 255;
+  /* Tinte azul más intenso: final de degradados claros. */
+  --gs-color-tint-200: #E6F1FF;
+  --gs-color-tint-200-rgb: 230 241 255;
+  /* Texto de etiquetas positivas (plan elegido, ahorro). */
+  --gs-color-success: #146C3A;
+  --gs-color-success-rgb: 20 108 58;
+  /* Fondo de etiquetas positivas. */
+  --gs-color-success-soft: #E3F7EC;
+  --gs-color-success-soft-rgb: 227 247 236;
+  /* Solo para el ícono de WhatsApp cuando se necesite su color oficial. Nunca como color de botón. */
+  --gs-color-whatsapp: #25D366;
+  --gs-color-whatsapp-rgb: 37 211 102;
+  /* Botón primario y acentos de acción. */
+  --gs-gradient-action: linear-gradient(135deg, var(--gs-color-action) 0%, var(--gs-color-action-light) 100%);
+  /* Fondo de paneles hero claros. */
+  --gs-gradient-tint: linear-gradient(90deg, var(--gs-color-tint-50) 0%, var(--gs-color-tint-100) 50%, var(--gs-color-tint-200) 100%);
+  /* Paneles oscuros con profundidad. */
+  --gs-gradient-navy: linear-gradient(135deg, var(--gs-color-navy) 0%, var(--gs-color-ink) 100%);
+  /* Títulos, precios, números destacados. Pesos 600–800 (no existe 900). */
+  --gs-font-family-heading: "Outfit", sans-serif;
+  /* Texto corrido, botones, etiquetas. Pesos 400–700. */
+  --gs-font-family-body: "Poppins", sans-serif;
+  --gs-font-weight-regular: 400;
+  --gs-font-weight-semibold: 600;
+  --gs-font-weight-bold: 700;
+  /* Máximo disponible en Outfit. Usar para títulos y precios. */
+  --gs-font-weight-extrabold: 800;
+  /* Etiqueta superior en mayúsculas (eyebrow). */
+  --gs-tracking-eyebrow: 0.22em;
+  /* Badges y píldoras en mayúsculas. */
+  --gs-tracking-badge: 0.12em;
+  /* Títulos grandes. */
+  --gs-tracking-tight: -0.025em;
+  /* Botones e inputs. */
+  --gs-radius-control: 0.75rem;
+  /* Tarjetas pequeñas, ítems de acordeón, contenedores de imagen. */
+  --gs-radius-card-sm: 1rem;
+  /* Tarjetas principales (ofertas, pasos). */
+  --gs-radius-card: 1.5rem;
+  /* Paneles grandes: hero slider, bloques destacados. */
+  --gs-radius-panel: 1.75rem;
+  /* Badges, chips, eyebrows con fondo. */
+  --gs-radius-pill: 9999px;
+  --gs-shadow-chip: 0 2px 8px 0 rgb(var(--gs-color-action-rgb) / 0.08);
+  /* Tarjeta en reposo. */
+  --gs-shadow-card: 0 18px 50px -35px rgb(var(--gs-color-navy-rgb) / 0.45);
+  --gs-shadow-card-hover: 0 28px 60px -35px rgb(var(--gs-color-navy-rgb) / 0.5);
+  /* Tarjeta destacada (sombra azul). */
+  --gs-shadow-card-featured: 0 24px 48px -24px rgb(var(--gs-color-action-rgb) / 0.45);
+  --gs-shadow-card-featured-hover: 0 32px 60px -24px rgb(var(--gs-color-action-rgb) / 0.55);
+  --gs-shadow-ticket: 0 28px 60px -28px rgb(var(--gs-color-navy-rgb) / 0.45);
+  /* Paneles grandes (hero). */
+  --gs-shadow-panel: 0 30px 80px -50px rgb(var(--gs-color-navy-rgb) / 0.35);
+  /* Glow del botón primario. */
+  --gs-shadow-button: 0 12px 22px -6px rgb(var(--gs-color-action-rgb) / 0.5);
+  /* Glow de íconos con fondo de acción. */
+  --gs-shadow-icon: 0 8px 16px -6px rgb(var(--gs-color-action-rgb) / 0.4);
+  /* Ancho máximo del contenido. Todas las secciones se alinean a este ancho. */
+  --gs-layout-container: 1350px;
+  /* Padding lateral del contenedor. */
+  --gs-layout-gutter: 1.5rem;
+  /* Padding vertical de sección en móvil. */
+  --gs-layout-section-y: 4rem;
+  /* Padding vertical de sección desde 768px. */
+  --gs-layout-section-y-lg: 5rem;
+  /* scroll-margin-top de anclas para no quedar bajo el menú fijo. */
+  --gs-layout-nav-offset: 7rem;
+  /* Hover de color. */
+  --gs-motion-duration-fast: 150ms;
+  /* Transiciones de UI (acordeón, íconos). */
+  --gs-motion-duration-base: 300ms;
+  /* Elevación de tarjetas, entrada de elementos. */
+  --gs-motion-duration-slow: 500ms;
+  /* Tiempo que un elemento destacado (anillo) permanece resaltado. */
+  --gs-motion-duration-highlight: 2200ms;
+  /* Equivalente a power2.out de GSAP. Entradas y hovers. */
+  --gs-motion-easing-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Desplazamiento vertical en animaciones de entrada al hacer scroll. */
+  --gs-motion-distance-reveal: 24px;
+}
+
+@media (max-width: 1200px) {
+  :root {
+    --gs-layout-container: 1024px;
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --gs-layout-gutter: 1.25rem;
+  }
+}

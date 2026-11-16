@@ -1,0 +1,50 @@
+---
+/**
+ * Sello circular "firmado digitalmente" (spec 002 §4). Decorativo.
+ * Gira muy lento; con "reducir movimiento" queda fijo.
+ */
+interface Props {
+	class?: string;
+	texto?: string;
+}
+// Texto a 14.5px (≥ 12px legible) que da una vuelta exacta al círculo.
+const { class: className, texto = 'Firmado digitalmente · ' } = Astro.props;
+const id = `sello-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<svg class:list={['fr-sello', className]} viewBox="0 0 120 120" aria-hidden="true">
+	<defs>
+		<path id={id} d="M60 60 m-43 0 a43 43 0 1 1 86 0 a43 43 0 1 1 -86 0"></path>
+	</defs>
+	<circle cx="60" cy="60" r="58" fill="none" stroke="currentColor" stroke-width="1.2"></circle>
+	<circle cx="60" cy="60" r="29" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3"></circle>
+	<g class="fr-sello__anillo">
+		<text
+			font-size="14.5"
+			fill="currentColor"
+			textLength="268"
+			lengthAdjust="spacing"
+			style="font-family: var(--fr-font-mono); text-transform: uppercase;"
+		>
+			<textPath href={`#${id}`} textLength="268" lengthAdjust="spacing">{texto}</textPath>
+		</text>
+	</g>
+	<path d="M49 61l8 8 15-17" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+
+<style>
+	.fr-sello__anillo {
+		transform-origin: 60px 60px;
+		animation: fr-sello-giro 40s linear infinite;
+	}
+	@keyframes fr-sello-giro {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fr-sello__anillo {
+			animation: none;
+		}
+	}
+</style>

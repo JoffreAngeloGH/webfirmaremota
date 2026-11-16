@@ -1,0 +1,20 @@
+---
+/** Eyebrow de sección en mono, con punto ámbar (spec 002 §4). Texto neutro: el azul es solo para acción. */
+interface Props {
+	class?: string;
+	/** "dark" sobre fondos navy. */
+	tono?: 'light' | 'dark';
+}
+const { class: className, tono = 'light' } = Astro.props;
+---
+
+<p
+	class:list={[
+		'fr-eyebrow m-0 inline-flex items-center gap-2',
+		tono === 'dark' ? 'text-white/70' : 'text-fr-muted',
+		className,
+	]}
+>
+	<span aria-hidden="true" class="size-1.5 rounded-full bg-fr-girasol"></span>
+	<slot />
+</p>

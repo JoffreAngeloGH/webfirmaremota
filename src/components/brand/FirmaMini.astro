@@ -1,0 +1,30 @@
+---
+/**
+ * La firma de la marca, en pequeño, para usar DENTRO de otra ilustración SVG (spec 004, iteración 2).
+ * Devuelve un <g>. La "escritura" la anima ilustraciones.ts ensanchando el recorte (data-parte="firma-clip");
+ * sin JS o con "reducir movimiento" se ve completa.
+ */
+import trazos from './firma-trazos.json';
+
+interface Props {
+	x: number;
+	y: number;
+	/** Ancho final en unidades del SVG contenedor (la firma mide 320 × 110). */
+	ancho: number;
+	color?: string;
+	/** Engrosa la tinta (en unidades de la firma) para que no se pierda al reducirla. */
+	grosor?: number;
+}
+const { x, y, ancho, color = 'var(--fr-color-navy)', grosor = 2 } = Astro.props;
+const escala = ancho / 320;
+const id = `firma-mini-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<g transform={`translate(${x} ${y}) scale(${escala.toFixed(4)})`}>
+	<clipPath id={id}>
+		<rect data-parte="firma-clip" x="0" y="0" width="320" height="110"></rect>
+	</clipPath>
+	<g clip-path={`url(#${id})`} fill={color} stroke={color} stroke-width={grosor} stroke-linejoin="round">
+		{trazos.tintas.map((d) => <path d={d} />)}
+	</g>
+</g>

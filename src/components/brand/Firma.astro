@@ -1,0 +1,87 @@
+---
+/**
+ * Firma manuscrita que se escribe sola (spec 002 §4, iteración 2 del spec 004). Decorativa.
+ *
+ * La "tinta" es una forma de grosor variable (más gruesa al bajar, fina al subir y en los extremos),
+ * generada por scripts/generar-firma.mjs. Para animarla, cada trazo se revela con una máscara que
+ * recorre su línea central, como un bolígrafo.
+ *
+ * Solo CSS: sin JS se escribe igual y termina completa; con "reducir movimiento" aparece entera.
+ * Con `alVer`, espera a estar en pantalla (ilustraciones.ts agrega .is-visible; solo si hay JS).
+ */
+import trazos from './firma-trazos.json';
+
+interface Props {
+	class?: string;
+	/** Retraso antes de empezar a escribir, en segundos. */
+	delay?: number;
+	alVer?: boolean;
+}
+const { class: className, delay = 0.3, alVer = false } = Astro.props;
+
+const uid = `firma-${Math.random().toString(36).slice(2, 8)}`;
+// Velocidad constante del "bolígrafo": la duración de cada trazo es proporcional a su largo.
+const VELOCIDAD = 620; // unidades del viewBox por segundo
+const PAUSA = 0.12; // levantar el bolígrafo entre trazos
+// Orden de escritura: trazo principal, el punto y al final la rúbrica.
+const ORDEN = [0, 2, 1];
+const tiempos: Record<number, { inicio: number; dur: number }> = {};
+let t = delay;
+for (const i of ORDEN) {
+	// Ojo: no escribir `x! / y` aquí; el compilador de Astro lo confunde con una expresión regular.
+	const largo = trazos.largos[i] ?? 0;
+	const dur = Math.max(0.08, largo / VELOCIDAD);
+	tiempos[i] = { inicio: t, dur };
+	t += dur + PAUSA;
+}
+---
+
+<svg class:list={['fr-firma', className]} viewBox="0 0 320 110" fill="none" aria-hidden="true" data-al-ver={alVer ? '' : undefined}>
+	<defs>
+		{
+			trazos.centrales.map((d, i) => (
+				<mask id={`${uid}-${i}`} maskUnits="userSpaceOnUse" x="0" y="0" width="320" height="110">
+					<path
+						class="fr-firma__guia"
+						d={d}
+						pathLength="1"
+						style={`--inicio:${tiempos[i]!.inicio.toFixed(2)}s;--dur:${tiempos[i]!.dur.toFixed(2)}s`}
+					/>
+				</mask>
+			))
+		}
+	</defs>
+	{
+		trazos.tintas.map((d, i) => (
+			<path d={d} fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round" mask={`url(#${uid}-${i})`} />
+		))
+	}
+</svg>
+
+<style>
+	.fr-firma__guia {
+		fill: none;
+		stroke: #fff;
+		stroke-width: 7;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		animation: fr-firma-escribe var(--dur) cubic-bezier(0.4, 0.1, 0.4, 1) var(--inicio) forwards;
+	}
+	/* Solo con JS: en pausa hasta que se vea. Sin JS se escribe al cargar. */
+	:global(.js) .fr-firma[data-al-ver]:not(.is-visible) .fr-firma__guia {
+		animation-play-state: paused;
+	}
+	@keyframes fr-firma-escribe {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fr-firma__guia {
+			animation: none;
+			stroke-dashoffset: 0;
+		}
+	}
+</style>

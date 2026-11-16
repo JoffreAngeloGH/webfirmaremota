@@ -1,0 +1,110 @@
+---
+/**
+ * Cómo funciona (spec 004): cada paso con su ilustración y una línea que los une y avanza con el scroll.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+import ChatAsesor from '@/components/illustrations/ChatAsesor.astro';
+import TarjetaAcceso from '@/components/illustrations/TarjetaAcceso.astro';
+import PasoFirma from '@/components/illustrations/PasoFirma.astro';
+
+const ILUSTRACIONES = { chat: ChatAsesor, acceso: TarjetaAcceso, firma: PasoFirma } as const;
+
+interface Props {
+	id: string;
+	etiqueta: string;
+	titulo: string;
+	acento?: string;
+	pasos: { titulo: string; texto: string; ilustracion: keyof typeof ILUSTRACIONES }[];
+}
+const { id, etiqueta, titulo, acento, pasos } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
+	<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} />
+
+	<div class="mt-12">
+		<!--
+			Recorrido de los pasos (desde 768px): la línea se llena con el scroll, una plumilla avanza en la punta
+			y cada número se rellena al alcanzarlo. Sin JS se ve completo (todos los números activos).
+		-->
+		<div aria-hidden="true" data-pasos class="fr-pasos relative mx-[16.66%] mb-8 hidden h-12 md:block">
+			<div class="absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-fr-line"></div>
+			<div data-pasos-relleno class="absolute inset-x-0 top-1/2 h-[3px] origin-left -translate-y-1/2 rounded-full bg-fr-girasol"></div>
+			{
+				pasos.map((_, i) => (
+					<span
+						data-paso-nodo
+						class="fr-pasos__nodo is-activo absolute top-1/2 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 font-fr-mono text-sm"
+						style={`left:${(i / Math.max(1, pasos.length - 1)) * 100}%`}
+					>
+						{String(i + 1).padStart(2, '0')}
+					</span>
+				))
+			}
+			<span data-pasos-punta class="fr-pasos__punta absolute bottom-1/2 z-10 -translate-x-1/2" style="left:100%">
+				<svg viewBox="0 0 24 32" class="h-8 w-6 -rotate-[24deg] origin-bottom">
+					<path d="M12 31 3.5 17.5 6 6h12l2.5 11.5Z" fill="var(--fr-color-navy)"></path>
+					<path d="M12 31V18" stroke="var(--fr-color-paper)" stroke-width="1.4"></path>
+					<circle cx="12" cy="15.5" r="2.2" fill="var(--fr-color-paper)"></circle>
+					<rect x="5" y="1" width="14" height="6" rx="1.5" fill="var(--fr-color-girasol)"></rect>
+				</svg>
+			</span>
+		</div>
+
+		<ol class="relative grid list-none gap-6 p-0 md:grid-cols-3">
+			{
+				pasos.map((paso, i) => {
+					const Ilustracion = ILUSTRACIONES[paso.ilustracion];
+					return (
+						<li class="flex flex-col">
+							<p aria-hidden="true" class="m-0 mx-auto mb-5 grid size-11 place-items-center rounded-full border-2 border-fr-girasol bg-fr-girasol font-fr-mono text-sm text-fr-navy md:hidden">
+								{String(i + 1).padStart(2, '0')}
+							</p>
+							<div class="flex flex-1 flex-col rounded-fr-card border border-fr-line bg-fr-sheet p-6 shadow-fr-sheet sm:p-7">
+								<Ilustracion class="block h-auto w-full" />
+								<h3 class="mt-6 mb-0 text-xl font-bold tracking-tight">
+									<span class="sr-only">Paso {i + 1}: </span>
+									{paso.titulo}
+								</h3>
+								<p class="mt-2 mb-0 text-sm leading-relaxed text-fr-muted">{paso.texto}</p>
+							</div>
+						</li>
+					);
+				})
+			}
+		</ol>
+	</div>
+</section>
+
+<style>
+	/* Número alcanzado: relleno ámbar. Pendiente (solo con JS en marcha): contorno. */
+	.fr-pasos__nodo {
+		border-color: var(--fr-color-girasol);
+		background: var(--fr-color-girasol);
+		color: var(--fr-color-navy);
+		transition:
+			background-color 0.3s ease,
+			border-color 0.3s ease,
+			color 0.3s ease,
+			scale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+	.fr-pasos.is-animada .fr-pasos__nodo:not(.is-activo) {
+		border-color: var(--fr-color-line-strong);
+		background: var(--fr-color-paper);
+		color: var(--fr-color-muted);
+		scale: 0.9;
+	}
+	/* La plumilla solo se ve mientras recorre la línea. */
+	.fr-pasos__punta {
+		opacity: 0;
+		transition: opacity 0.25s ease;
+	}
+	.fr-pasos.is-animada .fr-pasos__punta.is-viajando {
+		opacity: 1;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fr-pasos__nodo {
+			transition: none;
+		}
+	}
+</style>

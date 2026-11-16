@@ -1,0 +1,59 @@
+/* Generado por la skill girasol-design (scripts/build.mjs) desde tokens/tokens.json. No editar a mano. */
+/* Tailwind v4:  @import "tailwindcss";  @import "@girasol/design-system/tailwind-v4.css"; */
+@import "./tokens.css";
+
+@theme inline {
+  --color-gs-navy: var(--gs-color-navy);
+  --color-gs-ink: var(--gs-color-ink);
+  --color-gs-action: var(--gs-color-action);
+  --color-gs-action-light: var(--gs-color-action-light);
+  --color-gs-sky: var(--gs-color-sky);
+  --color-gs-muted: var(--gs-color-muted);
+  --color-gs-surface: var(--gs-color-surface);
+  --color-gs-white: var(--gs-color-white);
+  --color-gs-tint-50: var(--gs-color-tint-50);
+  --color-gs-tint-100: var(--gs-color-tint-100);
+  --color-gs-tint-200: var(--gs-color-tint-200);
+  --color-gs-success: var(--gs-color-success);
+  --color-gs-success-soft: var(--gs-color-success-soft);
+  --color-gs-whatsapp: var(--gs-color-whatsapp);
+  --font-gs-heading: var(--gs-font-family-heading);
+  --font-gs-body: var(--gs-font-family-body);
+  --tracking-gs-eyebrow: var(--gs-tracking-eyebrow);
+  --tracking-gs-badge: var(--gs-tracking-badge);
+  --tracking-gs-tight: var(--gs-tracking-tight);
+  --radius-gs-control: var(--gs-radius-control);
+  --radius-gs-card-sm: var(--gs-radius-card-sm);
+  --radius-gs-card: var(--gs-radius-card);
+  --radius-gs-panel: var(--gs-radius-panel);
+  --radius-gs-pill: var(--gs-radius-pill);
+  --shadow-gs-chip: var(--gs-shadow-chip);
+  --shadow-gs-card: var(--gs-shadow-card);
+  --shadow-gs-card-hover: var(--gs-shadow-card-hover);
+  --shadow-gs-card-featured: var(--gs-shadow-card-featured);
+  --shadow-gs-card-featured-hover: var(--gs-shadow-card-featured-hover);
+  --shadow-gs-ticket: var(--gs-shadow-ticket);
+  --shadow-gs-panel: var(--gs-shadow-panel);
+  --shadow-gs-button: var(--gs-shadow-button);
+  --shadow-gs-icon: var(--gs-shadow-icon);
+  --ease-gs-out: var(--gs-motion-easing-out);
+}
+
+@utility bg-gs-gradient-action {
+  background-image: var(--gs-gradient-action);
+}
+
+@utility bg-gs-gradient-tint {
+  background-image: var(--gs-gradient-tint);
+}
+
+@utility bg-gs-gradient-navy {
+  background-image: var(--gs-gradient-navy);
+}
+
+@utility gs-container {
+  width: 100%;
+  max-width: var(--gs-layout-container);
+  margin-inline: auto;
+  padding-inline: var(--gs-layout-gutter);
+}

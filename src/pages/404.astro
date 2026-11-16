@@ -1,0 +1,28 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Etiqueta from '@/components/brand/Etiqueta.astro';
+import LineaFirma from '@/components/brand/LineaFirma.astro';
+import { buttonVariants } from '@/components/ui/button';
+---
+
+<BaseLayout
+	title="Página no encontrada"
+	description="La página que buscas no existe o cambió de dirección."
+	noindex
+>
+	<Header />
+	<main class="bg-fr-grid">
+		<div class="gs-container gs-section flex min-h-[65dvh] flex-col items-center justify-center text-center">
+			<Etiqueta>Error 404</Etiqueta>
+			<h1 class="mt-4 mb-0 text-[2.25rem] leading-tight font-extrabold tracking-[-0.025em] md:text-[3rem]">
+				Esta página <span class="font-fr-serif font-normal tracking-normal text-fr-navy italic">no existe.</span>
+			</h1>
+			<p class="mt-3 text-fr-muted md:text-lg">Puede que la dirección haya cambiado o que el enlace esté incompleto.</p>
+			<LineaFirma class="mt-8 w-full max-w-xs" leyenda="Documento no encontrado" />
+			<a href="/" class:list={['mt-8', buttonVariants()]}>Ir al inicio</a>
+		</div>
+	</main>
+	<Footer />
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+/**
+ * "Necesitas los dos": certificado y firmas son dos piezas que encajan (spec 004).
+ * El texto es HTML real; la animación (GSAP, data-anim="encajan") solo mueve las piezas.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+
+interface Props {
+	id: string;
+	etiqueta: string;
+	titulo: string;
+	acento?: string;
+	texto: string;
+	ecuacion: { a: string; b: string; resultado: string; etiquetaResultado: string };
+}
+const { id, etiqueta, titulo, acento, texto, ecuacion } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="overflow-hidden bg-fr-navy text-white">
+	<div class="gs-container gs-section">
+		<div class="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+			<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={texto} tono="dark" />
+
+			<div data-anim="encajan" class="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+				<!-- Las dos piezas encajadas -->
+				<div class="flex flex-1 items-stretch">
+					<div data-parte="pieza-a" class="relative flex-1 rounded-l-fr-card border border-r-0 border-white/20 bg-white/5 p-5 pr-7">
+						<p class="fr-eyebrow m-0 text-white/60">01</p>
+						<p class="mt-2 mb-0 font-semibold">{ecuacion.a}</p>
+					</div>
+					<!-- Unión tipo rompecabezas -->
+					<div data-parte="union" aria-hidden="true" class="relative z-10 -mx-3 grid w-6 place-items-center">
+						<span class="size-6 rounded-full border-2 border-fr-girasol bg-fr-navy"></span>
+					</div>
+					<div data-parte="pieza-b" class="relative flex-1 rounded-r-fr-card border border-l-0 border-white/20 bg-white/5 p-5 pl-7">
+						<p class="fr-eyebrow m-0 text-white/60">02</p>
+						<p class="mt-2 mb-0 font-semibold">{ecuacion.b}</p>
+					</div>
+				</div>
+				<span data-parte="igual" aria-hidden="true" class="self-center font-fr-mono text-2xl text-fr-girasol">=</span>
+				<div data-parte="resultado" class="rounded-fr-card bg-fr-girasol p-5 text-fr-navy sm:w-44">
+					<p class="fr-eyebrow m-0 text-fr-navy/75">{ecuacion.etiquetaResultado}</p>
+					<p class="mt-2 mb-0 flex items-center gap-2 font-semibold">
+						{ecuacion.resultado}
+						<svg viewBox="0 0 24 24" class="size-5 shrink-0" fill="none" aria-hidden="true">
+							<path data-parte="check" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+						</svg>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

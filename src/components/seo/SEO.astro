@@ -1,0 +1,54 @@
+---
+import { INDEXABLE } from 'astro:env/server';
+import { site } from '@/config/site';
+import { absoluteUrl } from '@/lib/seo/schema';
+
+export interface SeoProps {
+	/** Título de la página, sin la marca: se aplica la plantilla `%s | firmaremota.pe`. */
+	title: string;
+	/** Descripción propia de la página (~155 caracteres). */
+	description: string;
+	/** Usa el título tal cual, sin plantilla (solo el inicio). */
+	titleAbsolute?: boolean;
+	/** Ruta de la imagen Open Graph. */
+	image?: string;
+	type?: 'website' | 'article';
+	/** Fuerza noindex aunque el sitio sea indexable (por ejemplo, la 404). */
+	noindex?: boolean;
+}
+
+const {
+	title,
+	description,
+	titleAbsolute = false,
+	image = site.ogImage,
+	type = 'website',
+	noindex = false,
+} = Astro.props;
+
+const fullTitle = titleAbsolute ? title : site.titleTemplate.replace('%s', title);
+const canonical = absoluteUrl(Astro.url.pathname);
+const imageUrl = absoluteUrl(image);
+// Constitución §5.1: sin INDEXABLE=true, nada se indexa.
+const robots = INDEXABLE && !noindex ? 'index, follow' : 'noindex, nofollow';
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />

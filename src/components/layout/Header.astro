@@ -1,0 +1,42 @@
+---
+import Logotipo from '@/components/brand/Logotipo.astro';
+import { buttonVariants } from '@/components/ui/button';
+import { whatsappUrl } from '@/lib/whatsapp';
+
+interface Props {
+	/** Enlaces de navegación (anclas o páginas). */
+	links?: { href: string; label: string }[];
+}
+const { links = [] } = Astro.props;
+---
+
+<header class="sticky top-0 z-40 border-b border-fr-line bg-fr-paper/85 backdrop-blur-md">
+	<div class="gs-container flex h-16 items-center justify-between gap-6">
+		<a href="/" aria-label="firmaremota.pe, ir al inicio" class="rounded-sm">
+			<Logotipo />
+		</a>
+		{
+			links.length > 0 && (
+				<nav aria-label="Principal" class="hidden md:block">
+					<ul class="m-0 flex list-none gap-8 p-0">
+						{links.map((l) => (
+							<li>
+								<a href={l.href} class="text-sm font-medium text-fr-muted transition-colors hover:text-fr-tinta">
+									{l.label}
+								</a>
+							</li>
+						))}
+					</ul>
+				</nav>
+			)
+		}
+		<a
+			href={whatsappUrl()}
+			target="_blank"
+			rel="noopener noreferrer"
+			class={buttonVariants({ size: 'sm' })}
+		>
+			Comprar
+		</a>
+	</div>
+</header>

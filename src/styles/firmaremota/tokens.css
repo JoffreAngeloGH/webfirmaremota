@@ -1,0 +1,91 @@
+/*
+ * Tokens de la sub-marca firmaremota.pe — "Tinta digital" (spec 002, constitución §6).
+ * Derivada de Girasol: hereda navy, texto y celeste; el resto es propio.
+ * Se edita a mano (no lo genera la skill de Girasol).
+ */
+
+:root {
+	/* Superficies: papel y hojas */
+	--fr-color-paper: #fbfaf7;
+	--fr-color-paper-2: #f3f1ea;
+	--fr-color-sheet: #ffffff;
+
+	/* Heredados de Girasol */
+	--fr-color-navy: var(--gs-color-navy); /* #0E035C */
+	--fr-color-text: var(--gs-color-ink); /* #1F263E */
+	--fr-color-sky: var(--gs-color-sky); /* #65AFFF */
+
+	/* Propios */
+	--fr-color-muted: #555a6e; /* 6.4:1 sobre papel */
+	--fr-color-ink: #16151c; /* tinta negra cálida: footer y fondos de cierre */
+	/* Azul tinta: SOLO lo accionable (botones, enlaces, foco). */
+	--fr-color-tinta: #2443d6; /* 7.4:1 con blanco */
+	/* Ámbar girasol: acento decorativo. Como texto, solo sobre navy (≈ 8:1); sobre papel no llega a AA. */
+	--fr-color-girasol: #e8a33d;
+	--fr-color-girasol-soft: #fbefd9;
+	--fr-color-tinta-hover: #1b34b0;
+	--fr-color-tinta-soft: #e9edfc;
+	--fr-color-line: rgb(14 3 92 / 0.12);
+	--fr-color-line-strong: rgb(14 3 92 / 0.22);
+
+	/* Layout: el header mide 64px (Girasol usa 7rem porque su menú es más alto). */
+	--fr-nav-offset: 4.5rem;
+
+	/* Forma: más recta que Girasol (12 / 24) */
+	--fr-radius-control: 10px;
+	--fr-radius-card: 16px;
+
+	/* Profundidad: plana, de papel */
+	--fr-shadow-sheet: 0 1px 0 rgb(14 3 92 / 0.06), 0 10px 30px -18px rgb(14 3 92 / 0.25);
+	--fr-shadow-lift: 0 1px 0 rgb(14 3 92 / 0.06), 0 22px 40px -22px rgb(14 3 92 / 0.35);
+	--fr-shadow-button: 0 10px 20px -10px rgb(36 67 214 / 0.55);
+
+	/* Tipografía (las variables --ff-* las define la API de fuentes de Astro) */
+	--fr-font-display: var(--ff-outfit);
+	--fr-font-serif: var(--ff-instrument-serif);
+	--fr-font-mono: var(--ff-jetbrains-mono);
+}
+
+@theme inline {
+	--color-fr-paper: var(--fr-color-paper);
+	--color-fr-paper-2: var(--fr-color-paper-2);
+	--color-fr-sheet: var(--fr-color-sheet);
+	--color-fr-navy: var(--fr-color-navy);
+	--color-fr-text: var(--fr-color-text);
+	--color-fr-sky: var(--fr-color-sky);
+	--color-fr-muted: var(--fr-color-muted);
+	--color-fr-ink: var(--fr-color-ink);
+	--color-fr-tinta: var(--fr-color-tinta);
+	--color-fr-tinta-hover: var(--fr-color-tinta-hover);
+	--color-fr-tinta-soft: var(--fr-color-tinta-soft);
+	--color-fr-girasol: var(--fr-color-girasol);
+	--color-fr-girasol-soft: var(--fr-color-girasol-soft);
+	--color-fr-line: var(--fr-color-line);
+	--color-fr-line-strong: var(--fr-color-line-strong);
+
+	--radius-fr-control: var(--fr-radius-control);
+	--radius-fr-card: var(--fr-radius-card);
+
+	--shadow-fr-sheet: var(--fr-shadow-sheet);
+	--shadow-fr-lift: var(--fr-shadow-lift);
+	--shadow-fr-button: var(--fr-shadow-button);
+
+	--font-fr-display: var(--fr-font-display);
+	--font-fr-serif: var(--fr-font-serif);
+	--font-fr-mono: var(--fr-font-mono);
+}
+
+/* Cuadrícula de papel: puntos muy tenues para fondos de hero. */
+@utility bg-fr-grid {
+	background-image: radial-gradient(rgb(14 3 92 / 0.09) 1px, transparent 1px);
+	background-size: 22px 22px;
+}
+
+/* Etiqueta (eyebrow) en mono. 12px: el mínimo legible en móvil (Lighthouse). */
+@utility fr-eyebrow {
+	font-family: var(--fr-font-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}

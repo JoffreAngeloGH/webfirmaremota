@@ -1,0 +1,21 @@
+---
+// Logotipo de texto provisional hasta tener el logo de firmaremota.pe (ver P19 en specs/pendientes.md).
+interface Props {
+	class?: string;
+	tono?: 'light' | 'dark';
+}
+const { class: className, tono = 'light' } = Astro.props;
+---
+
+<span
+	class:list={[
+		'inline-flex items-baseline font-fr-display text-lg font-extrabold tracking-tight',
+		tono === 'dark' ? 'text-white' : 'text-fr-navy',
+		className,
+	]}
+>
+	firma<span class="font-fr-serif text-[1.15em] font-normal italic">remota</span><span
+		aria-hidden="true"
+		class="mx-[0.06em] inline-block size-[0.32em] translate-y-[-0.05em] self-center rounded-full bg-fr-girasol"
+	></span><span class="sr-only">.</span>pe
+</span>

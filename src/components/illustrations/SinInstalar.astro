@@ -1,0 +1,58 @@
+---
+/**
+ * Ventaja 1 (spec 004, iteración 2): un instalador intenta cargar, se descarta,
+ * y el documento firmado sube a la nube. Decorativa.
+ * Estado final en el HTML: instalador tachado al fondo, nube con el documento firmado delante.
+ */
+import FirmaMini from '@/components/brand/FirmaMini.astro';
+
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg data-anim="sin-instalar" class:list={['fr-ilus', className]} viewBox="0 0 240 150" fill="none" aria-hidden="true">
+	<!-- Instalador descartado -->
+	<g data-parte="instalador" transform="rotate(-7 70 70)" opacity="0.55">
+		<rect x="18" y="34" width="112" height="74" rx="8" fill="var(--fr-color-navy)" opacity="0.06" transform="translate(3 4)"></rect>
+		<rect x="18" y="34" width="112" height="74" rx="8" fill="var(--fr-color-sheet)" stroke="var(--fr-color-line-strong)" stroke-width="1.5"></rect>
+		<path d="M18 50h112" stroke="var(--fr-color-line-strong)" stroke-width="1.5"></path>
+		<circle cx="28" cy="42" r="2.2" fill="var(--fr-color-line-strong)"></circle>
+		<circle cx="36" cy="42" r="2.2" fill="var(--fr-color-line-strong)"></circle>
+		<circle cx="44" cy="42" r="2.2" fill="var(--fr-color-line-strong)"></circle>
+		<!-- icono de descarga -->
+		<path d="M44 62v14M38 71l6 6 6-6M36 82h16" stroke="var(--fr-color-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+		<rect x="62" y="64" width="54" height="5" rx="2.5" fill="var(--fr-color-line)"></rect>
+		<rect x="62" y="74" width="36" height="4" rx="2" fill="var(--fr-color-line)"></rect>
+		<!-- barra de progreso -->
+		<rect x="30" y="92" width="88" height="6" rx="3" fill="var(--fr-color-paper-2)"></rect>
+		<rect data-parte="progreso" x="30" y="92" width="52" height="6" rx="3" fill="var(--fr-color-muted)"></rect>
+	</g>
+	<path data-parte="tachado" d="M22 40L126 112" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" stroke="var(--fr-color-girasol)" stroke-width="3.5" stroke-linecap="round"></path>
+
+	<!-- Nube con el documento firmado -->
+	<g data-parte="nube-flota">
+		<g data-parte="nube">
+			<path d="M206 112h-64a30 30 0 1 1 9-58.6 36 36 0 0 1 64.6 15.1A22 22 0 0 1 206 112Z" fill="var(--fr-color-navy)" opacity="0.06" transform="translate(3 4)"></path>
+			<path d="M206 112h-64a30 30 0 1 1 9-58.6 36 36 0 0 1 64.6 15.1A22 22 0 0 1 206 112Z" fill="var(--fr-color-sheet)" stroke="var(--fr-color-navy)" stroke-width="2.2" stroke-linejoin="round"></path>
+		</g>
+		<g data-parte="doc">
+			<rect x="160" y="58" width="40" height="50" rx="4" fill="var(--fr-color-paper)" stroke="var(--fr-color-navy)" stroke-width="1.8"></rect>
+			<path d="M167 67h26M167 73h26M167 79h16" stroke="var(--fr-color-line-strong)" stroke-width="2.2" stroke-linecap="round"></path>
+			<FirmaMini x={164} y={84} ancho={30} grosor={3} />
+			<path d="M166 99h28" stroke="var(--fr-color-line-strong)" stroke-width="1" stroke-dasharray="2 2"></path>
+		</g>
+		<g data-parte="check">
+			<circle cx="204" cy="104" r="10" fill="var(--fr-color-girasol)"></circle>
+			<path d="M199 104l3.5 3.5 6.5-7" stroke="var(--fr-color-navy)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
+		</g>
+	</g>
+
+	<!-- Destellos -->
+	<g fill="var(--fr-color-girasol)">
+		<circle data-parte="destello" cx="150" cy="40" r="2.2"></circle>
+		<circle data-parte="destello" cx="226" cy="54" r="1.8"></circle>
+		<circle data-parte="destello" cx="140" cy="122" r="1.6"></circle>
+	</g>
+</svg>

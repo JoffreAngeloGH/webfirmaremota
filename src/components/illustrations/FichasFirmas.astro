@@ -1,0 +1,30 @@
+---
+/**
+ * Tarjeta de firmas: una pila de fichas de firma y el contador ×N (spec 004). La pila es decorativa;
+ * el número es texto real (sin JS se ve el valor final) y GSAP lo anima desde 0.
+ */
+interface Props {
+	cantidad: number;
+	class?: string;
+}
+const { cantidad, class: className } = Astro.props;
+const fichas = [0, 1, 2];
+---
+
+<div data-anim="fichas" class:list={['flex items-center gap-5 rounded-fr-control border border-fr-line bg-fr-paper px-5 py-4', className]}>
+	<svg class="h-16 w-28 shrink-0" viewBox="0 0 112 64" fill="none" aria-hidden="true">
+		{
+			fichas.map((i) => (
+				<g data-parte="ficha" transform={`translate(${8 + i * 6} ${34 - i * 13})`}>
+					<rect width="80" height="22" rx="6" fill="var(--fr-color-sheet)" stroke="var(--fr-color-navy)" stroke-width="1.8" />
+					<path d="M12 13c3-5 5-7 6-5s-2 6 0 6 4-5 6-5 2 3 4 3 3-3 5-3" stroke="var(--fr-color-navy)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+					<circle cx="66" cy="11" r="4" fill="var(--fr-color-girasol)" />
+				</g>
+			))
+		}
+	</svg>
+	<p class="m-0 font-fr-display text-4xl leading-none font-extrabold text-fr-navy tabular-nums">
+		<span aria-hidden="true" class="text-fr-muted">×</span><span data-contador data-hasta={cantidad}>{cantidad}</span>
+		<span class="sr-only">firmas</span>
+	</p>
+</div>

@@ -1,0 +1,81 @@
+---
+/**
+ * Ilustración del hero: un documento que se firma solo, con código OTP y sello (spec 002, iteración 2 del 004).
+ * Secuencia (solo CSS, termina en el estado final aunque no haya JS):
+ *   1) llegan los dígitos del código, 2) se escribe la firma, 3) cae el sello.
+ * Con "reducir movimiento" se ve directamente el resultado. Sus textos son parte del dibujo.
+ */
+import Firma from '@/components/brand/Firma.astro';
+import Sello from '@/components/brand/Sello.astro';
+import LineaFirma from '@/components/brand/LineaFirma.astro';
+import CodigoOtp from '@/components/brand/CodigoOtp.astro';
+
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<div class:list={['fr-doc relative mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end', className]}>
+	<div class="absolute -inset-4 rotate-3 rounded-fr-card border border-fr-line bg-fr-paper-2" aria-hidden="true"></div>
+	<figure class="relative m-0 rounded-fr-card border border-fr-line bg-fr-sheet p-6 shadow-fr-lift sm:p-8 lg:-rotate-1">
+		<figcaption class="sr-only">Ilustración: un documento PDF firmado con firmaremota.pe y confirmado con un código.</figcaption>
+		<div class="flex items-center justify-between gap-3" aria-hidden="true">
+			<p class="m-0 truncate font-fr-mono text-xs text-fr-muted">contrato-de-servicios.pdf</p>
+			<span class="fr-eyebrow shrink-0 rounded-full bg-fr-paper-2 px-2.5 py-1 text-fr-muted">PDF</span>
+		</div>
+		<div class="mt-6 space-y-2.5" aria-hidden="true">
+			<div class="h-2 w-full rounded-full bg-fr-paper-2"></div>
+			<div class="h-2 w-11/12 rounded-full bg-fr-paper-2"></div>
+			<div class="h-2 w-4/5 rounded-full bg-fr-paper-2"></div>
+			<div class="h-2 w-3/5 rounded-full bg-fr-paper-2"></div>
+		</div>
+		<div class="mt-8" aria-hidden="true">
+			<Firma class="-mb-2 ml-2 w-56 text-fr-navy sm:w-64" delay={1.0} />
+			<LineaFirma leyenda="Firmado con firmaremota.pe" />
+		</div>
+		<div class="mt-7 border-t border-dashed border-fr-line-strong pt-6" aria-hidden="true">
+			<p class="fr-eyebrow m-0 text-fr-muted">Código por WhatsApp</p>
+			<CodigoOtp class="mt-2" />
+		</div>
+		<div class="fr-doc__sello absolute -right-5 -bottom-10 sm:-right-8">
+			<Sello class="size-24 text-fr-girasol sm:size-28" />
+		</div>
+	</figure>
+</div>
+
+<style>
+	/* 1) Llegan los dígitos del código */
+	.fr-doc :global([data-otp-celda]) {
+		animation: fr-doc-digito 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+		animation-delay: calc(0.35s + var(--i) * 0.08s);
+	}
+	/* 3) Cae el sello cuando termina la firma (≈ 3.2 s) */
+	.fr-doc__sello {
+		animation: fr-doc-sello 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) 3.2s backwards;
+	}
+	@keyframes fr-doc-digito {
+		from {
+			opacity: 0;
+			translate: 0 6px;
+			scale: 0.85;
+		}
+	}
+	@keyframes fr-doc-sello {
+		from {
+			opacity: 0;
+			scale: 1.7;
+			rotate: -18deg;
+		}
+		70% {
+			opacity: 1;
+			scale: 0.94;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fr-doc :global([data-otp-celda]),
+		.fr-doc__sello {
+			animation: none;
+		}
+	}
+</style>

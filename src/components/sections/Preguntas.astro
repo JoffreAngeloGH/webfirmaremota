@@ -1,0 +1,76 @@
+---
+/**
+ * Preguntas frecuentes con <details> nativo: sin JS, con teclado, una abierta a la vez (atributo name).
+ * El FAQPage (JSON-LD) se genera en la página con el mismo arreglo que se pinta aquí.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+import type { Faq } from '@/lib/faqs';
+
+interface Props {
+	id: string;
+	etiqueta: string;
+	titulo: string;
+	acento?: string;
+	intro?: string;
+	faqs: Faq[];
+}
+const { id, etiqueta, titulo, acento, intro, faqs } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="border-t border-fr-line bg-fr-paper-2">
+	<div class="gs-container gs-section grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+		<div class="lg:sticky lg:top-28 lg:self-start">
+			<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={intro} />
+		</div>
+		<div class="divide-y divide-fr-line rounded-fr-card border border-fr-line bg-fr-sheet shadow-fr-sheet">
+			{
+				faqs.map((f, i) => (
+					<details name={`${id}-acordeon`} class="fr-faq group" open={i === 0}>
+						<summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-left font-semibold text-fr-navy transition-colors hover:text-fr-tinta sm:px-7">
+							<span>{f.pregunta}</span>
+							<span aria-hidden="true" class="fr-faq__icono grid size-8 shrink-0 place-items-center rounded-full border border-fr-line font-fr-mono text-lg leading-none text-fr-navy transition-transform duration-300 ease-gs-out">
+								+
+							</span>
+						</summary>
+						<p class="m-0 px-6 pb-6 text-sm leading-relaxed text-fr-muted sm:px-7 md:text-base">{f.respuesta}</p>
+					</details>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style>
+	.fr-faq summary::-webkit-details-marker {
+		display: none;
+	}
+	.fr-faq[open] .fr-faq__icono {
+		transform: rotate(45deg);
+	}
+	/*
+	 * Despliegue suave (spec 004): se anima la altura del contenido de <details>.
+	 * Navegadores sin ::details-content / interpolate-size abren sin animación, como antes.
+	 */
+	.fr-faq {
+		interpolate-size: allow-keywords;
+	}
+	.fr-faq::details-content {
+		block-size: 0;
+		opacity: 0;
+		overflow-y: clip;
+		transition:
+			block-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+			opacity 0.3s ease,
+			content-visibility 0.35s allow-discrete;
+	}
+	.fr-faq[open]::details-content {
+		block-size: auto;
+		opacity: 1;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fr-faq__icono,
+		.fr-faq::details-content {
+			transition: none;
+		}
+	}
+</style>

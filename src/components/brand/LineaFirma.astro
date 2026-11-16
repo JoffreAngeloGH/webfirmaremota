@@ -1,0 +1,16 @@
+---
+/** Separador "× ________" con leyenda, como la línea de firma de un documento (spec 002 §4). */
+interface Props {
+	class?: string;
+	leyenda?: string;
+}
+const { class: className, leyenda } = Astro.props;
+---
+
+<div class:list={['flex flex-col gap-1.5', className]}>
+	<div class="flex items-end gap-2 text-fr-muted">
+		<span aria-hidden="true" class="font-fr-mono text-sm leading-none">×</span>
+		<span aria-hidden="true" class="h-px flex-1 border-b border-dashed border-fr-line-strong"></span>
+	</div>
+	{leyenda && <p class="fr-eyebrow m-0 pl-5 text-fr-muted">{leyenda}</p>}
+</div>

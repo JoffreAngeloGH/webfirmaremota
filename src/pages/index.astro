@@ -1,0 +1,177 @@
+---
+// Inicio (specs 003 y 004). Los textos de cada sección viven aquí y se pasan por props;
+// precios, planes, WhatsApp y preguntas salen de los datos.
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Ventajas from '@/components/sections/Ventajas.astro';
+import Productos, { type PiezaCertificado, type PiezaFirmas } from '@/components/sections/Productos.astro';
+import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
+import ComoFunciona from '@/components/sections/ComoFunciona.astro';
+import Preguntas from '@/components/sections/Preguntas.astro';
+import CtaCierre from '@/components/sections/CtaCierre.astro';
+import { getFaqs } from '@/lib/faqs';
+import { formatPrice, titularLabel, vigenciaLabel } from '@/lib/format';
+import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
+import { faqSchema, serviceSchema } from '@/lib/seo/schema';
+
+const productos = (await getCollection('productos')).map((p) => p.data).sort((a, b) => a.orden - b.orden);
+const planes = productos.filter((p) => p.tipo === 'certificado');
+const firmas = productos.find((p) => p.tipo === 'firmas')!;
+const cantidadFirmas = firmas.tipo === 'firmas' ? firmas.cantidad : 10;
+const faqs = await getFaqs('inicio');
+
+const comprar = { label: 'Comprar', href: whatsappUrl() };
+const iva = (incluye: boolean) => (incluye ? 'Incluye IGV' : undefined);
+
+// Certificado: 2 titulares × 3 vigencias (spec 004). Todo sale de la collection.
+const certificado: PiezaCertificado = {
+	numero: '01',
+	etiqueta: 'Certificado digital',
+	titulo: 'Tu identidad para firmar',
+	nota: iva(planes[0]!.incluyeIgv),
+	puntos: ['Dos certificados: persona natural y persona jurídica', 'Vigencia de 1, 2 o 3 años', 'Vive en la nube: no hay archivo que instalar'],
+	ctaLabel: 'Comprar certificado',
+	leyendaTitular: 'Titular',
+	leyendaVigencia: 'Vigencia',
+	titulares: (['natural', 'juridica'] as const).map((t) => ({
+		value: t,
+		label: titularLabel[t].replace(/^persona/, 'Persona'),
+	})),
+	vigencias: [...new Set(planes.map((p) => (p.tipo === 'certificado' ? p.vigenciaAnios : 0)))]
+		.sort()
+		.map((v) => ({ value: v, label: vigenciaLabel(v) })),
+	planes: planes.flatMap((p) =>
+		p.tipo === 'certificado'
+			? [
+					{
+						id: `${p.titular}-${p.vigenciaAnios}`,
+						titular: p.titular,
+						vigenciaAnios: p.vigenciaAnios,
+						nombre: p.nombre,
+						precio: p.precio,
+						precioTexto: formatPrice(p.precio, p.moneda),
+						simbolo: formatPrice(0, p.moneda).split(' ')[0]!,
+						href: productWhatsappUrl(p),
+					},
+				]
+			: [],
+	),
+};
+
+const piezaFirmas: PiezaFirmas = {
+	numero: '02',
+	etiqueta: 'Firmas',
+	titulo: 'El saldo que usas al firmar',
+	precio: formatPrice(firmas.precio, firmas.moneda),
+	cantidad: cantidadFirmas,
+	nota: iva(firmas.incluyeIgv),
+	puntos: [`Bolsa de ${cantidadFirmas} firmas`, 'Las firmas no vencen', 'Sirven con tu certificado, sea nuestro o de otro proveedor'],
+	cta: { label: 'Comprar firmas', href: productWhatsappUrl(firmas) },
+};
+
+const description =
+	`Firma digital en la nube, sin descargar ni instalar nada. Certificado digital para persona natural y jurídica ` +
+	`y firmas desde ${formatPrice(firmas.precio, firmas.moneda, 0)}. Te atendemos por WhatsApp.`;
+
+const links = [
+	{ href: '#productos', label: 'Productos' },
+	{ href: '#como-funciona', label: 'Cómo funciona' },
+	{ href: '#preguntas', label: 'Preguntas' },
+];
+---
+
+<BaseLayout
+	title="Firma remota: firma tus documentos desde la nube | firmaremota.pe"
+	titleAbsolute
+	description={description}
+	schema={[serviceSchema(productos, '/'), faqSchema(faqs.map((f) => ({ question: f.pregunta, answer: f.respuesta })))]}
+>
+	<Header links={links} />
+
+	<main>
+		<Hero
+			etiqueta="Firma remota · Perú"
+			titulo="Firma tus documentos"
+			acento="desde la nube."
+			subtitulo="Sin descargar ni instalar nada. Entras con tu usuario, confirmas con tu PIN y un código que llega a tu WhatsApp."
+			nota="Te atiende un asesor por WhatsApp · Precios con IGV incluido"
+			cta={{ ...comprar, externo: true }}
+			ctaSecundario={{ label: 'Cómo funciona', href: '#como-funciona' }}
+		/>
+
+		<Ventajas
+			id="ventajas"
+			etiqueta="Qué es"
+			titulo="Tu firma,"
+			acento="sin instalar nada."
+			ventajas={[
+				{ ilustracion: 'sin-instalar', titulo: 'Sin instalar nada', texto: 'No hay archivos, programas ni token. Tu certificado vive en la nube.' },
+				{ ilustracion: 'dispositivos', titulo: 'Desde donde estés', texto: 'Firmas con tu usuario y contraseña, desde cualquier lugar con internet.' },
+				{ ilustracion: 'verificacion', titulo: 'Doble verificación', texto: 'Cada firma se confirma con tu PIN y un código que llega a tu WhatsApp.' },
+			]}
+			comparacion={{
+				caption: 'Comparación entre el certificado tradicional y la firma remota',
+				columnas: ['Certificado tradicional', 'Firma remota'],
+				filas: [
+					{ label: 'Dónde está', a: 'En un archivo instalado o en un token', b: 'En la nube' },
+					{ label: 'Qué necesitas', a: 'La computadora o el token donde está instalado', b: 'Usuario, PIN y tu WhatsApp' },
+					{ label: 'Para empezar', a: 'Descargar, instalar y configurar', b: 'Recibes tu acceso y listo' },
+				],
+			}}
+		/>
+
+		<Productos
+			id="productos"
+			etiqueta="Productos"
+			titulo="Dos piezas,"
+			acento="una firma."
+			intro="Son productos distintos y los compras por separado, pero para firmar necesitas los dos."
+			certificado={certificado}
+			firmas={piezaFirmas}
+		/>
+
+		<NecesitasLosDos
+			id="necesitas-los-dos"
+			etiqueta="Para firmar"
+			titulo="Necesitas"
+			acento="los dos."
+			texto="Con certificado y sin firmas no puedes firmar. Con firmas y sin certificado, tampoco."
+			ecuacion={{ a: 'Certificado digital', b: 'Firmas', etiquetaResultado: 'Resultado', resultado: 'Puedes firmar' }}
+		/>
+
+		<ComoFunciona
+			id="como-funciona"
+			etiqueta="Cómo funciona"
+			titulo="Tres pasos y"
+			acento="firmas."
+			pasos={[
+				{ titulo: 'Hablas con un asesor', texto: 'Nos escribes por WhatsApp y un asesor te ayuda a elegir tu certificado y tus firmas.', ilustracion: 'chat' },
+				{ titulo: 'Recibes tu acceso', texto: 'Te damos un usuario y una contraseña. No hay nada que descargar ni instalar.', ilustracion: 'acceso' },
+				{ titulo: 'Firmas', texto: 'Ingresas tu PIN y confirmas con el código que llega a tu WhatsApp.', ilustracion: 'firma' },
+			]}
+		/>
+
+		<Preguntas
+			id="preguntas"
+			etiqueta="Preguntas frecuentes"
+			titulo="Lo que más"
+			acento="nos preguntan."
+			intro="¿Te queda alguna duda? Escríbenos por WhatsApp."
+			faqs={faqs}
+		/>
+
+		<CtaCierre
+			id="empezar"
+			titulo="Empieza a firmar"
+			acento="desde la nube."
+			texto="Escríbenos y te ayudamos a elegir tu certificado y tus firmas."
+			cta={comprar}
+			ctaSecundario={{ label: 'Escríbenos por WhatsApp', href: whatsappUrl() }}
+		/>
+	</main>
+
+	<Footer />
+</BaseLayout>

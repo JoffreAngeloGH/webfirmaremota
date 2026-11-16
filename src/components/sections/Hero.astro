@@ -1,0 +1,50 @@
+---
+import Etiqueta from '@/components/brand/Etiqueta.astro';
+import DocumentoFirmado from '@/components/brand/DocumentoFirmado.astro';
+import { buttonVariants } from '@/components/ui/button';
+
+interface Cta {
+	label: string;
+	href: string;
+	externo?: boolean;
+}
+interface Props {
+	etiqueta: string;
+	titulo: string;
+	acento: string;
+	subtitulo: string;
+	nota?: string;
+	cta: Cta;
+	ctaSecundario?: Cta;
+}
+const { etiqueta, titulo, acento, subtitulo, nota, cta, ctaSecundario } = Astro.props;
+const ext = (c: Cta) => (c.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {});
+---
+
+<section class="relative overflow-hidden bg-fr-grid">
+	<div class="gs-container grid items-center gap-14 pt-14 pb-20 md:pt-20 lg:grid-cols-[1.1fr_0.9fr] lg:pb-28">
+		<div>
+			<Etiqueta>{etiqueta}</Etiqueta>
+			<h1 class="mt-5 mb-0 text-[2.6rem] leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-[3.4rem] lg:text-[4rem]">
+				{titulo}{' '}
+				<span class="font-fr-serif font-normal tracking-normal text-fr-navy italic">{acento}</span>
+			</h1>
+			<p class="mt-6 max-w-xl text-base leading-relaxed text-fr-muted md:text-lg">{subtitulo}</p>
+			<div class="mt-9 flex flex-wrap items-center gap-3">
+				<a href={cta.href} {...ext(cta)} class={buttonVariants()}>
+					{cta.label}
+					<svg aria-hidden="true" viewBox="0 0 24 24" class="size-4 transition-transform group-hover/button:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+				</a>
+				{
+					ctaSecundario && (
+						<a href={ctaSecundario.href} {...ext(ctaSecundario)} class={buttonVariants({ variant: 'outline' })}>
+							{ctaSecundario.label}
+						</a>
+					)
+				}
+			</div>
+			{nota && <p class="mt-5 mb-0 font-fr-mono text-xs text-fr-muted">{nota}</p>}
+		</div>
+		<DocumentoFirmado />
+	</div>
+</section>

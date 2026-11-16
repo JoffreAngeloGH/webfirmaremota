@@ -1,0 +1,18 @@
+---
+/** Código OTP en celdas mono, para ilustrar el código que llega por WhatsApp (spec 002 §4). */
+interface Props {
+	digitos?: string;
+	class?: string;
+}
+const { digitos = '482190', class: className } = Astro.props;
+---
+
+<div class:list={['flex gap-1.5', className]} role="img" aria-label={`Código de ejemplo ${digitos.split('').join(' ')}`}>
+	{
+		digitos.split('').map((d, i) => (
+			<span data-otp-celda style={`--i:${i}`} class="grid size-9 place-items-center rounded-md border border-fr-line bg-fr-paper font-fr-mono text-base text-fr-navy">
+				{d}
+			</span>
+		))
+	}
+</div>

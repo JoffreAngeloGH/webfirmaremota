@@ -1,0 +1,148 @@
+/*
+ * Estilos globales — constitución §6.
+ * Orden: Tailwind → utilidades de shadcn → tokens de Girasol (heredados) → tokens de firmaremota (propios)
+ *        → tema de shadcn mapeado a los tokens propios.
+ * ./girasol/ lo genera la skill girasol-design (no editar a mano). ./firmaremota/ se edita a mano.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./girasol/tailwind-v4.css";
+@import "./firmaremota/tokens.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Tema de shadcn → tokens fr. Un componente nuevo sale con la marca sin tocar su archivo. */
+@theme inline {
+	--font-sans: var(--fr-font-display);
+	--font-heading: var(--fr-font-display);
+	--font-serif: var(--fr-font-serif);
+	--font-mono: var(--fr-font-mono);
+
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+
+	/* --radius = radio de control (10px). xl ≈ 14px, 2xl ≈ 18px ≈ tarjeta. */
+	--radius-sm: calc(var(--radius) * 0.6);
+	--radius-md: calc(var(--radius) * 0.8);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) * 1.4);
+	--radius-2xl: calc(var(--radius) * 1.8);
+	--radius-3xl: calc(var(--radius) * 2.2);
+	--radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+	--background: var(--fr-color-paper);
+	--foreground: var(--fr-color-text);
+	--card: var(--fr-color-sheet);
+	--card-foreground: var(--fr-color-text);
+	--popover: var(--fr-color-sheet);
+	--popover-foreground: var(--fr-color-text);
+	--primary: var(--fr-color-tinta);
+	--primary-foreground: #ffffff;
+	--secondary: var(--fr-color-tinta-soft);
+	--secondary-foreground: var(--fr-color-navy);
+	--muted: var(--fr-color-paper-2);
+	--muted-foreground: var(--fr-color-muted);
+	--accent: var(--fr-color-tinta-soft);
+	--accent-foreground: var(--fr-color-navy);
+	--destructive: #b42318; /* Solo para errores de formulario, nunca para llamar la atención. */
+	--border: var(--fr-color-line);
+	--input: var(--fr-color-line-strong);
+	--ring: var(--fr-color-tinta);
+	--radius: var(--fr-radius-control);
+
+	--chart-1: var(--fr-color-tinta);
+	--chart-2: var(--fr-color-navy);
+	--chart-3: var(--fr-color-sky);
+	--chart-4: var(--fr-color-text);
+	--chart-5: var(--fr-color-muted);
+
+	--sidebar: var(--fr-color-sheet);
+	--sidebar-foreground: var(--fr-color-text);
+	--sidebar-primary: var(--fr-color-tinta);
+	--sidebar-primary-foreground: #ffffff;
+	--sidebar-accent: var(--fr-color-tinta-soft);
+	--sidebar-accent-foreground: var(--fr-color-navy);
+	--sidebar-border: var(--fr-color-line);
+	--sidebar-ring: var(--fr-color-tinta);
+}
+
+/* Ritmo vertical de sección: 64px móvil, 80px desde 768px (heredado de Girasol). */
+@utility gs-section {
+	padding-block: var(--gs-layout-section-y);
+	@media (width >= 48rem) {
+		padding-block: var(--gs-layout-section-y-lg);
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	html {
+		@apply font-sans;
+		-webkit-text-size-adjust: 100%;
+	}
+	body {
+		@apply bg-background text-foreground antialiased;
+	}
+	h1, h2, h3, h4, h5, h6 {
+		font-family: var(--font-heading);
+		color: var(--fr-color-navy);
+		text-wrap: balance;
+	}
+	::selection {
+		background: var(--fr-color-tinta);
+		color: #ffffff;
+	}
+	/* Foco visible: anillo de 2px en tinta. */
+	:focus-visible {
+		outline: 2px solid var(--fr-color-tinta);
+		outline-offset: 2px;
+	}
+	/* Destinos de anclas no quedan bajo el menú fijo (header de 64px + aire). */
+	[id] {
+		scroll-margin-top: var(--fr-nav-offset);
+	}
+	button:not(:disabled),
+	[role="button"]:not(:disabled) {
+		cursor: pointer;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}

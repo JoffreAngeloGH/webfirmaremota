@@ -26,3 +26,16 @@ export function isIndexable(root = process.cwd()) {
 	const value = process.env.INDEXABLE ?? readDotenv(root).INDEXABLE;
 	return value === 'true';
 }
+
+/**
+ * Hosts extra que acepta el servidor de desarrollo (por ejemplo, un túnel de Cloudflare).
+ * DEV_ALLOWED_HOSTS=".trycloudflare.com" (separados por coma; un punto inicial acepta subdominios).
+ * Sin la variable, solo se acepta localhost: es lo seguro por defecto.
+ */
+export function devAllowedHosts(root = process.cwd()) {
+	const value = process.env.DEV_ALLOWED_HOSTS ?? readDotenv(root).DEV_ALLOWED_HOSTS ?? '';
+	return value
+		.split(',')
+		.map((h) => h.trim())
+		.filter(Boolean);
+}

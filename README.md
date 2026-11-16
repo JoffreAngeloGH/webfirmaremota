@@ -1,46 +1,41 @@
-# Astro Starter Kit: Basics
+# firmaremota.pe
 
-```sh
-pnpm create astro@latest -- --template basics
+Web de firma remota, un producto de Girasol. Astro 7 + Tailwind v4, con desarrollo guiado por specs.
+
+## Requisitos
+
+- **Node 24 LTS** (mínimo 22.23.4). Con nvm-windows: `nvm install 24.22.3` y `nvm use 24.22.3` (este último, en una terminal de administrador).
+- **pnpm 10**: `npm install -g pnpm@10`
+
+## Empezar
+
+```bash
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Abre http://localhost:4321.
 
-## 🚀 Project Structure
+| Comando | Qué hace |
+|---|---|
+| `pnpm dev` | Servidor de desarrollo |
+| `pnpm build` | Revisa pendientes y tipos, y compila a `dist/` |
+| `pnpm preview` | Sirve el build |
+| `pnpm check` | Revisa tipos |
+| `pnpm pendientes` | Lista los placeholders del código (ver `specs/pendientes.md`) |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Configuración por PC (`.env.local`)
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+Copia `.env.example` como `.env.local`. Ese archivo no se sube a git, así que cada PC tiene el suyo.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+- **Cloudflare Tunnel:** si ves el sitio a través de un túnel (`*.trycloudflare.com`), agrega
+  `DEV_ALLOWED_HOSTS=.trycloudflare.com` y reinicia `pnpm dev`. Sin esa línea, el servidor solo acepta
+  `localhost` y bloquea el túnel con el error "Blocked request. This host … is not allowed".
+- **Indexación:** el sitio sale con `noindex` mientras haya placeholders. `INDEXABLE=true` solo cuando
+  `specs/pendientes.md` esté vacío; si no, el build falla a propósito.
 
-## 🧞 Commands
+## Cómo se trabaja
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Antes de tocar código, lee `specs/constitution.md`. Cada cambio empieza como un spec en `specs/features/`
+(plantilla en `specs/_templates/spec.md`) y se implementa cuando está aprobado. El mapa del sitio está en
+`specs/site.md` y los datos por confirmar, en `specs/pendientes.md`.

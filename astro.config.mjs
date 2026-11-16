@@ -3,7 +3,7 @@ import { defineConfig, envField, fontProviders } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import { isIndexable } from './scripts/indexable.mjs';
+import { devAllowedHosts, isIndexable } from './scripts/indexable.mjs';
 
 // Constitución §8 (SEO) y §5.1 (indexación solo con INDEXABLE=true).
 const indexable = isIndexable();
@@ -13,6 +13,10 @@ export default defineConfig({
 	site: 'https://firmaremota.pe',
 	trailingSlash: 'always',
 	build: { format: 'directory' },
+
+	// Servidor de desarrollo: hosts extra solo si se piden en DEV_ALLOWED_HOSTS (p. ej. túnel de Cloudflare
+	// en la PC de trabajo, vía .env.local). Sin la variable, solo localhost.
+	server: { allowedHosts: devAllowedHosts() },
 
 	env: {
 		schema: {

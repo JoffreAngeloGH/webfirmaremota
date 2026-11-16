@@ -1,6 +1,6 @@
 # Constitución — Web Firma Remota
 
-> Versión 0.3.2 · 2026-11-16 · Estado: **borrador, pendiente de aprobación**
+> Versión 0.4.0 · 2026-11-16 · Estado: **borrador, pendiente de aprobación**
 
 Reglas que no cambian de una funcionalidad a otra. Todo spec, plan e implementación de este repositorio las cumple. Si una tarea choca con esta constitución, se detiene y se propone un cambio a la constitución (ver §12) antes de seguir.
 
@@ -226,15 +226,30 @@ Traen su propio aspecto y por defecto **no se ven como la marca**. Por eso:
 
 ## 11. Definición de terminado
 
-Una funcionalidad pasa a `hecho` solo si:
+La verificación tiene **dos niveles**, para no gastar tiempo ni tokens en cada iteración.
 
-- [ ] Cumple todos los criterios de aceptación de su spec.
-- [ ] `pnpm build` termina sin errores ni advertencias nuevas.
-- [ ] El bloque SEO del spec está implementado y el JSON-LD valida (Rich Results Test o validador de schema.org).
-- [ ] Se verificó en 375, 768, 1024 y 1280px midiendo, no suponiendo (alineación con el contenedor, sin desborde, bordes visibles).
-- [ ] Funciona sin JS y con `prefers-reduced-motion`.
-- [ ] Todo dato no confirmado es un placeholder registrado en `pendientes.md` y marcado en el código (§5.1). Para pasar a producción no puede quedar ninguno.
+### 11.1 Verificación ligera: en cada spec o iteración
+
+Una funcionalidad pasa a `hecho` si:
+
+- [ ] Cumple los criterios de aceptación de su spec que **no** dependen de la verificación completa.
+- [ ] `pnpm build` termina sin errores ni advertencias nuevas (incluye `astro check` y el chequeo de pendientes).
+- [ ] Se comprobó **lo que cambió**: las páginas o secciones tocadas, en 375 y 1440 px, con mediciones o capturas puntuales de esas partes; sin desborde lateral.
+- [ ] Lo nuevo con animación o interacción tiene su estado final sin JS (revisado en el código o con una prueba puntual).
+- [ ] Todo dato no confirmado es un placeholder registrado en `pendientes.md` y marcado en el código (§5.1).
 - [ ] El spec refleja lo construido.
+
+**No** se corren en esta etapa Lighthouse, la matriz completa de anchos, los barridos de todas las páginas ni los validadores externos.
+
+### 11.2 Verificación completa: solo antes de un push a GitHub
+
+Cuando el usuario decide subir, una sola vez sobre todo lo acumulado:
+
+- [ ] Lighthouse móvil ≥ 90 en las cuatro categorías en todas las páginas públicas.
+- [ ] 375, 768, 1024 y 1280 px en todas las páginas, midiendo (alineación con el contenedor, sin desborde, bordes visibles).
+- [ ] Todas las páginas sin JS y con `prefers-reduced-motion`.
+- [ ] JSON-LD coherente con lo visible en cada página (y validado en Rich Results Test cuando haya URL pública).
+- [ ] Un **resumen** para el usuario: qué se verificó, los números y lo que haya que corregir. Si algo falla, se corrige antes del push.
 
 ---
 
@@ -252,3 +267,4 @@ Una funcionalidad pasa a `hecho` solo si:
 - **0.3.0** (2026-11-16): §6 pasa de "consumir Girasol" a una sub-marca derivada, "Tinta digital" (spec 002), con tokens propios `fr-*`.
 - **0.3.1** (2026-11-16): §6.2 reparte el color: azul tinta solo para lo accionable y ámbar girasol como acento decorativo.
 - **0.3.2** (2026-11-16): §6.2 regla de WhatsApp: "Comprar" usa el botón primario (P20).
+- **0.4.0** (2026-11-16): §11 se divide en verificación ligera (cada spec) y verificación completa (Lighthouse y barridos, solo antes de un push).

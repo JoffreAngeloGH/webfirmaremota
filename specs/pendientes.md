@@ -42,7 +42,8 @@ Aplicados en el código con el **spec 007** (2026-11-16). En el código ya no qu
 |---|---|
 | P07 | Requisitos **persona natural**. Introducción: "Prepara estos documentos antes de iniciar tu flujo de validación en línea. Es un proceso rápido, diseñado para completarse en minutos." Ítems: **DNI y/o CE vigente** (ambas caras) · **Contrato** (leer antes de la validación) · **Validación de identidad**. **Aplicado en el código (spec 007).** |
 | P08 | Requisitos **persona jurídica** (misma introducción). Ítems: **DNI y/o CE vigente** (ambas caras) · **Validación de RUC en SUNAT** (si no cumple, adjuntar Ficha RUC QR de máximo 15 días) · **Vigencia de poder** (antigüedad menor a 90 días) · **Contrato** (leer antes de la validación) · **Lista de suscriptores** (firmada por el representante legal; **solo si es vinculado a empresa**) · **Validación de identidad**. **Aplicado en el código (spec 007).** |
-| P09 | La entrega del acceso es **inmediata**, siempre **después de la conversación con el asesor**. **Aplicado en el código (spec 007).** |
+| P09 | **Corregido el 2026-11-16:** la entrega es **aproximadamente 1 hora después de completar la solicitud y la validación de identidad** (como en girasol.pe), siempre después de la conversación con el asesor. Antes decía "inmediata" (aplicado en el spec 007); **el texto se corrige con el spec 008**. |
+| P23 | **Política de devolución** (confirmada el 2026-11-16, igual que Girasol): solicitud dentro de **5 días hábiles** y sin haber descargado el certificado; **100 %** si no se validó la identidad y **80 %** si ya se validó (el 20 % cubre costos administrativos); reembolso en hasta **15 días hábiles** desde la aprobación. Se aplica con el spec 008. |
 | P10 | Los mensajes de WhatsApp se arman **según lo que el cliente selecciona** (titular y vigencia, o bolsa). Se mantiene el sistema actual de mensajes dinámicos. **Aplicado en el código (spec 007).** |
 
 ### Legal y confianza
@@ -55,6 +56,8 @@ Aplicados en el código con el **spec 007** (2026-11-16). En el código ya no qu
 | P14 | Mencionar a Girasol **solo lo necesario**: razón social, RUC, acreditación y textos legales. Nada de "Un producto de Girasol" destacado. **Aplicado en el código (spec 007).** |
 | P15 | Términos y condiciones: **exactamente los de https://girasol.pe/terminos/** (15 secciones, actualizados el 27 de abril de 2026). **Aplicado en el código (spec 007).** |
 | P16 | Política de privacidad: **la Política y Plan de Privacidad V1.6 de Girasol** (PDF entregado por el usuario). Se publica como texto en la página y como PDF descargable. **Aplicado en el código (spec 007).** |
+| P24 | **Validez para SIGM y Contraloría** (confirmado el 2026-11-16): las páginas por titular mencionan, como en girasol.pe, que el certificado sirve para el registro de garantías mobiliarias (SIGM) y para las declaraciones juradas de Contraloría (persona natural). Se aplica con el spec 008. |
+| P25 | **Enlace al registro de prestadores de INDECOPI (ROPS)** (confirmado el 2026-11-16): se enlaza el mismo registro oficial que usa girasol.pe, para comprobar la acreditación. Se aplica con el spec 008. |
 
 ### Contacto y marca
 

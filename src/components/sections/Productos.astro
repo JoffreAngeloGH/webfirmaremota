@@ -11,6 +11,7 @@ export interface PiezaCertificado {
 	nota?: string;
 	puntos: string[];
 	ctaLabel: string;
+	enlace?: { label: string; href: string };
 	planes: PlanCertificado[];
 	leyendaTitular: string;
 	leyendaVigencia: string;
@@ -26,6 +27,7 @@ export interface PiezaFirmas {
 	nota?: string;
 	puntos: string[];
 	cta: { label: string; href: string };
+	enlace?: { label: string; href: string };
 }
 interface Props {
 	id: string;
@@ -76,6 +78,11 @@ const tarjeta =
 				<a href={firmas.cta.href} target="_blank" rel="noopener noreferrer" class={buttonVariants({ className: 'w-full' })}>
 					{firmas.cta.label}
 				</a>
+				{firmas.enlace && (
+					<a href={firmas.enlace.href} class={buttonVariants({ variant: 'link', className: 'mt-1 self-center' })}>
+						{firmas.enlace.label}
+					</a>
+				)}
 			</li>
 		</ul>
 	</div>

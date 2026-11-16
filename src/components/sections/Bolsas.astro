@@ -1,0 +1,66 @@
+---
+/**
+ * Una tarjeta por bolsa de firmas (spec 005). Agregar una bolsa a la collection la muestra sin tocar código.
+ * `data-anim="fichas"` ya viene en FichasFirmas.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+import FichasFirmas from '@/components/illustrations/FichasFirmas.astro';
+import { buttonVariants } from '@/components/ui/button';
+
+export interface BolsaTarjeta {
+	id: string;
+	cantidad: number;
+	nombre: string;
+	precio: string;
+	/** "Incluye IGV" */
+	nota?: string;
+	/** "No vencen" */
+	detalle?: string;
+	href: string;
+}
+
+interface Props {
+	id: string;
+	titulo: string;
+	acento?: string;
+	intro?: string;
+	bolsas: BolsaTarjeta[];
+	ctaLabel: string;
+	/** Línea bajo las tarjetas (p. ej. si solo hay una bolsa). */
+	pie?: string;
+}
+const { id, titulo, acento, intro, bolsas, ctaLabel, pie } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
+	<SectionHeading id={`${id}-titulo`} titulo={titulo} acento={acento} intro={intro} />
+
+	<ul data-reveal="stagger" class="mt-10 grid list-none gap-6 p-0 md:grid-cols-2 lg:grid-cols-3">
+		{
+			bolsas.map((bolsa) => (
+				<li class="flex flex-col rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet transition-[translate,box-shadow] duration-500 ease-gs-out hover:-translate-y-1 hover:shadow-fr-lift sm:p-8">
+					<FichasFirmas cantidad={bolsa.cantidad} />
+					<p class="mt-6 mb-0 font-fr-display text-[2.6rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums">
+						{bolsa.precio}
+					</p>
+					{bolsa.nota && <p class="mt-2 mb-0 text-sm text-fr-muted">{bolsa.nota}</p>}
+					{bolsa.detalle && (
+						<p class="mt-5 mb-0 flex items-center gap-3 border-t border-dashed border-fr-line-strong pt-5 text-sm text-fr-text">
+							<svg aria-hidden="true" viewBox="0 0 24 24" class="size-4 shrink-0 text-fr-navy" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M5 12.5l4.5 4.5L19 7.5" />
+							</svg>
+							{bolsa.detalle}
+						</p>
+					)}
+					<p class="mt-5 mb-0 font-fr-mono text-xs text-fr-muted">{bolsa.nombre}</p>
+					<div class="min-h-8 flex-1" aria-hidden="true" />
+					<a href={bolsa.href} target="_blank" rel="noopener noreferrer" class={buttonVariants({ className: 'w-full' })}>
+						{ctaLabel}
+						<span class="sr-only"> {bolsa.nombre}</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+	{pie && <p class="mt-6 mb-0 font-fr-mono text-xs text-fr-muted">{pie}</p>}
+</section>

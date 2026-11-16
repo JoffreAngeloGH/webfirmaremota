@@ -30,6 +30,8 @@ interface Props {
 	nota?: string;
 	puntos: string[];
 	ctaLabel: string;
+	/** Enlace de texto bajo el botón de compra. */
+	enlace?: { label: string; href: string };
 	planes: PlanCertificado[];
 	/** Textos de los selectores (vienen de la página). */
 	leyendaTitular: string;
@@ -93,7 +95,7 @@ function Segmentado<T extends string | number>({
 }
 
 export default function CertificadoPlanes(props: Props) {
-	const { numero, etiqueta, titulo, nota, puntos, ctaLabel, planes, leyendaTitular, leyendaVigencia, titulares, vigencias } =
+	const { numero, etiqueta, titulo, nota, puntos, ctaLabel, enlace, planes, leyendaTitular, leyendaVigencia, titulares, vigencias } =
 		props;
 	const uid = useId().replace(/:/g, '');
 	const [titular, setTitular] = useState<PlanCertificado['titular']>(titulares[0]!.value);
@@ -168,6 +170,11 @@ export default function CertificadoPlanes(props: Props) {
 				<a href={plan.href} target="_blank" rel="noopener noreferrer" className={buttonVariants({ className: 'w-full' })}>
 					{ctaLabel}
 				</a>
+				{enlace && (
+					<a href={enlace.href} className={buttonVariants({ variant: 'link', className: 'mt-1 self-center' })}>
+						{enlace.label}
+					</a>
+				)}
 			</div>
 		</MotionConfig>
 	);

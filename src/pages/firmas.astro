@@ -1,0 +1,101 @@
+---
+// /firmas/ (spec 005). Los textos viven aquí; bolsas, precios y mensajes de WhatsApp salen de la collection y de site.ts.
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import ProductoHero from '@/components/sections/ProductoHero.astro';
+import Bolsas, { type BolsaTarjeta } from '@/components/sections/Bolsas.astro';
+import CompatibleCon from '@/components/sections/CompatibleCon.astro';
+import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
+import Preguntas from '@/components/sections/Preguntas.astro';
+import CtaCierre from '@/components/sections/CtaCierre.astro';
+import { ctaCierre, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
+import { getFaqs } from '@/lib/faqs';
+import { formatPrice } from '@/lib/format';
+import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
+import { breadcrumbSchema, faqSchema, productSchema } from '@/lib/seo/schema';
+
+const productos = (await getCollection('productos')).map((p) => p.data).sort((a, b) => a.orden - b.orden);
+const bolsas = productos.flatMap((p) => (p.tipo === 'firmas' ? [p] : []));
+const planes = productos.filter((p) => p.tipo === 'certificado');
+const faqs = await getFaqs('firmas');
+
+const tarjetas: BolsaTarjeta[] = bolsas.map((b) => ({
+	id: `firmas-${b.cantidad}`,
+	cantidad: b.cantidad,
+	nombre: b.nombre,
+	precio: formatPrice(b.precio, b.moneda),
+	nota: b.incluyeIgv ? 'Incluye IGV' : undefined,
+	detalle: b.vence ? undefined : 'No vencen',
+	href: productWhatsappUrl(b),
+}));
+
+const desde = bolsas.reduce((min, b) => (b.precio < min.precio ? b : min));
+const description =
+	`Bolsas de firmas para tu certificado digital desde ${formatPrice(desde.precio, desde.moneda)}. ` +
+	`No vencen y sirven con certificados de otros proveedores. Compra por WhatsApp.`;
+
+const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
+---
+
+<BaseLayout
+	title="Firmas digitales: bolsas para tu certificado"
+	description={description}
+	schema={[
+		...bolsas.map((b) => productSchema(b, '/firmas/')),
+		breadcrumbSchema([{ name: 'Inicio', path: '/' }, { name: 'Firmas', path: '/firmas/' }]),
+		faqSchema(faqs.map((f) => ({ question: f.pregunta, answer: f.respuesta }))),
+	]}
+>
+	<Header />
+
+	<main>
+		<ProductoHero
+			migas={[{ label: 'Inicio', href: '/' }, { label: 'Firmas' }]}
+			migasLabel="Migas de pan"
+			etiqueta="Firmas"
+			titulo="Firmas para tu"
+			acento="certificado digital."
+			subtitulo="Las firmas son el saldo que usas cada vez que firmas. No vencen: se descuentan a medida que las usas."
+			nota={notaAtencion}
+		/>
+
+		<Bolsas
+			id="bolsas"
+			titulo="Bolsas de firmas"
+			bolsas={tarjetas}
+			ctaLabel="Comprar"
+			pie={tarjetas.length === 1 ? 'Pronto habrá bolsas más grandes.' : undefined}
+		/>
+
+		<CompatibleCon
+			id="compatible"
+			titulo="Sirven con"
+			acento="tu certificado."
+			intro="Puedes comprarnos solo las firmas y usarlas con un certificado de otro proveedor, o comprar los dos juntos."
+			tarjetas={[
+				{ titulo: 'Con nuestro certificado', texto: 'Compras el certificado y las firmas, y te atiende un mismo asesor.' },
+				{ titulo: 'Con otro proveedor', texto: 'Ya tienes certificado: solo sumas las firmas que necesitas.' },
+			]}
+		/>
+
+		<NecesitasLosDos
+			{...necesitasLosDos}
+			enlace={{ label: `Ver los ${planes.length} planes`, href: '/certificado-digital/' }}
+		/>
+
+		<Preguntas {...preguntas} faqs={faqs} />
+
+		<CtaCierre
+			id={ctaCierre.id}
+			titulo={ctaCierre.titulo}
+			acento={ctaCierre.acento}
+			texto={ctaCierre.texto}
+			cta={comprar}
+			ctaSecundario={{ label: ctaCierre.ctaSecundarioLabel, href: whatsappUrl() }}
+		/>
+	</main>
+
+	<Footer />
+</BaseLayout>

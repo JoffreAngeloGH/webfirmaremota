@@ -6,7 +6,8 @@
 import Etiqueta from '@/components/brand/Etiqueta.astro';
 
 interface Props {
-	etiqueta: string;
+	/** Sin etiqueta, el encabezado empieza directamente en el h2. */
+	etiqueta?: string;
 	titulo: string;
 	/** Palabra(s) final(es) del título en serif cursiva. */
 	acento?: string;
@@ -21,11 +22,12 @@ const { etiqueta, titulo, acento, intro, tono = 'light', align = 'left', class: 
 ---
 
 <div class:list={['max-w-2xl', align === 'center' && 'mx-auto text-center', className]}>
-	<Etiqueta tono={tono}>{etiqueta}</Etiqueta>
+	{etiqueta && <Etiqueta tono={tono}>{etiqueta}</Etiqueta>}
 	<h2
 		id={id}
 		class:list={[
-			'mt-4 mb-0 text-[2rem] leading-[1.08] font-extrabold tracking-[-0.025em] md:text-[2.75rem]',
+			etiqueta && 'mt-4',
+			'mb-0 text-[2rem] leading-[1.08] font-extrabold tracking-[-0.025em] md:text-[2.75rem]',
 			tono === 'dark' && 'text-white',
 		]}
 	>

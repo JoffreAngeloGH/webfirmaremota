@@ -12,6 +12,7 @@ import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
 import ComoFunciona from '@/components/sections/ComoFunciona.astro';
 import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
+import { comoFunciona, ctaCierre, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
 import { formatPrice, titularLabel, vigenciaLabel } from '@/lib/format';
 import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
@@ -34,6 +35,7 @@ const certificado: PiezaCertificado = {
 	nota: iva(planes[0]!.incluyeIgv),
 	puntos: ['Dos certificados: persona natural y persona jurídica', 'Vigencia de 1, 2 o 3 años', 'Vive en la nube: no hay archivo que instalar'],
 	ctaLabel: 'Comprar certificado',
+	enlace: { label: `Ver los ${planes.length} planes`, href: '/certificado-digital/' },
 	leyendaTitular: 'Titular',
 	leyendaVigencia: 'Vigencia',
 	titulares: (['natural', 'juridica'] as const).map((t) => ({
@@ -70,17 +72,13 @@ const piezaFirmas: PiezaFirmas = {
 	nota: iva(firmas.incluyeIgv),
 	puntos: [`Bolsa de ${cantidadFirmas} firmas`, 'Las firmas no vencen', 'Sirven con tu certificado, sea nuestro o de otro proveedor'],
 	cta: { label: 'Comprar firmas', href: productWhatsappUrl(firmas) },
+	enlace: { label: 'Ver bolsas de firmas', href: '/firmas/' },
 };
 
 const description =
 	`Firma digital en la nube, sin descargar ni instalar nada. Certificado digital para persona natural y jurídica ` +
 	`y firmas desde ${formatPrice(firmas.precio, firmas.moneda, 0)}. Te atendemos por WhatsApp.`;
 
-const links = [
-	{ href: '#productos', label: 'Productos' },
-	{ href: '#como-funciona', label: 'Cómo funciona' },
-	{ href: '#preguntas', label: 'Preguntas' },
-];
 ---
 
 <BaseLayout
@@ -89,7 +87,7 @@ const links = [
 	description={description}
 	schema={[serviceSchema(productos, '/'), faqSchema(faqs.map((f) => ({ question: f.pregunta, answer: f.respuesta })))]}
 >
-	<Header links={links} />
+	<Header />
 
 	<main>
 		<Hero
@@ -97,7 +95,7 @@ const links = [
 			titulo="Firma tus documentos"
 			acento="desde la nube."
 			subtitulo="Sin descargar ni instalar nada. Entras con tu usuario, confirmas con tu PIN y un código que llega a tu WhatsApp."
-			nota="Te atiende un asesor por WhatsApp · Precios con IGV incluido"
+			nota={notaAtencion}
 			cta={{ ...comprar, externo: true }}
 			ctaSecundario={{ label: 'Cómo funciona', href: '#como-funciona' }}
 		/>
@@ -133,43 +131,19 @@ const links = [
 			firmas={piezaFirmas}
 		/>
 
-		<NecesitasLosDos
-			id="necesitas-los-dos"
-			etiqueta="Para firmar"
-			titulo="Necesitas"
-			acento="los dos."
-			texto="Con certificado y sin firmas no puedes firmar. Con firmas y sin certificado, tampoco."
-			ecuacion={{ a: 'Certificado digital', b: 'Firmas', etiquetaResultado: 'Resultado', resultado: 'Puedes firmar' }}
-		/>
+		<NecesitasLosDos {...necesitasLosDos} />
 
-		<ComoFunciona
-			id="como-funciona"
-			etiqueta="Cómo funciona"
-			titulo="Tres pasos y"
-			acento="firmas."
-			pasos={[
-				{ titulo: 'Hablas con un asesor', texto: 'Nos escribes por WhatsApp y un asesor te ayuda a elegir tu certificado y tus firmas.', ilustracion: 'chat' },
-				{ titulo: 'Recibes tu acceso', texto: 'Te damos un usuario y una contraseña. No hay nada que descargar ni instalar.', ilustracion: 'acceso' },
-				{ titulo: 'Firmas', texto: 'Ingresas tu PIN y confirmas con el código que llega a tu WhatsApp.', ilustracion: 'firma' },
-			]}
-		/>
+		<ComoFunciona {...comoFunciona} pasos={[...comoFunciona.pasos]} />
 
-		<Preguntas
-			id="preguntas"
-			etiqueta="Preguntas frecuentes"
-			titulo="Lo que más"
-			acento="nos preguntan."
-			intro="¿Te queda alguna duda? Escríbenos por WhatsApp."
-			faqs={faqs}
-		/>
+		<Preguntas {...preguntas} faqs={faqs} />
 
 		<CtaCierre
-			id="empezar"
-			titulo="Empieza a firmar"
-			acento="desde la nube."
-			texto="Escríbenos y te ayudamos a elegir tu certificado y tus firmas."
+			id={ctaCierre.id}
+			titulo={ctaCierre.titulo}
+			acento={ctaCierre.acento}
+			texto={ctaCierre.texto}
 			cta={comprar}
-			ctaSecundario={{ label: 'Escríbenos por WhatsApp', href: whatsappUrl() }}
+			ctaSecundario={{ label: ctaCierre.ctaSecundarioLabel, href: whatsappUrl() }}
 		/>
 	</main>
 

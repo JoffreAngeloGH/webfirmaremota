@@ -7,32 +7,32 @@
 - id: que-es-la-firma-remota
   pregunta: ¿Qué es la firma remota?
   respuesta: 'Es una firma digital que no se descarga ni se instala: tu certificado vive en la nube y firmas tus documentos con tu usuario, tu PIN y un código que llega a tu WhatsApp.'
-  paginas: [inicio]
+  paginas: [inicio, certificado-digital]
   orden: 1
 
 - id: que-necesito-para-firmar
   pregunta: ¿Qué necesito para firmar?
   respuesta: 'Dos cosas: un certificado digital y firmas disponibles. Si te falta una de las dos, no puedes firmar.'
-  paginas: [inicio]
+  paginas: [inicio, certificado-digital, firmas]
   orden: 2
 
 - id: certificado-de-otro-proveedor
   pregunta: ¿Puedo usar un certificado de otro proveedor?
   respuesta: 'Sí. Puedes comprarnos solo las firmas y usarlas con tu certificado, o comprarnos el certificado y gestionar tus firmas por otro lado.'
-  paginas: [inicio]
+  paginas: [inicio, certificado-digital, firmas]
   orden: 3
 
 - id: las-firmas-vencen
   pregunta: ¿Las firmas vencen?
   respuesta: 'No. Las firmas que compras no vencen; se descuentan a medida que firmas.'
-  paginas: [inicio]
+  paginas: [inicio, firmas]
   orden: 4
 
 # Los precios salen de la collection productos (P01, P02).
 - id: cuanto-cuesta
   pregunta: ¿Cuánto cuesta?
   respuesta: 'El certificado digital cuesta {precio_certificado} y la bolsa mínima de {cantidad_firmas} firmas, {precio_firmas}. Los precios incluyen IGV.'
-  paginas: [inicio]
+  paginas: [inicio, firmas]
   orden: 5
 
 # PENDIENTE: P11 — redacción de la base legal a revisar.
@@ -40,5 +40,11 @@
 - id: validez-legal
   pregunta: ¿La firma remota tiene validez legal?
   respuesta: 'Sí. La firma digital tiene la misma validez que la firma manuscrita según la Ley N.° 27269, Ley de Firmas y Certificados Digitales.'
-  paginas: [inicio]
+  paginas: [inicio, certificado-digital]
   orden: 6
+
+- id: natural-o-juridica
+  pregunta: ¿Qué diferencia hay entre persona natural y persona jurídica?
+  respuesta: 'El certificado de persona natural es para firmar a tu nombre. El de persona jurídica es para firmar en nombre de una empresa, como su representante legal.'
+  paginas: [certificado-digital]
+  orden: 7

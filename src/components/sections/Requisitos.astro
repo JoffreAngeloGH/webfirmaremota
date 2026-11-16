@@ -1,0 +1,39 @@
+---
+/** Requisitos por titular en dos columnas (spec 005). Las listas salen de la collection `requisitos`. */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+
+interface Props {
+	id: string;
+	titulo: string;
+	acento?: string;
+	columnas: { titulo: string; items: string[] }[];
+	/** Línea bajo las listas. */
+	nota?: string;
+}
+const { id, titulo, acento, columnas, nota } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
+	<SectionHeading id={`${id}-titulo`} titulo={titulo} acento={acento} />
+
+	<div data-reveal="stagger" class="mt-10 grid gap-6 md:grid-cols-2">
+		{
+			columnas.map((col) => (
+				<div class="rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet sm:p-8">
+					<h3 class="m-0 text-xl font-bold tracking-tight">{col.titulo}</h3>
+					<ul class="mt-5 mb-0 list-none space-y-3 border-t border-dashed border-fr-line-strong p-0 pt-5">
+						{col.items.map((item) => (
+							<li class="flex gap-3 text-fr-text">
+								<svg aria-hidden="true" viewBox="0 0 24 24" class="mt-1 size-4 shrink-0 text-fr-navy" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M5 12.5l4.5 4.5L19 7.5" />
+								</svg>
+								{item}
+							</li>
+						))}
+					</ul>
+				</div>
+			))
+		}
+	</div>
+	{nota && <p class="mt-6 mb-0 font-fr-mono text-xs text-fr-muted">{nota}</p>}
+</section>

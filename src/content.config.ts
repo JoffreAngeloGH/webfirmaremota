@@ -47,4 +47,14 @@ const faqs = defineCollection({
 	}),
 });
 
-export const collections = { productos, faqs };
+/** Requisitos de compra por titular (spec 005). Placeholders P07 y P08. */
+const requisitos = defineCollection({
+	loader: file('src/content/requisitos.yaml'),
+	schema: z.object({
+		titular: z.enum(['natural', 'juridica']),
+		items: z.array(z.string()).min(1),
+		orden: z.number().int(),
+	}),
+});
+
+export const collections = { productos, faqs, requisitos };

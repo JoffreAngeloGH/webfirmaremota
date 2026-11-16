@@ -39,10 +39,12 @@ const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
 		<script>
 			import { destroyReveal, initReveal } from '@/lib/reveal';
 			import { destroyIlustraciones, initIlustraciones } from '@/lib/ilustraciones';
+			import { initDestacar } from '@/lib/destacar';
 			document.addEventListener('astro:page-load', () => {
 				document.documentElement.classList.add('js');
 				initReveal();
 				initIlustraciones();
+				initDestacar();
 			});
 			document.addEventListener('astro:before-swap', () => {
 				destroyReveal();

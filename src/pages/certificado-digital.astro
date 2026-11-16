@@ -1,0 +1,113 @@
+---
+// /certificado-digital/ (spec 005). Los textos viven aquí; precios, planes, requisitos, mensajes de WhatsApp y
+// preguntas salen de las collections y de site.ts.
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import ProductoHero from '@/components/sections/ProductoHero.astro';
+import PlanesTitular, { type PlanTarjeta } from '@/components/sections/PlanesTitular.astro';
+import Requisitos from '@/components/sections/Requisitos.astro';
+import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
+import ComoFunciona from '@/components/sections/ComoFunciona.astro';
+import Preguntas from '@/components/sections/Preguntas.astro';
+import CtaCierre from '@/components/sections/CtaCierre.astro';
+import { comoFunciona, ctaCierre, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
+import { getFaqs } from '@/lib/faqs';
+import { formatPrice, vigenciaLabel } from '@/lib/format';
+import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
+import { breadcrumbSchema, faqSchema, productSchema } from '@/lib/seo/schema';
+
+const productos = (await getCollection('productos')).map((p) => p.data).sort((a, b) => a.orden - b.orden);
+const planes = productos.flatMap((p) => (p.tipo === 'certificado' ? [p] : []));
+const requisitos = (await getCollection('requisitos')).map((r) => r.data).sort((a, b) => a.orden - b.orden);
+const faqs = await getFaqs('certificado-digital');
+
+const tarjetas = (titular: 'natural' | 'juridica'): PlanTarjeta[] =>
+	planes
+		.filter((p) => p.titular === titular)
+		.map((p) => ({
+			id: `${titular}-${p.vigenciaAnios}-${p.vigenciaAnios === 1 ? 'ano' : 'anos'}`,
+			vigencia: vigenciaLabel(p.vigenciaAnios),
+			precio: formatPrice(p.precio, p.moneda),
+			nota: p.incluyeIgv ? 'Incluye IGV' : undefined,
+			nombre: p.nombre,
+			href: productWhatsappUrl(p),
+			destacado: p.vigenciaAnios === 2 ? 'Más elegido' : undefined,
+		}));
+
+const desde = planes.reduce((min, p) => (p.precio < min.precio ? p : min));
+const description =
+	`Certificado digital para firma remota, persona natural o jurídica, de 1 a 3 años desde ${formatPrice(desde.precio, desde.moneda)}. ` +
+	`Sin instalar nada. Te atiende un asesor por WhatsApp.`;
+
+const migas = [{ label: 'Inicio', href: '/' }, { label: 'Certificado digital' }];
+const titularLabel = { natural: 'Persona natural', juridica: 'Persona jurídica' } as const;
+const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
+---
+
+<BaseLayout
+	title="Certificado digital persona natural y jurídica"
+	description={description}
+	schema={[
+		...planes.map((p) => productSchema(p, '/certificado-digital/')),
+		breadcrumbSchema([{ name: 'Inicio', path: '/' }, { name: 'Certificado digital', path: '/certificado-digital/' }]),
+		faqSchema(faqs.map((f) => ({ question: f.pregunta, answer: f.respuesta }))),
+	]}
+>
+	<Header />
+
+	<main>
+		<ProductoHero
+			migas={migas}
+			migasLabel="Migas de pan"
+			etiqueta="Certificado digital"
+			titulo="Certificado digital"
+			acento="para firma remota."
+			subtitulo="Tu identidad digital vive en la nube: firmas con tu usuario, tu PIN y un código que llega a tu WhatsApp. Elige el titular y la vigencia."
+			nota={notaAtencion}
+		/>
+
+		<PlanesTitular
+			id="persona-natural"
+			titulo="Persona natural"
+			intro="Para firmar a tu nombre: contratos, documentos personales y trámites."
+			planes={tarjetas('natural')}
+			ctaLabel="Comprar"
+		/>
+
+		<PlanesTitular
+			id="persona-juridica"
+			fondo="paper-2"
+			titulo="Persona jurídica"
+			intro="Para firmar en nombre de tu empresa, como su representante."
+			planes={tarjetas('juridica')}
+			ctaLabel="Comprar"
+		/>
+
+		<Requisitos
+			id="requisitos"
+			titulo="Lo que"
+			acento="necesitas."
+			columnas={requisitos.map((r) => ({ titulo: titularLabel[r.titular], items: r.items }))}
+			nota="Un asesor te confirma los requisitos antes de la compra."
+		/>
+
+		<NecesitasLosDos {...necesitasLosDos} enlace={{ label: 'Ver bolsas de firmas', href: '/firmas/' }} />
+
+		<ComoFunciona {...comoFunciona} pasos={[...comoFunciona.pasos]} />
+
+		<Preguntas {...preguntas} faqs={faqs} />
+
+		<CtaCierre
+			id={ctaCierre.id}
+			titulo={ctaCierre.titulo}
+			acento={ctaCierre.acento}
+			texto={ctaCierre.texto}
+			cta={comprar}
+			ctaSecundario={{ label: ctaCierre.ctaSecundarioLabel, href: whatsappUrl() }}
+		/>
+	</main>
+
+	<Footer />
+</BaseLayout>

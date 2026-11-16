@@ -135,6 +135,11 @@
 	[id] {
 		scroll-margin-top: var(--fr-nav-offset);
 	}
+	/* Destino de un ancla resaltado (spec 005, lib/destacar.ts): anillo ámbar de 3px que se apaga solo. */
+	.is-destacado {
+		outline: 3px solid var(--fr-color-girasol);
+		outline-offset: 3px;
+	}
 	button:not(:disabled),
 	[role="button"]:not(:disabled) {
 		cursor: pointer;

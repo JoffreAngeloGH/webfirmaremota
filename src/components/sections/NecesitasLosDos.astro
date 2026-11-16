@@ -4,6 +4,7 @@
  * El texto es HTML real; la animación (GSAP, data-anim="encajan") solo mueve las piezas.
  */
 import SectionHeading from '@/components/sections/SectionHeading.astro';
+import { buttonVariants } from '@/components/ui/button';
 
 interface Props {
 	id: string;
@@ -12,14 +13,25 @@ interface Props {
 	acento?: string;
 	texto: string;
 	ecuacion: { a: string; b: string; resultado: string; etiquetaResultado: string };
+	/** Enlace de texto bajo el encabezado (spec 005). */
+	enlace?: { label: string; href: string };
 }
-const { id, etiqueta, titulo, acento, texto, ecuacion } = Astro.props;
+const { id, etiqueta, titulo, acento, texto, ecuacion, enlace } = Astro.props;
 ---
 
 <section id={id} aria-labelledby={`${id}-titulo`} class="overflow-hidden bg-fr-navy text-white">
 	<div class="gs-container gs-section">
 		<div class="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
-			<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={texto} tono="dark" />
+			<div>
+				<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={texto} tono="dark" />
+				{
+					enlace && (
+						<a href={enlace.href} class={buttonVariants({ variant: 'link', className: 'mt-4 text-white hover:text-fr-girasol' })}>
+							{enlace.label}
+						</a>
+					)
+				}
+			</div>
 
 			<div data-anim="encajan" class="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
 				<!-- Las dos piezas encajadas -->

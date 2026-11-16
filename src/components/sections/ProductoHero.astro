@@ -1,0 +1,31 @@
+---
+/** Encabezado de una página de producto: migas, etiqueta, h1 con una palabra en serif y subtítulo (spec 005). */
+import Etiqueta from '@/components/brand/Etiqueta.astro';
+import Breadcrumbs from '@/components/layout/Breadcrumbs.astro';
+
+interface Props {
+	migas: { label: string; href?: string }[];
+	migasLabel: string;
+	etiqueta: string;
+	titulo: string;
+	acento: string;
+	subtitulo: string;
+	nota?: string;
+}
+const { migas, migasLabel, etiqueta, titulo, acento, subtitulo, nota } = Astro.props;
+---
+
+<section class="relative overflow-hidden bg-fr-grid">
+	<div class="gs-container pt-6 pb-14 md:pb-20">
+		<Breadcrumbs items={migas} label={migasLabel} />
+		<div class="mt-8 max-w-3xl md:mt-12">
+			<Etiqueta>{etiqueta}</Etiqueta>
+			<h1 class="mt-5 mb-0 text-[2.4rem] leading-[1.04] font-extrabold tracking-[-0.03em] sm:text-[3.2rem] lg:text-[3.6rem]">
+				{titulo}{' '}
+				<span class="font-fr-serif font-normal tracking-normal text-fr-navy italic">{acento}</span>
+			</h1>
+			<p class="mt-6 mb-0 max-w-2xl text-base leading-relaxed text-fr-muted md:text-lg">{subtitulo}</p>
+			{nota && <p class="mt-5 mb-0 font-fr-mono text-xs text-fr-muted">{nota}</p>}
+		</div>
+	</div>
+</section>

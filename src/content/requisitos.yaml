@@ -1,0 +1,20 @@
+# Requisitos de compra por titular (spec 005). Un asesor los confirma antes de la compra.
+
+# PENDIENTE: P07
+- id: natural
+  titular: natural
+  items:
+    - DNI
+    - Correo electrónico
+    - Celular con WhatsApp
+  orden: 1
+
+# PENDIENTE: P08
+- id: juridica
+  titular: juridica
+  items:
+    - RUC de la empresa
+    - DNI del representante legal
+    - Vigencia de poder
+    - Celular con WhatsApp
+  orden: 2

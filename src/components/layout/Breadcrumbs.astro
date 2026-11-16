@@ -1,0 +1,40 @@
+---
+/**
+ * Migas de pan (spec 005). El último elemento es la página actual: sin enlace y con aria-current.
+ * Los enlaces son lo que se pulsa, así que llevan el color de acción al pasar el cursor.
+ */
+interface Props {
+	items: { label: string; href?: string }[];
+	label: string;
+	class?: string;
+}
+const { items, label, class: className } = Astro.props;
+---
+
+<nav aria-label={label} class={className}>
+	<ol class="m-0 flex list-none flex-wrap items-center gap-x-2 gap-y-1 p-0 font-fr-mono text-xs text-fr-muted">
+		{
+			items.map((item, i) => {
+				const ultimo = i === items.length - 1;
+				return (
+					<li class="flex items-center gap-2">
+						{ultimo || !item.href ? (
+							<span aria-current={ultimo ? 'page' : undefined} class={ultimo ? 'text-fr-navy' : undefined}>
+								{item.label}
+							</span>
+						) : (
+							<a href={item.href} class="inline-flex min-h-8 items-center underline-offset-4 hover:text-fr-tinta hover:underline">
+								{item.label}
+							</a>
+						)}
+						{!ultimo && (
+							<span aria-hidden="true" class="text-fr-muted/60">
+								›
+							</span>
+						)}
+					</li>
+				);
+			})
+		}
+	</ol>
+</nav>

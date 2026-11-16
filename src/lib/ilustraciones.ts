@@ -68,6 +68,31 @@ const ANIMACIONES: Record<string, Builder> = {
 			);
 		}
 	},
+	// Medidor de saldo (spec 006): se firman 3 documentos y el saldo baja de N a N−3, con la barra y el número.
+	saldo: (tl, q, el) => {
+		const numero = el.querySelector<HTMLElement>('[data-saldo]');
+		const barra = el.querySelector<HTMLElement>('[data-barra]');
+		const docs = q('doc-firmado');
+		if (!numero || !barra || !docs.length) return;
+		const desde = Number(numero.dataset.desde);
+		const obj = { v: desde };
+		const pintar = () => {
+			numero.textContent = String(Math.round(obj.v));
+			barra.style.width = `${(obj.v * 100) / desde}%`;
+		};
+		tl.from(docs, { opacity: 0, y: 14, duration: 0.4, ease, stagger: 0.1 });
+		docs.forEach((doc, i) => {
+			const clip = doc.querySelector('[data-parte="firma-clip"]');
+			const check = doc.querySelector('[data-parte="check"]');
+			const inicio = i === 0 ? '+=0.1' : '+=0.15';
+			if (clip) tl.from(clip, { attr: { width: 0 }, duration: 0.6, ease: 'power1.inOut' }, inicio);
+			if (check) tl.from(check, { scale: 0, svgOrigin: '78 102', duration: 0.3, ease: 'back.out(2.5)' });
+			// El saldo baja de una en una al terminar cada firma.
+			const objetivo = desde - (i + 1);
+			if (i === 0) tl.fromTo(obj, { v: desde }, { v: objetivo, duration: 0.35, ease: 'power1.out', onUpdate: pintar }, '<');
+			else tl.to(obj, { v: objetivo, duration: 0.35, ease: 'power1.out', onUpdate: pintar }, '<');
+		});
+	},
 	encajan: (tl, q) => {
 		tl.from(q('pieza-a'), { x: -36, opacity: 0, duration: 0.55, ease });
 		tl.from(q('pieza-b'), { x: 36, opacity: 0, duration: 0.55, ease }, '<');

@@ -1,0 +1,60 @@
+---
+/**
+ * Medidor de saldo (spec 006 §3.4): el saldo de una bolsa baja a medida que se firman documentos.
+ * El HTML trae el estado FINAL (N−3 firmas y 3 documentos firmados); GSAP (data-anim="saldo", ilustraciones.ts)
+ * anima desde N. Decorativo: el texto de la columna explica la idea. Sus rótulos son parte del dibujo.
+ */
+import FirmaMini from '@/components/brand/FirmaMini.astro';
+
+interface Props {
+	/** Firmas de la bolsa (N). */
+	cantidad: number;
+	class?: string;
+}
+const { cantidad, class: className } = Astro.props;
+const FIRMADAS = 3;
+const restante = Math.max(0, cantidad - FIRMADAS);
+const porcentaje = cantidad > 0 ? (restante * 100) / cantidad : 0;
+const documentos = Array.from({ length: FIRMADAS }, (_, i) => i);
+---
+
+<div
+	data-anim="saldo"
+	aria-hidden="true"
+	class:list={['rounded-fr-card border border-fr-line bg-fr-sheet p-6 shadow-fr-sheet sm:p-8', className]}
+>
+	<div class="flex items-end justify-between gap-4">
+		<div>
+			<p class="fr-eyebrow m-0 text-fr-muted">Saldo</p>
+			<p class="mt-2 mb-0 font-fr-display text-6xl leading-none font-extrabold text-fr-navy tabular-nums">
+				<span data-saldo data-desde={cantidad} data-hasta={restante}>{restante}</span>
+			</p>
+		</div>
+		<p class="m-0 pb-1 font-fr-mono text-xs text-fr-muted">de {cantidad}</p>
+	</div>
+
+	<div class="mt-5 h-3 overflow-hidden rounded-full bg-fr-paper-2">
+		<div data-barra class="h-full rounded-full bg-fr-navy" style={`width: ${porcentaje}%`}></div>
+	</div>
+
+	<ul class="m-0 mt-8 grid list-none grid-cols-3 gap-3 p-0 sm:gap-5">
+		{
+			documentos.map(() => (
+				<li data-parte="doc-firmado" class="rounded-fr-control border border-fr-line bg-fr-paper p-3">
+					<svg viewBox="0 0 96 120" class="block h-auto w-full" fill="none">
+						<rect x="0.75" y="0.75" width="94.5" height="118.5" rx="6" fill="var(--fr-color-sheet)" stroke="var(--fr-color-line-strong)" stroke-width="1.5" />
+						<rect x="12" y="14" width="72" height="5" rx="2.5" fill="var(--fr-color-paper-2)" />
+						<rect x="12" y="26" width="58" height="5" rx="2.5" fill="var(--fr-color-paper-2)" />
+						<rect x="12" y="38" width="66" height="5" rx="2.5" fill="var(--fr-color-paper-2)" />
+						<FirmaMini x={14} y={58} ancho={62} grosor={3} />
+						<path d="M12 96h72" stroke="var(--fr-color-line-strong)" stroke-width="1.5" stroke-dasharray="3 3" />
+						<g data-parte="check">
+							<circle cx="78" cy="102" r="9" fill="var(--fr-color-girasol)" />
+							<path d="M73.5 102.5l3.2 3.2 5.6-6.4" stroke="var(--fr-color-ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+						</g>
+					</svg>
+				</li>
+			))
+		}
+	</ul>
+</div>

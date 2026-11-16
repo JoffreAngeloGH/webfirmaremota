@@ -1,6 +1,6 @@
 # [006] Diseño de las páginas de producto, espacios y menú móvil
 
-> Estado: `aprobado` · Creado: 2026-11-16 · Actualizado: 2026-11-16
+> Estado: `en-curso` · Creado: 2026-11-16 · Actualizado: 2026-11-16
 > Aprobado por el usuario el 2026-11-16: todo lo de "Para aprobar" (matriz de planes, textos nuevos, ilustraciones y menú móvil). Se ejecuta en la PC de casa.
 > Constitución: v0.3.2 · Depende de: 005 (`hecho`)
 > Lo implementa otra sesión. Este spec trae todo lo necesario: no hace falta el historial de la conversación.
@@ -145,29 +145,29 @@ Persona jurídica …
 ## 5. Criterios de aceptación
 
 **Espacios**
-- [ ] En `/`, `/certificado-digital/` y `/firmas/`, el espacio vacío entre el hero y el primer título de la sección siguiente es ≤ 96 px en 1440 y en 375 px (medido).
+- [x] En `/`, `/certificado-digital/` y `/firmas/`, el espacio vacío entre el hero y el primer título de la sección siguiente es ≤ 96 px en 1440 y en 375 px (medido).
 
 **Productos**
-- [ ] Los heros de producto tienen ilustración y chips; en 1440 px el contenido del hero ocupa todo el ancho del contenedor.
-- [ ] Los 6 planes se ven en una matriz desde 1024 px y en bloques por titular por debajo. Cada uno muestra precio, "por año" calculado, "Incluye IGV" y su botón con el mensaje de WhatsApp de ese plan.
-- [ ] Las 8 anclas (`#persona-natural`, `#persona-juridica` y las 6 de planes) siguen funcionando con `destacar.ts`: centran y resaltan.
-- [ ] El bloque "Qué incluye" está en la página.
-- [ ] `/firmas/` tiene la bolsa y el medidor de saldo lado a lado desde `md`, sin columnas vacías.
-- [ ] Los requisitos tienen sus íconos, y `pnpm pendientes` sigue listando P07 y P08.
+- [x] Los heros de producto tienen ilustración y chips; en 1440 px el contenido del hero ocupa todo el ancho del contenedor.
+- [x] Los 6 planes se ven en una matriz desde 1024 px y en bloques por titular por debajo. Cada uno muestra precio, "por año" calculado, "Incluye IGV" y su botón con el mensaje de WhatsApp de ese plan.
+- [x] Las 8 anclas (`#persona-natural`, `#persona-juridica` y las 6 de planes) siguen funcionando con `destacar.ts`: centran y resaltan.
+- [x] El bloque "Qué incluye" está en la página.
+- [x] `/firmas/` tiene la bolsa y el medidor de saldo lado a lado desde `md`, sin columnas vacías.
+- [x] Los requisitos tienen sus íconos, y `pnpm pendientes` sigue listando P07 y P08.
 
 **Menú móvil**
-- [ ] En 375 px se puede abrir el menú, llegar a `/certificado-digital/`, `/firmas/` y `/#como-funciona`, y cerrarlo con Esc; el foco vuelve al botón.
-- [ ] Al navegar con el menú abierto, la página nueva carga con el menú cerrado.
+- [x] En 375 px se puede abrir el menú, llegar a `/certificado-digital/`, `/firmas/` y `/#como-funciona`, y cerrarlo con Esc; el foco vuelve al botón.
+- [x] Al navegar con el menú abierto, la página nueva carga con el menú cerrado.
 
 **Movimiento y accesibilidad**
-- [ ] Sin JS y con "reducir movimiento": ilustraciones en estado final y el medidor en N−3.
-- [ ] La tabla de planes tiene `caption` y `th` con `scope`; el lector de pantalla anuncia titular, vigencia y precio de cada celda.
-- [ ] Ninguna animación usa `transition-all` sobre elementos que mueve GSAP.
+- [x] Sin JS y con "reducir movimiento": ilustraciones en estado final y el medidor en N−3.
+- [x] La tabla de planes tiene `caption` y `th` con `scope`; el lector de pantalla anuncia titular, vigencia y precio de cada celda.
+- [x] Ninguna animación usa `transition-all` sobre elementos que mueve GSAP.
 
 **Calidad**
-- [ ] Sin desborde lateral en 375, 768, 1024 y 1280 px en las tres páginas.
-- [ ] Lighthouse móvil ≥ 90 en las cuatro categorías en las tres páginas, y LCP ≤ 2.5 s (hoy está justo en 2.5 s: que no empeore; si empeora, quitar `preload` de las fuentes no críticas o mover la ilustración del hero a CSS más simple).
-- [ ] `pnpm build` sin errores ni advertencias.
+- [x] Sin desborde lateral en 375, 768, 1024 y 1280 px en las tres páginas.
+- [x] Lighthouse móvil ≥ 90 en las cuatro categorías en las tres páginas, y LCP ≤ 2.5 s (hoy está justo en 2.5 s: que no empeore; si empeora, quitar `preload` de las fuentes no críticas o mover la ilustración del hero a CSS más simple).
+- [x] `pnpm build` sin errores ni advertencias.
 
 ## Para aprobar
 
@@ -220,14 +220,58 @@ src/components/layout/MenuMovil.astro                  botón + panel (popover n
 
 ## 7. Tareas
 
-- [ ] T1 Espacios: hero del inicio y `ProductoHero` (medir antes y después).
-- [ ] T2 `ProductoHero` en dos columnas + chips + `CredencialDigital` (certificado) + ilustración de firmas.
-- [ ] T3 `MatrizPlanes` (tabla + móvil + "Qué incluye"), conectada a `destacar.ts`.
-- [ ] T4 `Bolsas` en dos columnas + `MedidorSaldo` + animación `saldo`.
-- [ ] T5 Requisitos con íconos.
-- [ ] T6 `MenuMovil` en el header.
-- [ ] T7 Verificación: criterios de §5 con Chrome sin interfaz (capturas en 375 y 1440 px de las tres páginas, medición de espacios, anclas, menú con teclado) y Lighthouse en las tres páginas. Anotar resultados y decisiones en §8, y dejar el spec en `en-curso` para revisión.
+- [x] T1 Espacios: hero del inicio y `ProductoHero` (medir antes y después).
+- [x] T2 `ProductoHero` en dos columnas + chips + `CredencialDigital` (certificado) + ilustración de firmas.
+- [x] T3 `MatrizPlanes` (tabla + móvil + "Qué incluye"), conectada a `destacar.ts`.
+- [x] T4 `Bolsas` en dos columnas + `MedidorSaldo` + animación `saldo`.
+- [x] T5 Requisitos con íconos.
+- [x] T6 `MenuMovil` en el header.
+- [x] T7 Verificación: criterios de §5 con Chrome sin interfaz (capturas en 375 y 1440 px de las tres páginas, medición de espacios, anclas, menú con teclado) y Lighthouse en las tres páginas. Anotar resultados y decisiones en §8, y dejar el spec en `en-curso` para revisión.
 
 ## 8. Notas de implementación
 
-_(vacío)_
+**2026-11-16**
+
+Verificado con Chrome sin interfaz (puppeteer-core) y Lighthouse 12 móvil sobre `INDEXABLE=true pnpm astro build --outDir dist-lh` (borrada al terminar). Capturas revisadas de `/`, `/certificado-digital/` y `/firmas/` en 375 y 1440 px, y el menú móvil abierto.
+
+**Espacios** (último elemento del hero → primer título de la sección siguiente, px):
+
+| Página | 1440 antes | 1440 después | 375 antes | 375 después |
+|---|---|---|---|---|
+| `/` | 194 | 90 | 150 | 74 |
+| `/certificado-digital/` | 160 | 92 | 120 | 71 |
+| `/firmas/` | 160 | 60 | 120 | 81 |
+
+**Lighthouse móvil**
+
+| Página | Perf. | Accesib. | Buenas prácticas | SEO | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|
+| `/` | 96 | 100 | 100 | 100 | 2475 ms | 0 | 100 ms |
+| `/certificado-digital/` | 97 | 100 | 100 | 100 | 2456 ms | 0 | 40 ms |
+| `/firmas/` | 97 | 100 | 100 | 100 | 2455 ms | 0 | 40 ms |
+
+LCP no empeora (antes del 006: 2452 y 2427 ms en las dos páginas de producto; el LCP es el `h1`). `pnpm build`: 0 errores y 0 advertencias; `pnpm pendientes` lista P07 y P08 en `requisitos.yaml`.
+
+- **Sin desborde** en 375, 768, 1024 y 1280 px en las tres páginas (12 combinaciones, `scrollWidth` = ancho de ventana), un `h1` en cada una.
+- **Anclas:** las 8 (`#persona-natural`, `#persona-juridica` y las 6 de planes) centran el elemento (centro a 400 de 800 px) y le ponen el anillo ámbar, en 1280 y en 375 px.
+- **Tabla:** `caption`, `th scope="col"` (Titular, 1/2/3 años) y `th scope="row"` (los dos titulares); 6 celdas con `id`; cada botón abre WhatsApp con el mensaje de su plan; la columna de 2 años tiene fondo `fr-paper` y "Más elegido". Por debajo de 1024 px la misma tabla pasa a un bloque por titular.
+- **Menú móvil (375 px, solo teclado):** botón de 48 × 48; Enter abre (`aria-expanded="true"`, etiqueta "Cerrar menú"); Tab pasa al primer enlace; los 3 enlaces miden 48 px; Esc cierra y el foco vuelve al botón; al elegir `/#como-funciona` se cierra; al navegar a `/certificado-digital/` con el menú abierto, la página nueva carga con el menú cerrado y se puede abrir de nuevo.
+- **Medidor de saldo:** el HTML trae 7 y 3 documentos firmados; al entrar en pantalla cuenta 10 → 9 → 8 → 7 (barra de 100 % a 70 %). Con "reducir movimiento" y sin JS queda en 7. Las ilustraciones de los heros no tienen animación con "reducir movimiento".
+- **Requisitos:** 9 íconos (2 de columna + 7 de requisitos). Ningún elemento animado por GSAP tiene `transition-all`.
+
+**Decisiones**
+- **Una sola `<table>` para escritorio y móvil**, con roles ARIA explícitos (`role="table|row|cell|rowheader|columnheader"`). Se descartaron dos estructuras (tabla y bloques) porque repetirían los `id` de las anclas, y `destacar.ts` necesita un único destino por plan. Con `display: block` en móvil los roles mantienen la semántica.
+- **"Qué incluye" va debajo de la matriz** (el spec permitía "a la derecha o debajo").
+- **Espacios:** el hero del inicio baja a `pb-10`; el de producto a `pb-3`. La primera sección tras un hero usa la nueva utilidad `gs-section-tras-hero` (28 px arriba en móvil, 48 px desde 768 px; abajo, el ritmo de siempre). La sección de planes además cambia a fondo `fr-paper-2` con `border-y`, para que se vea el corte. Se aplicó también a `Ventajas`.
+- **Medidor de saldo:** muestra N−3 y 3 documentos con `FirmaMini`; la animación está en `ilustraciones.ts` (`saldo`). Con 3 o más bolsas, `Bolsas` deja las tarjetas a todo el ancho y el medidor debajo.
+- **Hero de firmas:** `FichasFirmas` con la nueva prop `grande` (pila y contador mayores), sobre una hoja girada.
+- **Iconos:** los trazos están en `src/lib/iconos.ts` y los pinta `components/icons/Icono.astro`. El nombre del ícono de cada requisito y de cada columna vive en `requisitos.yaml` (campos `icono`, obligatorios, validados con Zod); `items` pasa de lista de textos a lista de `{ texto, icono }`.
+- **Menú móvil:** `popover` nativo, sin React. Un script mínimo solo cambia la etiqueta ("Abrir/Cerrar menú") y cierra el panel al elegir un enlace; el panel nace cerrado en cada página porque el header se reemplaza con `ClientRouter`.
+- **Hero de producto en móvil:** la ilustración se muestra debajo del texto (no se oculta); no empuja el contenido más de lo razonable (las medidas de arriba lo incluyen).
+- Textos de los rótulos de `CredencialDigital` y `MedidorSaldo` ("Persona natural", "Vigencia 1–3 años", "Saldo", "de N") viven en la ilustración, como permite el spec; el texto del caption de la tabla ("Planes de certificado digital: precio por titular y vigencia") es mío y no estaba en §2.1.
+- Se borró `PlanesTitular.astro` (sin uso).
+
+**Pendiente / a revisar**
+- En `/firmas/` a 1440 px el hueco es de 60 px (por debajo del máximo, pero menor que el resto de secciones); si lo prefieres igual al de las otras páginas se puede subir sin pasar de 96.
+- En la credencial de certificado, la tarjeta de adelante tapa parte de la banda "Vigencia" de la de atrás (es parte del apilado).
+- Precios y requisitos siguen siendo placeholders (P01, P02, P07, P08).

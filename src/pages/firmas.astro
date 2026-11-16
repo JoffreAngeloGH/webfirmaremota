@@ -6,6 +6,8 @@ import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import ProductoHero from '@/components/sections/ProductoHero.astro';
 import Bolsas, { type BolsaTarjeta } from '@/components/sections/Bolsas.astro';
+import FichasFirmas from '@/components/illustrations/FichasFirmas.astro';
+import MedidorSaldo from '@/components/illustrations/MedidorSaldo.astro';
 import CompatibleCon from '@/components/sections/CompatibleCon.astro';
 import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
 import Preguntas from '@/components/sections/Preguntas.astro';
@@ -36,6 +38,12 @@ const description =
 	`Bolsas de firmas para tu certificado digital desde ${formatPrice(desde.precio, desde.moneda)}. ` +
 	`No vencen y sirven con certificados de otros proveedores. Compra por WhatsApp.`;
 
+const minimaCantidad = Math.min(...bolsas.map((b) => b.cantidad));
+const chips = [
+	...(bolsas.every((b) => !b.vence) ? ['No vencen'] : []),
+	`Desde ${minimaCantidad} firmas`,
+	`Desde ${formatPrice(desde.precio, desde.moneda)}`,
+];
 const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 ---
 
@@ -59,7 +67,13 @@ const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 			acento="certificado digital."
 			subtitulo="Las firmas son el saldo que usas cada vez que firmas. No vencen: se descuentan a medida que las usas."
 			nota={notaAtencion}
-		/>
+			chips={chips}
+		>
+			<div class="relative mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end">
+				<div class="absolute -inset-3 rotate-2 rounded-fr-card border border-fr-line bg-fr-paper-2" aria-hidden="true"></div>
+				<FichasFirmas grande cantidad={minimaCantidad} class="relative shadow-fr-lift" />
+			</div>
+		</ProductoHero>
 
 		<Bolsas
 			id="bolsas"
@@ -67,7 +81,14 @@ const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 			bolsas={tarjetas}
 			ctaLabel="Comprar"
 			pie={tarjetas.length === 1 ? 'Pronto habrá bolsas más grandes.' : undefined}
-		/>
+			medidor={{
+				titulo: 'Tu saldo,',
+				acento: 'a la vista.',
+				texto: 'Cada vez que firmas se descuenta del saldo de tu bolsa. Lo que no usas no vence.',
+			}}
+		>
+			<MedidorSaldo slot="medidor" cantidad={minimaCantidad} />
+		</Bolsas>
 
 		<CompatibleCon
 			id="compatible"

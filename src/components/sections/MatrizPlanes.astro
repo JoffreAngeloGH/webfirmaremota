@@ -1,0 +1,146 @@
+---
+/**
+ * Los 6 planes del certificado en una matriz (spec 006 §3.3): titulares en filas, vigencias en columnas.
+ * Es una sola <table> con roles ARIA explícitos: desde `lg` se ve como tabla y por debajo cada fila pasa a ser
+ * un bloque por titular (display: block no debe borrar la semántica de tabla). Así cada ancla (`id`) existe una
+ * vez y destacar.ts puede centrarla y resaltarla. Los textos y los datos llegan por props.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+import { buttonVariants } from '@/components/ui/button';
+
+export interface CeldaPlan {
+	/** Ancla de la celda, p. ej. "juridica-2-anos". */
+	id: string;
+	precio: string;
+	/** "US$ 10.00 por año" */
+	porAnio: string;
+	/** "Incluye IGV" */
+	nota?: string;
+	/** Nombre completo, para lectores de pantalla y el mensaje de WhatsApp. */
+	nombre: string;
+	href: string;
+}
+export interface FilaTitular {
+	/** Ancla de la fila, p. ej. "persona-natural". */
+	id: string;
+	titulo: string;
+	linea: string;
+	/** Una celda por vigencia, en el orden de `vigencias`. */
+	planes: CeldaPlan[];
+}
+
+interface Props {
+	id: string;
+	etiqueta: string;
+	titulo: string;
+	acento?: string;
+	intro?: string;
+	/** Título accesible de la tabla. */
+	caption: string;
+	/** Texto (accesible) del encabezado de la primera columna. */
+	columnaTitular: string;
+	vigencias: { label: string; destacado?: string }[];
+	filas: FilaTitular[];
+	ctaLabel: string;
+	incluye: { titulo: string; items: string[] };
+}
+const { id, etiqueta, titulo, acento, intro, caption, columnaTitular, vigencias, filas, ctaLabel, incluye } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="border-y border-fr-line bg-fr-paper-2">
+	<div class="gs-container gs-section-tras-hero">
+		<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={intro} />
+
+		<div data-reveal class="mt-10">
+			<table role="table" class="w-full border-collapse text-left max-lg:block lg:overflow-hidden lg:rounded-fr-card lg:border lg:border-fr-line lg:bg-fr-sheet lg:shadow-fr-sheet">
+				<caption class="sr-only">{caption}</caption>
+				<thead role="rowgroup" class="max-lg:sr-only">
+					<tr role="row">
+						<th role="columnheader" scope="col" class="p-6 align-bottom"><span class="sr-only">{columnaTitular}</span></th>
+						{
+							vigencias.map((v) => (
+								<th role="columnheader" scope="col" class:list={['p-6 pb-4 align-bottom text-2xl font-bold tracking-tight text-fr-navy', v.destacado && 'bg-fr-paper']}>
+									{v.destacado && (
+										<span class="mb-3 block w-fit rounded-full border border-fr-line-strong bg-fr-sheet px-3 py-1 font-fr-mono text-xs font-medium tracking-normal text-fr-navy">
+											{v.destacado}
+										</span>
+									)}
+									{v.label}
+								</th>
+							))
+						}
+					</tr>
+				</thead>
+				<tbody role="rowgroup" class="max-lg:block">
+					{
+						filas.map((fila) => (
+							<tr
+								role="row"
+								id={fila.id}
+								data-destacable
+								class="max-lg:mb-5 max-lg:block max-lg:rounded-fr-card max-lg:border max-lg:border-fr-line max-lg:bg-fr-sheet max-lg:p-5 max-lg:shadow-fr-sheet lg:border-t lg:border-fr-line"
+							>
+								<th role="rowheader" scope="row" class="max-lg:block max-lg:pb-3 lg:w-56 lg:p-6 lg:align-top">
+									<span class="block text-xl font-bold tracking-tight text-fr-navy">{fila.titulo}</span>
+									<span class="mt-1 block text-sm font-normal text-fr-muted">{fila.linea}</span>
+								</th>
+								{fila.planes.map((plan, i) => (
+									<td
+										role="cell"
+										id={plan.id}
+										data-destacable
+										class:list={[
+											'max-lg:flex max-lg:flex-wrap max-lg:items-center max-lg:justify-between max-lg:gap-x-4 max-lg:gap-y-3 max-lg:border-t max-lg:border-dashed max-lg:border-fr-line-strong max-lg:py-4 lg:p-6 lg:align-top',
+											vigencias[i]?.destacado && 'lg:bg-fr-paper',
+										]}
+									>
+										<div>
+											<p class="m-0 text-sm font-semibold text-fr-navy lg:hidden" aria-hidden="true">
+												{vigencias[i]?.label}
+												{vigencias[i]?.destacado && (
+													<span class="ml-2 rounded-full border border-fr-line-strong bg-fr-paper px-2 py-0.5 align-middle font-fr-mono text-xs font-medium text-fr-navy">
+														{vigencias[i]?.destacado}
+													</span>
+												)}
+											</p>
+											<p class="m-0 font-fr-display text-[2rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums max-lg:mt-1 lg:text-[2.1rem]">
+												{plan.precio}
+											</p>
+											<p class="mt-2 mb-0 text-sm text-fr-muted">{plan.porAnio}</p>
+											{plan.nota && <p class="mt-0.5 mb-0 text-xs text-fr-muted">{plan.nota}</p>}
+										</div>
+										<a
+											href={plan.href}
+											target="_blank"
+											rel="noopener noreferrer"
+											class={buttonVariants({ className: 'max-lg:px-5 lg:mt-5 lg:flex lg:w-full' })}
+										>
+											{ctaLabel}
+											<span class="sr-only"> {plan.nombre}</span>
+										</a>
+									</td>
+								))}
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<div data-reveal class="mt-8 rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet sm:p-8">
+			<h3 class="m-0 text-xl font-bold tracking-tight">{incluye.titulo}</h3>
+			<ul class="mt-5 mb-0 grid list-none gap-3 border-t border-dashed border-fr-line-strong p-0 pt-5 md:grid-cols-2 md:gap-x-10">
+				{
+					incluye.items.map((item) => (
+						<li class="flex gap-3 text-fr-text">
+							<svg aria-hidden="true" viewBox="0 0 24 24" class="mt-1 size-4 shrink-0 text-fr-navy" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M5 12.5l4.5 4.5L19 7.5" />
+							</svg>
+							{item}
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+</section>

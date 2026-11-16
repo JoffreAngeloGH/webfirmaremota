@@ -1,5 +1,8 @@
 ---
-/** Encabezado de una página de producto: migas, etiqueta, h1 con una palabra en serif y subtítulo (spec 005). */
+/**
+ * Encabezado de una página de producto (spec 005 y 006): migas, etiqueta, h1 con una palabra en serif, subtítulo,
+ * chips y, desde `lg`, una ilustración en la segunda columna (slot). Sin ilustración ocupa todo el ancho.
+ */
 import Etiqueta from '@/components/brand/Etiqueta.astro';
 import Breadcrumbs from '@/components/layout/Breadcrumbs.astro';
 
@@ -11,21 +14,41 @@ interface Props {
 	acento: string;
 	subtitulo: string;
 	nota?: string;
+	/** Datos clave en mono, sin color de acción (no son botones). */
+	chips?: string[];
 }
-const { migas, migasLabel, etiqueta, titulo, acento, subtitulo, nota } = Astro.props;
+const { migas, migasLabel, etiqueta, titulo, acento, subtitulo, nota, chips = [] } = Astro.props;
+const conIlustracion = Astro.slots.has('default');
 ---
 
 <section class="relative overflow-hidden bg-fr-grid">
-	<div class="gs-container pt-6 pb-14 md:pb-20">
+	<div class="gs-container pt-6 pb-3">
 		<Breadcrumbs items={migas} label={migasLabel} />
-		<div class="mt-8 max-w-3xl md:mt-12">
-			<Etiqueta>{etiqueta}</Etiqueta>
-			<h1 class="mt-5 mb-0 text-[2.4rem] leading-[1.04] font-extrabold tracking-[-0.03em] sm:text-[3.2rem] lg:text-[3.6rem]">
-				{titulo}{' '}
-				<span class="font-fr-serif font-normal tracking-normal text-fr-navy italic">{acento}</span>
-			</h1>
-			<p class="mt-6 mb-0 max-w-2xl text-base leading-relaxed text-fr-muted md:text-lg">{subtitulo}</p>
-			{nota && <p class="mt-5 mb-0 font-fr-mono text-xs text-fr-muted">{nota}</p>}
+		<div
+			class:list={[
+				'mt-8 grid items-center gap-12 md:mt-12',
+				conIlustracion && 'lg:grid-cols-[1.1fr_0.9fr]',
+			]}
+		>
+			<div>
+				<Etiqueta>{etiqueta}</Etiqueta>
+				<h1 class="mt-5 mb-0 text-[2.4rem] leading-[1.04] font-extrabold tracking-[-0.03em] sm:text-[3.2rem] lg:text-[3.6rem]">
+					{titulo}{' '}
+					<span class="font-fr-serif font-normal tracking-normal text-fr-navy italic">{acento}</span>
+				</h1>
+				<p class="mt-6 mb-0 max-w-2xl text-base leading-relaxed text-fr-muted md:text-lg">{subtitulo}</p>
+				{
+					chips.length > 0 && (
+						<ul class="mt-6 mb-0 flex list-none flex-wrap gap-2 p-0">
+							{chips.map((chip) => (
+								<li class="rounded-full border border-fr-line bg-fr-sheet px-3 py-1.5 font-fr-mono text-xs text-fr-navy">{chip}</li>
+							))}
+						</ul>
+					)
+				}
+				{nota && <p class="mt-5 mb-0 font-fr-mono text-xs text-fr-muted">{nota}</p>}
+			</div>
+			{conIlustracion && <slot />}
 		</div>
 	</div>
 </section>

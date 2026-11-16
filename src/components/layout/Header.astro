@@ -1,5 +1,6 @@
 ---
 import Logotipo from '@/components/brand/Logotipo.astro';
+import MenuMovil from '@/components/layout/MenuMovil.astro';
 import { buttonVariants } from '@/components/ui/button';
 import { whatsappUrl } from '@/lib/whatsapp';
 
@@ -36,13 +37,16 @@ const {
 				</nav>
 			)
 		}
-		<a
-			href={whatsappUrl()}
-			target="_blank"
-			rel="noopener noreferrer"
-			class={buttonVariants({ size: 'sm' })}
-		>
-			Comprar
-		</a>
+		<div class="flex items-center gap-2">
+			<a
+				href={whatsappUrl()}
+				target="_blank"
+				rel="noopener noreferrer"
+				class={buttonVariants({ size: 'sm' })}
+			>
+				Comprar
+			</a>
+			<MenuMovil links={links} abrirLabel="Abrir menú" cerrarLabel="Cerrar menú" navLabel="Menú móvil" />
+		</div>
 	</div>
 </header>

@@ -1,20 +1,23 @@
 # Requisitos de compra por titular (spec 005). Un asesor los confirma antes de la compra.
+# `icono`: nombre de un ícono de src/lib/iconos.ts (spec 006).
 
 # PENDIENTE: P07
 - id: natural
   titular: natural
+  icono: persona
   items:
-    - DNI
-    - Correo electrónico
-    - Celular con WhatsApp
+    - { texto: DNI, icono: dni }
+    - { texto: Correo electrónico, icono: sobre }
+    - { texto: Celular con WhatsApp, icono: telefono }
   orden: 1
 
 # PENDIENTE: P08
 - id: juridica
   titular: juridica
+  icono: edificio
   items:
-    - RUC de la empresa
-    - DNI del representante legal
-    - Vigencia de poder
-    - Celular con WhatsApp
+    - { texto: RUC de la empresa, icono: documento }
+    - { texto: DNI del representante legal, icono: dni }
+    - { texto: Vigencia de poder, icono: documento-sello }
+    - { texto: Celular con WhatsApp, icono: telefono }
   orden: 2

@@ -1,12 +1,17 @@
 ---
-/** Requisitos por titular en dos columnas (spec 005). Las listas salen de la collection `requisitos`. */
+/**
+ * Requisitos por titular como checklist ilustrado (spec 005 y 006): un ícono grande por columna y uno pequeño por
+ * requisito. Las listas y el nombre de cada ícono salen de la collection `requisitos`.
+ */
 import SectionHeading from '@/components/sections/SectionHeading.astro';
+import Icono from '@/components/icons/Icono.astro';
+import type { NombreIcono } from '@/lib/iconos';
 
 interface Props {
 	id: string;
 	titulo: string;
 	acento?: string;
-	columnas: { titulo: string; items: string[] }[];
+	columnas: { titulo: string; icono: NombreIcono; items: { texto: string; icono: NombreIcono }[] }[];
 	/** Línea bajo las listas. */
 	nota?: string;
 }
@@ -20,14 +25,19 @@ const { id, titulo, acento, columnas, nota } = Astro.props;
 		{
 			columnas.map((col) => (
 				<div class="rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet sm:p-8">
-					<h3 class="m-0 text-xl font-bold tracking-tight">{col.titulo}</h3>
-					<ul class="mt-5 mb-0 list-none space-y-3 border-t border-dashed border-fr-line-strong p-0 pt-5">
+					<div class="flex items-center gap-4">
+						<span class="grid size-14 shrink-0 place-items-center rounded-fr-control bg-fr-navy text-white">
+							<Icono nombre={col.icono} class="size-8" />
+						</span>
+						<h3 class="m-0 text-xl font-bold tracking-tight">{col.titulo}</h3>
+					</div>
+					<ul class="mt-6 mb-0 list-none space-y-3 border-t border-dashed border-fr-line-strong p-0 pt-6">
 						{col.items.map((item) => (
-							<li class="flex gap-3 text-fr-text">
-								<svg aria-hidden="true" viewBox="0 0 24 24" class="mt-1 size-4 shrink-0 text-fr-navy" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-									<path d="M5 12.5l4.5 4.5L19 7.5" />
-								</svg>
-								{item}
+							<li class="flex items-center gap-4 text-fr-text">
+								<span class="grid size-10 shrink-0 place-items-center rounded-full border border-fr-line bg-fr-paper text-fr-navy">
+									<Icono nombre={item.icono} class="size-5" />
+								</span>
+								{item.texto}
 							</li>
 						))}
 					</ul>

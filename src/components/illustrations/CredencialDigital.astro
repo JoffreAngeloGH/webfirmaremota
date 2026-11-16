@@ -1,0 +1,112 @@
+---
+/**
+ * Ilustración del hero de certificado digital (spec 006): dos credenciales apiladas y giradas,
+ * "Persona natural" delante y "Persona jurídica" detrás, cada una con avatar, datos, banda de vigencia y sello.
+ * Solo CSS: termina en el estado final sin JS y no se anima con "reducir movimiento". Sus textos son parte del dibujo.
+ */
+import Sello from '@/components/brand/Sello.astro';
+
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+
+const credenciales = [
+	{ clase: 'fr-cred--atras', titulo: 'Persona jurídica', avatar: 'edificio' },
+	{ clase: 'fr-cred--frente', titulo: 'Persona natural', avatar: 'persona' },
+] as const;
+---
+
+<div class:list={['fr-creds relative mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end', className]}>
+	<p class="sr-only">Ilustración: credenciales de certificado digital de persona natural y de persona jurídica.</p>
+	<div aria-hidden="true" class="relative aspect-[1.12] w-full">
+		{
+			credenciales.map((c) => (
+				<div class:list={['fr-cred absolute w-[82%] rounded-fr-card border border-fr-line bg-fr-sheet p-5 shadow-fr-lift sm:p-6', c.clase]}>
+					<div class="flex items-center justify-between gap-3">
+						<p class="fr-eyebrow m-0 text-fr-muted">{c.titulo}</p>
+						<span class="size-1.5 rounded-full bg-fr-girasol"></span>
+					</div>
+					<div class="mt-4 flex items-center gap-4">
+						<div class="grid size-16 shrink-0 place-items-center rounded-fr-control border border-fr-line bg-fr-paper-2 text-fr-navy sm:size-20">
+							{c.avatar === 'persona' ? (
+								<svg viewBox="0 0 24 24" class="size-9 sm:size-11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+									<circle cx="12" cy="8" r="4" />
+									<path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+								</svg>
+							) : (
+								<svg viewBox="0 0 24 24" class="size-9 sm:size-11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+									<rect x="5" y="3" width="14" height="18" rx="1" />
+									<path d="M9 7h.01M15 7h.01M9 11h.01M15 11h.01M10 21v-4h4v4" />
+								</svg>
+							)}
+						</div>
+						<div class="flex-1 space-y-2.5">
+							<div class="h-2 w-full rounded-full bg-fr-paper-2" />
+							<div class="h-2 w-4/5 rounded-full bg-fr-paper-2" />
+							<div class="h-2 w-3/5 rounded-full bg-fr-paper-2" />
+						</div>
+					</div>
+					<div class="mt-5 rounded-fr-control bg-fr-navy px-3 py-2">
+						<p class="fr-eyebrow m-0 text-white/80">Vigencia 1–3 años</p>
+					</div>
+					<div class="fr-cred__sello absolute -right-3 -bottom-3">
+						<Sello class="size-16 text-fr-girasol sm:size-20" />
+					</div>
+				</div>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.fr-cred--atras {
+		top: 0;
+		right: 0;
+		rotate: 5deg;
+		animation: fr-cred-atras 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards;
+	}
+	.fr-cred--frente {
+		bottom: 0;
+		left: 0;
+		rotate: -3deg;
+		animation: fr-cred-frente 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.35s backwards;
+	}
+	/* El sello de cada credencial cae al final de su entrada. */
+	.fr-cred__sello {
+		animation: fr-cred-sello 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) 1.1s backwards;
+	}
+	.fr-cred--atras .fr-cred__sello {
+		animation-delay: 0.8s;
+	}
+	@keyframes fr-cred-atras {
+		from {
+			opacity: 0;
+			translate: 36px -8px;
+		}
+	}
+	@keyframes fr-cred-frente {
+		from {
+			opacity: 0;
+			translate: 0 28px;
+		}
+	}
+	@keyframes fr-cred-sello {
+		from {
+			opacity: 0;
+			scale: 1.7;
+			rotate: -18deg;
+		}
+		70% {
+			opacity: 1;
+			scale: 0.94;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fr-cred--atras,
+		.fr-cred--frente,
+		.fr-cred__sello {
+			animation: none;
+		}
+	}
+</style>

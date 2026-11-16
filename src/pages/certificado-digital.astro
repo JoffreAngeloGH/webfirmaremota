@@ -6,7 +6,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import ProductoHero from '@/components/sections/ProductoHero.astro';
-import PlanesTitular, { type PlanTarjeta } from '@/components/sections/PlanesTitular.astro';
+import MatrizPlanes, { type FilaTitular } from '@/components/sections/MatrizPlanes.astro';
+import CredencialDigital from '@/components/illustrations/CredencialDigital.astro';
 import Requisitos from '@/components/sections/Requisitos.astro';
 import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
 import ComoFunciona from '@/components/sections/ComoFunciona.astro';
@@ -23,26 +24,41 @@ const planes = productos.flatMap((p) => (p.tipo === 'certificado' ? [p] : []));
 const requisitos = (await getCollection('requisitos')).map((r) => r.data).sort((a, b) => a.orden - b.orden);
 const faqs = await getFaqs('certificado-digital');
 
-const tarjetas = (titular: 'natural' | 'juridica'): PlanTarjeta[] =>
-	planes
-		.filter((p) => p.titular === titular)
-		.map((p) => ({
-			id: `${titular}-${p.vigenciaAnios}-${p.vigenciaAnios === 1 ? 'ano' : 'anos'}`,
-			vigencia: vigenciaLabel(p.vigenciaAnios),
-			precio: formatPrice(p.precio, p.moneda),
-			nota: p.incluyeIgv ? 'Incluye IGV' : undefined,
-			nombre: p.nombre,
-			href: productWhatsappUrl(p),
-			destacado: p.vigenciaAnios === 2 ? 'Más elegido' : undefined,
-		}));
+const vigencias = [...new Set(planes.map((p) => p.vigenciaAnios))].sort();
+const titulares = ['natural', 'juridica'] as const;
+const textosTitular = {
+	natural: { titulo: 'Persona natural', linea: 'Para firmar a tu nombre: contratos, documentos personales y trámites.' },
+	juridica: { titulo: 'Persona jurídica', linea: 'Para firmar en nombre de tu empresa, como su representante.' },
+} as const;
+
+// Una fila por titular y una celda por vigencia. El precio por año se calcula, no se escribe.
+const filas: FilaTitular[] = titulares.map((titular) => ({
+	id: `persona-${titular === 'natural' ? 'natural' : 'juridica'}`,
+	...textosTitular[titular],
+	planes: vigencias.flatMap((anios) => {
+		const p = planes.find((x) => x.titular === titular && x.vigenciaAnios === anios);
+		if (!p) return [];
+		const porAnio = p.precio / p.vigenciaAnios;
+		return [
+			{
+				id: `${titular}-${anios}-${anios === 1 ? 'ano' : 'anos'}`,
+				precio: formatPrice(p.precio, p.moneda),
+				porAnio: `${formatPrice(porAnio, p.moneda)} por año`,
+				nota: p.incluyeIgv ? 'Incluye IGV' : undefined,
+				nombre: p.nombre,
+				href: productWhatsappUrl(p),
+			},
+		];
+	}),
+}));
 
 const desde = planes.reduce((min, p) => (p.precio < min.precio ? p : min));
 const description =
 	`Certificado digital para firma remota, persona natural o jurídica, de 1 a 3 años desde ${formatPrice(desde.precio, desde.moneda)}. ` +
 	`Sin instalar nada. Te atiende un asesor por WhatsApp.`;
 
+const chips = [`${titulares.length} titulares`, `${vigencias.length} vigencias`, `Desde ${formatPrice(desde.precio, desde.moneda)}`];
 const migas = [{ label: 'Inicio', href: '/' }, { label: 'Certificado digital' }];
-const titularLabel = { natural: 'Persona natural', juridica: 'Persona jurídica' } as const;
 const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 ---
 
@@ -66,30 +82,38 @@ const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 			acento="para firma remota."
 			subtitulo="Tu identidad digital vive en la nube: firmas con tu usuario, tu PIN y un código que llega a tu WhatsApp. Elige el titular y la vigencia."
 			nota={notaAtencion}
-		/>
+			chips={chips}
+		>
+			<CredencialDigital />
+		</ProductoHero>
 
-		<PlanesTitular
-			id="persona-natural"
-			titulo="Persona natural"
-			intro="Para firmar a tu nombre: contratos, documentos personales y trámites."
-			planes={tarjetas('natural')}
+		<MatrizPlanes
+			id="planes"
+			etiqueta="Planes"
+			titulo="Elige tu"
+			acento="certificado."
+			intro="Mismo certificado en la nube; cambia el titular y cuánto tiempo dura."
+			caption="Planes de certificado digital: precio por titular y vigencia"
+			columnaTitular="Titular"
+			vigencias={vigencias.map((v) => ({ label: vigenciaLabel(v), destacado: v === 2 ? 'Más elegido' : undefined }))}
+			filas={filas}
 			ctaLabel="Comprar"
-		/>
-
-		<PlanesTitular
-			id="persona-juridica"
-			fondo="paper-2"
-			titulo="Persona jurídica"
-			intro="Para firmar en nombre de tu empresa, como su representante."
-			planes={tarjetas('juridica')}
-			ctaLabel="Comprar"
+			incluye={{
+				titulo: 'Qué incluye',
+				items: [
+					'Certificado digital en la nube, sin instalar nada',
+					'Acceso con usuario y contraseña',
+					'Cada firma se confirma con tu PIN y un código por WhatsApp',
+					'Un asesor te acompaña en la compra',
+				],
+			}}
 		/>
 
 		<Requisitos
 			id="requisitos"
 			titulo="Lo que"
 			acento="necesitas."
-			columnas={requisitos.map((r) => ({ titulo: titularLabel[r.titular], items: r.items }))}
+			columnas={requisitos.map((r) => ({ titulo: textosTitular[r.titular].titulo, icono: r.icono, items: r.items }))}
 			nota="Un asesor te confirma los requisitos antes de la compra."
 		/>
 

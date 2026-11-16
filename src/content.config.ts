@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { file } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { NOMBRES_ICONO } from './lib/iconos';
 
 /**
  * Productos: planes de certificado y bolsas de firmas (specs/site.md §1).
@@ -52,7 +53,10 @@ const requisitos = defineCollection({
 	loader: file('src/content/requisitos.yaml'),
 	schema: z.object({
 		titular: z.enum(['natural', 'juridica']),
-		items: z.array(z.string()).min(1),
+		/** Ícono grande de la columna. */
+		icono: z.enum(NOMBRES_ICONO),
+		/** Cada requisito con su ícono lineal (spec 006). */
+		items: z.array(z.object({ texto: z.string(), icono: z.enum(NOMBRES_ICONO) })).min(1),
 		orden: z.number().int(),
 	}),
 });

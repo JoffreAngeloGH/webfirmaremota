@@ -1,6 +1,6 @@
 # [005] Páginas de producto: certificado digital y firmas
 
-> Estado: `en-curso` · Creado: 2026-11-16 · Actualizado: 2026-11-16
+> Estado: `hecho` (revisado por el usuario el 2026-11-16; las mejoras de diseño pasan al spec 006) · Creado: 2026-11-16 · Actualizado: 2026-11-16
 > Aprobado por el usuario el 2026-11-16: «apruebo todo» (textos nuevos, "Más elegido", pregunta nueva, "Pronto habrá bolsas más grandes" y quitar "Preguntas" del menú).
 > Constitución: v0.3.2 · Depende de: 001, 002, 003, 004 (todos `hecho`)
 > Lo implementa otra sesión. Este spec trae todo lo necesario: no hace falta el historial de la conversación.

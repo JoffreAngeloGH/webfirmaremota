@@ -1,0 +1,69 @@
+# Páginas por titular (spec 008). Los textos vienen de las páginas de producto de girasol.pe, adaptados según el
+# spec (sin promociones, sin soles, sin plan de 3 años, compra por WhatsApp). Donde algo choca con
+# specs/pendientes.md gana pendientes.md.
+# `seo.description` admite {desde} (precio mínimo del titular, desde la collection productos).
+
+- id: persona-natural
+  slug: persona-natural
+  titular: natural
+  nombre: Persona natural
+  h1: Certificado digital para persona natural
+  descripcion: 'Permite firmar cualquier documento digital en PDF como persona natural, reemplazando la firma manuscrita: contratos, acuerdos, trámites con notarios y otros.'
+  seo:
+    title: Certificado digital para persona natural
+    description: 'Certificado digital para persona natural: firma contratos, acuerdos y trámites con notarios en PDF, con validez legal. Desde {desde}. Compra por WhatsApp.'
+  paraQueSirve:
+    titulo: Para qué
+    acento: sirve.
+    texto: 'Para firmar cualquier documento PDF a tu nombre, con validez legal: contratos, acuerdos, cartas o declaraciones. Tu firma digital reemplaza a la manuscrita, así que ya no tienes que imprimir, firmar y escanear.'
+    usos:
+      - Contratos
+      - Acuerdos
+      - Cartas y declaraciones
+      - Trámites con notarios
+  normativa:
+    - { titulo: Entidad de Certificación, texto: Emitimos tu certificado con los más altos estándares de seguridad para garantizar su valor legal., icono: escudo }
+    - { titulo: Entidad de Registro, texto: 'Validamos tu identidad de forma directa y confidencial, sin intermediarios.', icono: identidad }
+    - { titulo: Software de Firma, texto: Incluye software para firmar tus documentos con validez legal., icono: contrato }
+    - { titulo: Garantías Mobiliarias, texto: Válido para el registro de garantías mobiliarias (SIGM)., icono: candado }
+    - { titulo: Declaraciones Juradas de Contraloría, texto: Para declaraciones juradas ante la Contraloría., icono: documento-sello }
+  antesDeComprar: &antesDeComprar
+    devolucion:
+      titulo: Garantía de devolución
+      plazo: Tienes 5 días hábiles para pedir la devolución de tu dinero, siempre que aún no hayas descargado tu certificado.
+      puntos:
+        - { antes: Te devolvemos el, destacado: 100 %, despues: 'si aún no validaste tu identidad. Si ya lo hiciste, recibes el 80 % y el otro 20 % cubre los gastos administrativos.' }
+        - { antes: Recibes tu dinero en, destacado: 15 días hábiles, despues: 'como máximo, desde que aprobamos tu solicitud. Puede llegar antes.' }
+        - { antes: La devolución de tu dinero, destacado: No procede, despues: si ya descargaste el certificado o ya venció el plazo de 5 días hábiles para solicitar la devolución. }
+      contacto: Pídela escribiendo a
+      correos: [soporte@girasolpe.com, pagos@girasol.pe]
+      enlace: Ver política de devolución completa
+    entrega:
+      titulo: Entrega
+      destacado: ≈ 1 hora
+      texto: Es lo que demora la emisión una vez que completas la solicitud y la validación de identidad.
+  orden: 1
+
+- id: persona-juridica
+  slug: persona-juridica
+  titular: juridica
+  nombre: Persona jurídica
+  h1: Certificado digital para persona jurídica y vinculado a empresa
+  descripcion: 'Te permite firmar cualquier documento PDF a nombre de tu empresa, como representante legal, gerente u otro cargo con poderes, o como persona autorizada por la empresa.'
+  seo:
+    title: Certificado digital para persona jurídica
+    description: 'Certificado digital para persona jurídica y vinculado a empresa: firma contratos, actas y documentos legales en PDF a nombre de tu empresa. Desde {desde}.'
+  paraQueSirve:
+    titulo: Para qué
+    acento: sirve.
+    texto: 'Para firmar cualquier documento PDF en nombre de tu empresa, como representante legal, gerente u otro cargo con poderes. Quien recibe el documento sabe que lo firma la empresa, lo que da respaldo legal a tus contratos y acuerdos comerciales.'
+    usos:
+      - Representante legal
+      - Gerente u otro cargo con poderes
+      - Persona autorizada por la empresa
+  normativa:
+    - { titulo: Entidad de Certificación, texto: Emitimos tu certificado con los más altos estándares de seguridad para garantizar su valor legal., icono: escudo }
+    - { titulo: Entidad de Registro, texto: 'Validamos tu identidad de forma directa y confidencial, sin intermediarios.', icono: identidad }
+    - { titulo: Software de Firma, texto: Incluye software para firmar tus documentos con validez legal., icono: contrato }
+  antesDeComprar: *antesDeComprar
+  orden: 2

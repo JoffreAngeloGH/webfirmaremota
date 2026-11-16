@@ -12,7 +12,7 @@
 - id: que-necesito-para-firmar
   pregunta: ¿Qué necesito para firmar?
   respuesta: 'Dos cosas: un certificado digital y firmas disponibles. Si te falta una de las dos, no puedes firmar.'
-  paginas: [inicio, certificado-digital, firmas]
+  paginas: [inicio, certificado-digital, persona-natural, persona-juridica, firmas]
   orden: 2
 
 - id: certificado-de-otro-proveedor
@@ -37,18 +37,18 @@
 - id: validez-legal
   pregunta: ¿La firma remota tiene validez legal?
   respuesta: 'Sí. La firma digital tiene la misma validez que la firma manuscrita según la Ley N.° 27269, Ley de Firmas y Certificados Digitales, y su Reglamento (D.S. N.° 052-2008-PCM). Los certificados los emite GIRASOL PE S.C.R.L., Entidad de Certificación acreditada ante INDECOPI.'
-  paginas: [inicio, certificado-digital]
+  paginas: [inicio, certificado-digital, persona-natural, persona-juridica]
   orden: 6
 
 - id: como-pagar
   pregunta: ¿Cómo puedo pagar?
   respuesta: 'Trabajamos con el BCP y aceptamos tarjetas de crédito y débito. También puedes pagar en línea con Izipay, Culqi o Yape. Tu asesor te indica los datos al confirmar la compra.'
-  paginas: [inicio, certificado-digital, firmas]
+  paginas: [inicio, certificado-digital, persona-natural, persona-juridica, firmas]
   orden: 7
 
 - id: cuanto-tarda
   pregunta: ¿Cuánto tarda en estar listo mi acceso?
-  respuesta: 'Es inmediato: después de conversar con tu asesor y completar la validación, recibes tu usuario y contraseña.'
+  respuesta: 'Aproximadamente 1 hora después de completar tu solicitud y la validación de identidad recibes tu usuario y contraseña.'
   paginas: [inicio, certificado-digital]
   orden: 8
 
@@ -69,3 +69,42 @@
   respuesta: 'El certificado de persona natural es para firmar a tu nombre. El de persona jurídica es para firmar en nombre de una empresa, como su representante legal.'
   paginas: [certificado-digital]
   orden: 11
+
+# Preguntas de las páginas por titular (spec 008). Textos de las páginas de producto de girasol.pe, sin la de
+# promociones. "¿Dónde puedo realizar el pago?" no se copia: se usa `como-pagar` (P06), porque en firmaremota se
+# paga después de hablar con el asesor. `orden` negativo: van antes de las preguntas generales en esas páginas.
+- id: natural-para-que-sirve
+  pregunta: ¿Para qué sirve el certificado digital para persona natural?
+  respuesta: 'Para firmar cualquier documento PDF a tu nombre, con validez legal: contratos, acuerdos, cartas o declaraciones. Tu firma digital reemplaza a la manuscrita, así que ya no tienes que imprimir, firmar y escanear.'
+  paginas: [persona-natural]
+  orden: -4
+
+- id: juridica-para-que-sirve
+  pregunta: ¿Para qué sirve el certificado digital para persona jurídica?
+  respuesta: 'Para firmar cualquier documento PDF en nombre de tu empresa, como representante legal, gerente u otro cargo con poderes. Quien recibe el documento sabe que lo firma la empresa, lo que da respaldo legal a tus contratos y acuerdos comerciales.'
+  paginas: [persona-juridica]
+  orden: -4
+
+- id: natural-requisitos
+  pregunta: ¿Qué requisitos necesito para solicitarlo?
+  respuesta: 'Para este certificado necesitas: DNI y/o CE vigente, contrato y validación de identidad. En la sección de requisitos tienes el detalle de cada uno.'
+  paginas: [persona-natural]
+  orden: -3
+
+- id: juridica-requisitos
+  pregunta: ¿Qué requisitos necesito para solicitarlo?
+  respuesta: 'Para este certificado necesitas: DNI y/o CE vigente, validación de RUC en SUNAT, vigencia de poder, contrato y otros documentos. En la sección de requisitos tienes el detalle de cada uno.'
+  paginas: [persona-juridica]
+  orden: -3
+
+- id: validacion-de-identidad
+  pregunta: ¿Cómo realizo la validación de identidad?
+  respuesta: 'Tienes dos opciones. En línea: desde nuestra plataforma escaneas un QR o abres un enlace y haces todo desde tu celular, incluida la firma del contrato. Asistida: si prefieres acompañamiento, eliges fecha y hora en la plataforma y una operadora de Girasol te atiende por videollamada: te hace las preguntas de validación y te guía hasta terminar.'
+  paginas: [persona-natural, persona-juridica]
+  orden: -2
+
+- id: demora-de-la-emision
+  pregunta: ¿Cuánto tiempo demora la emisión?
+  respuesta: 'Depende de cuánto tardes en completar la solicitud. Una vez que terminas la validación de identidad, la emisión de tu certificado demora aproximadamente una hora.'
+  paginas: [persona-natural, persona-juridica]
+  orden: -1

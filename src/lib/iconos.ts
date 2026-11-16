@@ -8,6 +8,8 @@ export const ICONOS = {
 	contrato: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 10h6"/><path d="M9 17c1-2 2-2 3 0s2 1 3-1"/>',
 	identidad: '<circle cx="10" cy="8" r="4"/><path d="M3 21c0-4 3-7 7-7 1.2 0 2.3.3 3.3.8"/><circle cx="18" cy="17" r="4"/><path d="M16.2 17l1.4 1.4 2.4-2.8"/>',
 	lista: '<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',
+	escudo: '<path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+	candado: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3M12 15v2"/>',
 	sobre: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
 	telefono: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
 } as const;

@@ -65,3 +65,40 @@ export const mediosPago = {
 	texto: 'Pagas como prefieras: trabajamos con el BCP y aceptamos tarjetas de crédito y débito. También puedes pagar en línea con Izipay, Culqi o Yape.',
 	medios: ['BCP', 'Tarjeta de crédito', 'Tarjeta de débito', 'Izipay', 'Culqi', 'Yape'],
 } as const;
+
+/** Páginas por titular (spec 008). */
+export const planesTitular = {
+	id: 'planes',
+	etiqueta: 'Planes',
+	titulo: 'Elige tu',
+	acento: 'vigencia.',
+	ctaLabel: 'Comprar',
+	masElegido: 'Más elegido',
+} as const;
+
+export const normativa = {
+	id: 'normativa',
+	titulo: 'Cumplimos con las',
+	acento: 'normativas peruanas.',
+	intro: 'Tu certificado está respaldado por nuestra infraestructura como Entidad de Certificación (EC) y Entidad de Registro (ER) acreditada por INDECOPI.',
+	enlaceLabel: 'Verifica nuestra acreditación en INDECOPI',
+} as const;
+
+export const antesDeComprar = {
+	id: 'antes-de-comprar',
+	etiqueta: 'Antes de comprar',
+	titulo: 'Compra con',
+	acento: 'tranquilidad.',
+	intro: 'Cómo pagas, cuándo lo recibes y qué pasa si cambias de opinión.',
+	pagosTitulo: 'Pago',
+	respaldo: {
+		titulo: 'Respaldo legal',
+		intro: 'Estamos acreditados por INDECOPI:',
+		items: ['Entidad de Certificación', 'Entidad de Registro'],
+		ley: 'Conforme a la Ley N.° 27269, Ley de Firmas y Certificados Digitales.',
+		enlaceLabel: 'Lista de Confianza de INDECOPI',
+	},
+} as const;
+
+export const verPlanes = 'Ver planes';
+export const escribenos = 'Escríbenos por WhatsApp';

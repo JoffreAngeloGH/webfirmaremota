@@ -24,7 +24,9 @@ export interface FilaTitular {
 	/** Ancla de la fila, p. ej. "persona-natural". */
 	id: string;
 	titulo: string;
-	linea: string;
+	linea?: string;
+	/** Enlace a la página del titular (spec 008). */
+	enlace?: { label: string; href: string };
 	/** Una celda por vigencia, en el orden de `vigencias`. */
 	planes: CeldaPlan[];
 }
@@ -42,13 +44,15 @@ interface Props {
 	vigencias: { label: string; destacado?: string }[];
 	filas: FilaTitular[];
 	ctaLabel: string;
-	incluye: { titulo: string; items: string[] };
+	incluye?: { titulo: string; items: string[] };
+	/** La sección va justo después de un hero (menos padding arriba). */
+	trasHero?: boolean;
 }
-const { id, etiqueta, titulo, acento, intro, caption, columnaTitular, vigencias, filas, ctaLabel, incluye } = Astro.props;
+const { id, etiqueta, titulo, acento, intro, caption, columnaTitular, vigencias, filas, ctaLabel, incluye, trasHero = true } = Astro.props;
 ---
 
 <section id={id} aria-labelledby={`${id}-titulo`} class="border-y border-fr-line bg-fr-paper-2">
-	<div class="gs-container gs-section-tras-hero">
+	<div class:list={['gs-container', trasHero ? 'gs-section-tras-hero' : 'gs-section']}>
 		<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={intro} />
 
 		<div data-reveal class="mt-10">
@@ -82,7 +86,12 @@ const { id, etiqueta, titulo, acento, intro, caption, columnaTitular, vigencias,
 							>
 								<th role="rowheader" scope="row" class="max-lg:block max-lg:pb-3 lg:w-56 lg:p-6 lg:align-top">
 									<span class="block text-xl font-bold tracking-tight text-fr-navy">{fila.titulo}</span>
-									<span class="mt-1 block text-sm font-normal text-fr-muted">{fila.linea}</span>
+									{fila.linea && <span class="mt-1 block text-sm font-normal text-fr-muted">{fila.linea}</span>}
+									{fila.enlace && (
+										<a href={fila.enlace.href} class="mt-3 inline-flex min-h-8 items-center text-sm font-semibold text-fr-tinta underline-offset-4 hover:underline">
+											{fila.enlace.label}
+										</a>
+									)}
 								</th>
 								{fila.planes.map((plan, i) => (
 									<td
@@ -127,6 +136,7 @@ const { id, etiqueta, titulo, acento, intro, caption, columnaTitular, vigencias,
 			</table>
 		</div>
 
+		{incluye && (
 		<div data-reveal class="mt-8 rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet sm:p-8">
 			<h3 class="m-0 text-xl font-bold tracking-tight">{incluye.titulo}</h3>
 			<ul class="mt-5 mb-0 grid list-none gap-3 border-t border-dashed border-fr-line-strong p-0 pt-5 md:grid-cols-2 md:gap-x-10">
@@ -142,6 +152,7 @@ const { id, etiqueta, titulo, acento, intro, caption, columnaTitular, vigencias,
 				}
 			</ul>
 		</div>
+		)}
 		<slot />
 	</div>
 </section>

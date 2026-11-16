@@ -1,0 +1,96 @@
+---
+/**
+ * "Antes de comprar" (spec 008): devolución, entrega, pagos y respaldo legal en cuatro bloques. Los textos de
+ * devolución y entrega vienen de la collection `titulares`; pagos (MediosPago) y respaldo, de config/secciones.ts.
+ * Todo llega por props.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+import MediosPago from '@/components/sections/MediosPago.astro';
+
+interface Props {
+	id: string;
+	etiqueta: string;
+	titulo: string;
+	acento?: string;
+	intro?: string;
+	devolucion: {
+		titulo: string;
+		plazo: string;
+		puntos: { antes: string; destacado: string; despues: string }[];
+		contacto: string;
+		correos: string[];
+		enlace: { label: string; href: string };
+	};
+	entrega: { titulo: string; destacado: string; texto: string };
+	pagos: { titulo: string; texto: string; medios: string[] };
+	respaldo: {
+		titulo: string;
+		intro: string;
+		items: string[];
+		ley: string;
+		enlace: { label: string; href: string };
+	};
+}
+const { id, etiqueta, titulo, acento, intro, devolucion, entrega, pagos, respaldo } = Astro.props;
+const bloque = 'rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet sm:p-8';
+const enlace = 'inline-flex min-h-12 items-center font-semibold text-fr-tinta underline-offset-4 hover:underline';
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="border-y border-fr-line bg-fr-paper-2">
+	<div class="gs-container gs-section">
+		<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={intro} />
+
+		<div data-reveal="stagger" class="mt-10 grid gap-6 lg:grid-cols-2">
+			<!-- Devolución -->
+			<div class:list={[bloque, 'lg:row-span-2']}>
+				<h3 class="m-0 text-xl font-bold tracking-tight">{devolucion.titulo}</h3>
+				<p class="mt-3 mb-0 text-fr-muted">{devolucion.plazo}</p>
+				<ul class="mt-6 mb-0 grid list-none gap-5 border-t border-dashed border-fr-line-strong p-0 pt-6">
+					{
+						devolucion.puntos.map((p) => (
+							<li>
+								<p class="m-0 text-sm text-fr-muted">{p.antes}</p>
+								<p class="my-1 font-fr-display text-[2rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums">{p.destacado}</p>
+								<p class="m-0 text-sm text-fr-text">{p.despues}</p>
+							</li>
+						))
+					}
+				</ul>
+				<p class="mt-6 mb-0 text-sm text-fr-text">
+					{devolucion.contacto}{' '}
+					{devolucion.correos.map((c, i) => (
+						<>
+							{i > 0 && ' · '}
+							<a href={`mailto:${c}`} class="font-semibold text-fr-tinta underline underline-offset-4">{c}</a>
+						</>
+					))}
+				</p>
+				<a href={devolucion.enlace.href} class:list={[enlace, 'mt-2']}>{devolucion.enlace.label}</a>
+			</div>
+
+			<!-- Entrega -->
+			<div class={bloque}>
+				<h3 class="m-0 text-xl font-bold tracking-tight">{entrega.titulo}</h3>
+				<p class="mt-4 mb-0 font-fr-display text-[2.4rem] leading-none font-extrabold tracking-tight text-fr-navy">{entrega.destacado}</p>
+				<p class="mt-3 mb-0 text-fr-muted">{entrega.texto}</p>
+			</div>
+
+			<!-- Pagos -->
+			<div class={bloque}>
+				<h3 class="m-0 text-xl font-bold tracking-tight">{pagos.titulo}</h3>
+				<MediosPago texto={pagos.texto} medios={pagos.medios} plano class="mt-4" />
+			</div>
+
+			<!-- Respaldo legal -->
+			<div class:list={[bloque, 'lg:col-span-2']}>
+				<h3 class="m-0 text-xl font-bold tracking-tight">{respaldo.titulo}</h3>
+				<p class="mt-3 mb-0 text-fr-muted">{respaldo.intro}</p>
+				<ul class="mt-3 mb-0 flex list-none flex-wrap gap-2 p-0">
+					{respaldo.items.map((i) => <li class="rounded-full border border-fr-line bg-fr-paper px-3 py-1.5 text-sm font-semibold text-fr-navy">{i}</li>)}
+				</ul>
+				<p class="mt-4 mb-0 text-sm text-fr-text">{respaldo.ley}</p>
+				<a href={respaldo.enlace.href} target="_blank" rel="noopener noreferrer" class:list={[enlace, 'mt-1']}>{respaldo.enlace.label}</a>
+			</div>
+		</div>
+	</div>
+</section>

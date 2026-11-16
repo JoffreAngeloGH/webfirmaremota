@@ -21,6 +21,9 @@ export const site = {
 
 	email: 'comercial@girasol.pe',
 
+	// Registro oficial de prestadores de servicios de certificación digital (ROPS) de INDECOPI; el mismo que enlaza girasol.pe.
+	rops: 'https://www.gob.pe/59924-registro-oficial-de-prestadores-de-servicios-de-certificacion-digital-rops',
+
 	// Entidad que emite los certificados y a cuyo nombre se vende (razón social y RUC confirmados).
 	company: {
 		legalName: 'GIRASOL PE S.C.R.L.',

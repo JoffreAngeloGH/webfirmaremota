@@ -5,6 +5,7 @@
  */
 import Etiqueta from '@/components/brand/Etiqueta.astro';
 import Breadcrumbs from '@/components/layout/Breadcrumbs.astro';
+import { buttonVariants } from '@/components/ui/button';
 
 interface Props {
 	migas: { label: string; href?: string }[];
@@ -16,8 +17,10 @@ interface Props {
 	nota?: string;
 	/** Datos clave en mono, sin color de acción (no son botones). */
 	chips?: string[];
+	/** Botones bajo los chips (spec 008): el primero es la acción principal. */
+	ctas?: { label: string; href: string; externo?: boolean }[];
 }
-const { migas, migasLabel, etiqueta, titulo, acento, subtitulo, nota, chips = [] } = Astro.props;
+const { migas, migasLabel, etiqueta, titulo, acento, subtitulo, nota, chips = [], ctas = [] } = Astro.props;
 const conIlustracion = Astro.slots.has('default');
 ---
 
@@ -44,6 +47,21 @@ const conIlustracion = Astro.slots.has('default');
 								<li class="rounded-full border border-fr-line bg-fr-sheet px-3 py-1.5 font-fr-mono text-xs text-fr-navy">{chip}</li>
 							))}
 						</ul>
+					)
+				}
+				{
+					ctas.length > 0 && (
+						<div class="mt-8 flex flex-wrap items-center gap-3">
+							{ctas.map((c, i) => (
+								<a
+									href={c.href}
+									{...(c.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+									class={buttonVariants({ variant: i === 0 ? 'default' : 'outline' })}
+								>
+									{c.label}
+								</a>
+							))}
+						</div>
 					)
 				}
 				{nota && <p class="mt-5 mb-0 font-fr-mono text-xs text-fr-muted">{nota}</p>}

@@ -1,0 +1,30 @@
+---
+/** "¿Cuál necesitas?": dos tarjetas, una por titular, que llevan a su página (spec 008). Todo llega por props. */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+
+interface Props {
+	id: string;
+	titulo: string;
+	acento?: string;
+	tarjetas: { titulo: string; texto: string; enlace: { label: string; href: string } }[];
+}
+const { id, titulo, acento, tarjetas } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section-tras-hero">
+	<SectionHeading id={`${id}-titulo`} titulo={titulo} acento={acento} />
+	<ul data-reveal="stagger" class="mt-10 grid list-none gap-6 p-0 md:grid-cols-2">
+		{
+			tarjetas.map((t) => (
+				<li class="flex flex-col rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet sm:p-8">
+					<h3 class="m-0 text-2xl font-bold tracking-tight">{t.titulo}</h3>
+					<p class="mt-3 mb-0 flex-1 text-fr-muted">{t.texto}</p>
+					<a href={t.enlace.href} class="mt-6 inline-flex min-h-12 items-center gap-2 self-start font-semibold text-fr-tinta underline-offset-4 hover:underline">
+						{t.enlace.label}
+						<svg aria-hidden="true" viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>

@@ -8,13 +8,17 @@ import Sello from '@/components/brand/Sello.astro';
 
 interface Props {
 	class?: string;
+	/** Titular de la credencial que va adelante. */
+	adelante?: 'natural' | 'juridica';
 }
-const { class: className } = Astro.props;
+const { class: className, adelante = 'natural' } = Astro.props;
 
+const natural = { titulo: 'Persona natural', avatar: 'persona' } as const;
+const juridica = { titulo: 'Persona jurídica', avatar: 'edificio' } as const;
 const credenciales = [
-	{ clase: 'fr-cred--atras', titulo: 'Persona jurídica', avatar: 'edificio' },
-	{ clase: 'fr-cred--frente', titulo: 'Persona natural', avatar: 'persona' },
-] as const;
+	{ clase: 'fr-cred--atras', ...(adelante === 'natural' ? juridica : natural) },
+	{ clase: 'fr-cred--frente', ...(adelante === 'natural' ? natural : juridica) },
+];
 ---
 
 <div class:list={['fr-creds relative mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end', className]}>

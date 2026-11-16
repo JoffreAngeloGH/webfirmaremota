@@ -12,6 +12,8 @@ export interface PiezaCertificado {
 	puntos: string[];
 	ctaLabel: string;
 	enlace?: { label: string; href: string };
+	/** Enlaces pequeños a las páginas por titular (spec 008). */
+	enlacesTitular?: { label: string; href: string }[];
 	planes: PlanCertificado[];
 	leyendaTitular: string;
 	leyendaVigencia: string;

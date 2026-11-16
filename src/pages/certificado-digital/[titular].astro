@@ -1,0 +1,170 @@
+---
+// /certificado-digital/persona-natural/ y /certificado-digital/persona-juridica/ (spec 008). Los textos de cada
+// titular viven en la collection `titulares` (adaptados de girasol.pe); precios, planes, requisitos y preguntas
+// salen de las demás collections. Compra solo por WhatsApp.
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import ProductoHero from '@/components/sections/ProductoHero.astro';
+import CredencialDigital from '@/components/illustrations/CredencialDigital.astro';
+import MatrizPlanes from '@/components/sections/MatrizPlanes.astro';
+import ParaQueSirve from '@/components/sections/ParaQueSirve.astro';
+import Requisitos from '@/components/sections/Requisitos.astro';
+import Acreditacion from '@/components/sections/Acreditacion.astro';
+import Normativa from '@/components/sections/Normativa.astro';
+import AntesDeComprar from '@/components/sections/AntesDeComprar.astro';
+import Preguntas from '@/components/sections/Preguntas.astro';
+import CtaCierre from '@/components/sections/CtaCierre.astro';
+import { site } from '@/config/site';
+import {
+	acreditacion,
+	antesDeComprar,
+	ctaCierre,
+	escribenos,
+	mediosPago,
+	normativa,
+	notaAtencion,
+	planesTitular,
+	preguntas,
+	verPlanes,
+} from '@/config/secciones';
+import { getFaqs } from '@/lib/faqs';
+import { formatPrice, vigenciaLabel } from '@/lib/format';
+import { celdasDe, vigenciasTexto } from '@/lib/planes';
+import { whatsappUrl } from '@/lib/whatsapp';
+import { breadcrumbSchema, faqSchema, productSchema } from '@/lib/seo/schema';
+
+export async function getStaticPaths() {
+	const titulares = await getCollection('titulares');
+	return titulares.map((t) => ({ params: { titular: t.data.slug }, props: { datos: t.data } }));
+}
+
+const { datos } = Astro.props;
+const ruta = `/certificado-digital/${datos.slug}/`;
+
+const productos = (await getCollection('productos')).map((p) => p.data).sort((a, b) => a.orden - b.orden);
+const todos = productos.flatMap((p) => (p.tipo === 'certificado' ? [p] : []));
+const planes = todos.filter((p) => p.titular === datos.titular);
+const vigencias = [...new Set(planes.map((p) => p.vigenciaAnios))].sort();
+const desde = planes.reduce((min, p) => (p.precio < min.precio ? p : min));
+const desdeTexto = formatPrice(desde.precio, desde.moneda);
+
+const requisitos = (await getCollection('requisitos')).map((r) => r.data).find((r) => r.titular === datos.titular)!;
+const faqs = await getFaqs(datos.slug as 'persona-natural' | 'persona-juridica');
+const { devolucion, entrega } = datos.antesDeComprar;
+
+// El h1 se parte en "Certificado digital" + "para …" (la segunda parte va en serif).
+const corte = datos.h1.indexOf(' para ');
+const tituloH1 = datos.h1.slice(0, corte);
+const acentoH1 = datos.h1.slice(corte + 1);
+
+const migas = [{ label: 'Inicio', href: '/' }, { label: 'Certificado digital', href: '/certificado-digital/' }, { label: datos.nombre }];
+const chips = [vigenciasTexto(vigencias), `Desde ${desdeTexto}`, 'Entrega aprox. 1 hora'];
+const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
+---
+
+<BaseLayout
+	title={datos.seo.title}
+	description={datos.seo.description.replace('{desde}', desdeTexto)}
+	schema={[
+		...planes.map((p) => productSchema(p, ruta)),
+		breadcrumbSchema([
+			{ name: 'Inicio', path: '/' },
+			{ name: 'Certificado digital', path: '/certificado-digital/' },
+			{ name: datos.nombre, path: ruta },
+		]),
+		faqSchema(faqs.map((f) => ({ question: f.pregunta, answer: f.respuesta }))),
+	]}
+>
+	<Header />
+
+	<main>
+		<ProductoHero
+			migas={migas}
+			migasLabel="Migas de pan"
+			etiqueta="Certificado digital"
+			titulo={tituloH1}
+			acento={acentoH1}
+			subtitulo={datos.descripcion}
+			nota={notaAtencion}
+			chips={chips}
+			ctas={[
+				{ label: verPlanes, href: '#planes' },
+				{ label: escribenos, href: whatsappUrl(), externo: true },
+			]}
+		>
+			<CredencialDigital adelante={datos.titular} />
+		</ProductoHero>
+
+		<MatrizPlanes
+			id={planesTitular.id}
+			etiqueta={planesTitular.etiqueta}
+			titulo={planesTitular.titulo}
+			acento={planesTitular.acento}
+			caption={`Planes de certificado digital para ${datos.nombre.toLowerCase()}: precio por vigencia`}
+			columnaTitular="Titular"
+			vigencias={vigencias.map((v) => ({ label: vigenciaLabel(v), destacado: v === 2 ? planesTitular.masElegido : undefined }))}
+			filas={[{ id: datos.slug, titulo: datos.nombre, planes: celdasDe(todos, datos.titular, vigencias) }]}
+			ctaLabel={planesTitular.ctaLabel}
+		/>
+
+		<ParaQueSirve id="para-que-sirve" {...datos.paraQueSirve} usos={[...datos.paraQueSirve.usos]} />
+
+		<Requisitos
+			id="requisitos"
+			titulo="Lo que"
+			acento="necesitas."
+			intro={requisitos.intro}
+			columnas={[{ titulo: datos.nombre, icono: requisitos.icono, items: requisitos.items }]}
+			nota="Un asesor te confirma los requisitos antes de la compra."
+		/>
+
+		<!-- P22: logo de INDECOPI en el slot `logo` cuando llegue el archivo (specs/pendientes.md) -->
+		<Acreditacion {...acreditacion} hitos={[...acreditacion.hitos]} sello={{ ...acreditacion.sello }} />
+		<Normativa
+			id={normativa.id}
+			titulo={normativa.titulo}
+			acento={normativa.acento}
+			intro={normativa.intro}
+			tarjetas={datos.normativa}
+			enlace={{ label: normativa.enlaceLabel, href: site.rops }}
+		/>
+
+		<AntesDeComprar
+			id={antesDeComprar.id}
+			etiqueta={antesDeComprar.etiqueta}
+			titulo={antesDeComprar.titulo}
+			acento={antesDeComprar.acento}
+			intro={antesDeComprar.intro}
+			devolucion={{
+				...devolucion,
+				puntos: devolucion.puntos,
+				correos: devolucion.correos,
+				enlace: { label: devolucion.enlace, href: '/terminos-y-condiciones/#política-devolución-de-pago-realizado' },
+			}}
+			entrega={entrega}
+			pagos={{ titulo: antesDeComprar.pagosTitulo, texto: mediosPago.texto, medios: [...mediosPago.medios] }}
+			respaldo={{
+				titulo: antesDeComprar.respaldo.titulo,
+				intro: antesDeComprar.respaldo.intro,
+				items: [...antesDeComprar.respaldo.items],
+				ley: antesDeComprar.respaldo.ley,
+				enlace: { label: antesDeComprar.respaldo.enlaceLabel, href: site.rops },
+			}}
+		/>
+
+		<Preguntas {...preguntas} faqs={faqs} />
+
+		<CtaCierre
+			id={ctaCierre.id}
+			titulo={ctaCierre.titulo}
+			acento={ctaCierre.acento}
+			texto={ctaCierre.texto}
+			cta={comprar}
+			ctaSecundario={{ label: ctaCierre.ctaSecundarioLabel, href: whatsappUrl() }}
+		/>
+	</main>
+
+	<Footer />
+</BaseLayout>

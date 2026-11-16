@@ -29,7 +29,7 @@ const { id, titulo, acento, intro, columnas, nota } = Astro.props;
 <section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
 	<SectionHeading id={`${id}-titulo`} titulo={titulo} acento={acento} intro={intro} />
 
-	<div data-reveal="stagger" class="mt-10 grid gap-6 md:grid-cols-2">
+	<div data-reveal="stagger" class:list={['mt-10 grid gap-6', columnas.length > 1 && 'md:grid-cols-2']}>
 		{
 			columnas.map((col) => (
 				<div class="rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet sm:p-8">

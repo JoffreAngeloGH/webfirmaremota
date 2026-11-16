@@ -1,0 +1,32 @@
+---
+/** Para qué sirve el certificado de un titular (spec 008): un texto y una lista de usos. Todo llega por props. */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+
+interface Props {
+	id: string;
+	etiqueta?: string;
+	titulo: string;
+	acento?: string;
+	texto: string;
+	usos: string[];
+}
+const { id, etiqueta, titulo, acento, texto, usos } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
+	<div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start lg:gap-16">
+		<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={texto} />
+		<ul data-reveal="stagger" class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+			{
+				usos.map((uso) => (
+					<li class="flex items-center gap-3 rounded-fr-card border border-fr-line bg-fr-sheet p-5 font-semibold text-fr-navy shadow-fr-sheet">
+						<svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M5 12.5l4.5 4.5L19 7.5" />
+						</svg>
+						{uso}
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

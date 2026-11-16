@@ -32,6 +32,8 @@ interface Props {
 	ctaLabel: string;
 	/** Enlace de texto bajo el botón de compra. */
 	enlace?: { label: string; href: string };
+	/** Enlaces pequeños a las páginas por titular. */
+	enlacesTitular?: { label: string; href: string }[];
 	planes: PlanCertificado[];
 	/** Textos de los selectores (vienen de la página). */
 	leyendaTitular: string;
@@ -95,7 +97,7 @@ function Segmentado<T extends string | number>({
 }
 
 export default function CertificadoPlanes(props: Props) {
-	const { numero, etiqueta, titulo, nota, puntos, ctaLabel, enlace, planes, leyendaTitular, leyendaVigencia, titulares, vigencias } =
+	const { numero, etiqueta, titulo, nota, puntos, ctaLabel, enlace, enlacesTitular, planes, leyendaTitular, leyendaVigencia, titulares, vigencias } =
 		props;
 	const uid = useId().replace(/:/g, '');
 	const [titular, setTitular] = useState<PlanCertificado['titular']>(titulares[0]!.value);
@@ -174,6 +176,15 @@ export default function CertificadoPlanes(props: Props) {
 					<a href={enlace.href} className={buttonVariants({ variant: 'link', className: 'mt-1 self-center' })}>
 						{enlace.label}
 					</a>
+				)}
+				{enlacesTitular && enlacesTitular.length > 0 && (
+					<div className="flex flex-wrap items-center justify-center gap-x-5">
+						{enlacesTitular.map((e) => (
+							<a key={e.href} href={e.href} className={buttonVariants({ variant: 'link', className: 'text-[13px]' })}>
+								{e.label}
+							</a>
+						))}
+					</div>
 				)}
 			</div>
 		</MotionConfig>

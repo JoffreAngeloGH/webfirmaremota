@@ -7,6 +7,7 @@ import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import ProductoHero from '@/components/sections/ProductoHero.astro';
 import MatrizPlanes, { type FilaTitular } from '@/components/sections/MatrizPlanes.astro';
+import CualNecesitas from '@/components/sections/CualNecesitas.astro';
 import MediosPago from '@/components/sections/MediosPago.astro';
 import Acreditacion from '@/components/sections/Acreditacion.astro';
 import CredencialDigital from '@/components/illustrations/CredencialDigital.astro';
@@ -17,8 +18,9 @@ import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
 import { acreditacion, comoFunciona, ctaCierre, mediosPago, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
+import { celdasDe, vigenciasTexto } from '@/lib/planes';
 import { formatPrice, vigenciaLabel } from '@/lib/format';
-import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
+import { whatsappUrl } from '@/lib/whatsapp';
 import { breadcrumbSchema, faqSchema, productSchema } from '@/lib/seo/schema';
 
 const productos = (await getCollection('productos')).map((p) => p.data).sort((a, b) => a.orden - b.orden);
@@ -41,27 +43,13 @@ const textosTitular = {
 const filas: FilaTitular[] = titulares.map((titular) => ({
 	id: `persona-${titular}`,
 	...textosTitular[titular],
-	planes: vigencias.flatMap((anios) => {
-		const p = planes.find((x) => x.titular === titular && x.vigenciaAnios === anios);
-		if (!p) return [];
-		const porAnio = p.precio / p.vigenciaAnios;
-		return [
-			{
-				id: `${titular}-${anios}-${anios === 1 ? 'ano' : 'anos'}`,
-				precio: formatPrice(p.precio, p.moneda),
-				porAnio: `${formatPrice(porAnio, p.moneda)} por año`,
-				nota: p.incluyeIgv ? 'Incluye IGV' : undefined,
-				nombre: p.nombre,
-				href: productWhatsappUrl(p),
-			},
-		];
-	}),
+	enlace: { label: `Ver detalles de ${textosTitular[titular].titulo.toLowerCase()} →`, href: `/certificado-digital/persona-${titular}/` },
+	planes: celdasDe(planes, titular, vigencias),
 }));
 
 const desde = planes.reduce((min, p) => (p.precio < min.precio ? p : min));
-const vigenciasTexto = `${vigencias.slice(0, -1).join(', ')} o ${vigencias[vigencias.length - 1]} años`;
 const description =
-	`Certificado digital para firma remota, persona natural o jurídica, de ${vigenciasTexto} desde ${formatPrice(desde.precio, desde.moneda)}. ` +
+	`Certificado digital para firma remota, persona natural o jurídica, de ${vigenciasTexto(vigencias)} desde ${formatPrice(desde.precio, desde.moneda)}. ` +
 	`Sin instalar nada. Te atiende un asesor por WhatsApp.`;
 
 const chips = [`${titulares.length} titulares`, `${vigencias.length} vigencias`, `Desde ${formatPrice(desde.precio, desde.moneda)}`];
@@ -96,7 +84,19 @@ const introComun = requisitos.every((r) => r.intro === requisitos[0]!.intro) ? r
 			<CredencialDigital />
 		</ProductoHero>
 
+		<CualNecesitas
+			id="cual-necesitas"
+			titulo="¿Cuál"
+			acento="necesitas?"
+			tarjetas={titulares.map((t) => ({
+				titulo: textosTitular[t].titulo,
+				texto: textosTitular[t].linea,
+				enlace: { label: `Ver detalles de ${textosTitular[t].titulo.toLowerCase()}`, href: `/certificado-digital/persona-${t}/` },
+			}))}
+		/>
+
 		<MatrizPlanes
+			trasHero={false}
 			id="planes"
 			etiqueta="Planes"
 			titulo="Elige tu"

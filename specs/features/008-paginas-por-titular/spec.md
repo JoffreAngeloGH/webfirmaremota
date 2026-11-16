@@ -1,6 +1,6 @@
 # [008] Páginas por titular, "antes de comprar" y footer con menos tipografías
 
-> Estado: `aprobado` · Creado: 2026-11-16 · Actualizado: 2026-11-16
+> Estado: `en-curso` · Creado: 2026-11-16 · Actualizado: 2026-11-16
 > Aprobado por el usuario el 2026-11-16 con estas decisiones:
 > - Contenido (textos) de las páginas de producto de girasol.pe, **sin** sus promociones, precios en soles ni plan de 3 años. Diseño y estructura son de firmaremota.
 > - Precios: 1 año US$ 20.00 y 2 años US$ 34.00, iguales para natural y jurídica.
@@ -109,16 +109,16 @@ Además:
 
 **Verificación ligera** (constitución §11.1). **No** correr Lighthouse ni barridos de todas las páginas: eso se hace antes del push.
 
-- [ ] Las dos páginas existen y muestran las 8 secciones de §2.2 con los textos de girasol.pe adaptados según §2.1.
-- [ ] No aparecen soles, "3 años", promociones, formularios, sello de tiempo ni logos de clientes (comprobar con `grep` sobre `dist/`).
-- [ ] Cada página muestra solo sus 2 planes con precio desde la collection y su botón de WhatsApp con el mensaje del plan; las anclas resaltan la tarjeta.
-- [ ] "Antes de comprar" muestra devolución (P23), entrega aprox. 1 hora (P09), pagos (P06) y respaldo legal; el enlace ROPS (P25) funciona.
-- [ ] `/certificado-digital/`, el inicio y el footer enlazan a las dos páginas.
-- [ ] La pregunta `cuanto-tarda` dice aprox. 1 hora, y no queda "inmediato" referido a la entrega.
-- [ ] El footer no usa JetBrains Mono (comprobar en el HTML: ninguna clase `font-fr-mono` ni `fr-eyebrow` dentro de `<footer>`).
-- [ ] El `FAQPage` de cada página coincide con sus preguntas visibles.
-- [ ] Capturas en 375 y 1440 px de las **dos páginas nuevas** y del **footer**, sin desborde lateral.
-- [ ] `pnpm build` sin errores ni advertencias.
+- [x] Las dos páginas existen y muestran las 8 secciones de §2.2 con los textos de girasol.pe adaptados según §2.1.
+- [x] No aparecen soles, "3 años", promociones, formularios, sello de tiempo ni logos de clientes (comprobar con `grep` sobre `dist/`).
+- [x] Cada página muestra solo sus 2 planes con precio desde la collection y su botón de WhatsApp con el mensaje del plan; las anclas resaltan la tarjeta.
+- [x] "Antes de comprar" muestra devolución (P23), entrega aprox. 1 hora (P09), pagos (P06) y respaldo legal; el enlace ROPS (P25) funciona.
+- [x] `/certificado-digital/`, el inicio y el footer enlazan a las dos páginas.
+- [x] La pregunta `cuanto-tarda` dice aprox. 1 hora, y no queda "inmediato" referido a la entrega.
+- [x] El footer no usa JetBrains Mono (comprobar en el HTML: ninguna clase `font-fr-mono` ni `fr-eyebrow` dentro de `<footer>`).
+- [x] El `FAQPage` de cada página coincide con sus preguntas visibles.
+- [x] Capturas en 375 y 1440 px de las **dos páginas nuevas** y del **footer**, sin desborde lateral.
+- [x] `pnpm build` sin errores ni advertencias.
 
 ---
 
@@ -156,13 +156,49 @@ src/components/sections/CualNecesitas.astro        (2 tarjetas en /certificado-d
 
 ## 7. Tareas
 
-- [ ] T1 Leer las dos páginas de girasol.pe y armar `titulares.yaml` y las preguntas en `faqs.yaml` con las adaptaciones de §2.1.
-- [ ] T2 Mover `certificado-digital.astro` a `certificado-digital/index.astro` y crear `[titular].astro`.
-- [ ] T3 Componentes `ParaQueSirve`, `Normativa`, `AntesDeComprar` y `CualNecesitas`; `Requisitos` en una columna; `CredencialDigital` con prop de titular.
-- [ ] T4 Enlaces desde `/certificado-digital/`, el inicio y el footer; corregir P09 (aprox. 1 hora).
-- [ ] T5 Footer en una sola familia tipográfica (§2.4).
-- [ ] T6 Verificación ligera de §5. Anotar en §8 lo verificado, las decisiones y cualquier contradicción con girasol.pe; actualizar `specs/pendientes.md`; dejar el spec en `en-curso` para revisión.
+- [x] T1 Leer las dos páginas de girasol.pe y armar `titulares.yaml` y las preguntas en `faqs.yaml` con las adaptaciones de §2.1.
+- [x] T2 Mover `certificado-digital.astro` a `certificado-digital/index.astro` y crear `[titular].astro`.
+- [x] T3 Componentes `ParaQueSirve`, `Normativa`, `AntesDeComprar` y `CualNecesitas`; `Requisitos` en una columna; `CredencialDigital` con prop de titular.
+- [x] T4 Enlaces desde `/certificado-digital/`, el inicio y el footer; corregir P09 (aprox. 1 hora).
+- [x] T5 Footer en una sola familia tipográfica (§2.4).
+- [x] T6 Verificación ligera de §5. Anotar en §8 lo verificado, las decisiones y cualquier contradicción con girasol.pe; actualizar `specs/pendientes.md`; dejar el spec en `en-curso` para revisión.
 
 ## 8. Notas de implementación
 
-_(vacío)_
+**2026-11-16**
+
+Verificación **ligera** (constitución §11.1): `pnpm build`, las comprobaciones de §5 y capturas de las dos páginas nuevas y del footer en 375 y 1440 px, con Chrome sin interfaz sobre `pnpm astro preview` (el build de `dist/`). **No se corrió Lighthouse** ni el barrido de todas las páginas: queda para antes del push (§11.2).
+
+**Verificado**
+- `pnpm build`: 0 errores, 0 advertencias, 9 páginas. `pnpm pendientes` lista solo P19.
+- **Contenido excluido:** en el texto visible del inicio, `/certificado-digital/`, `/firmas/` y las dos páginas nuevas no aparecen soles ("S/ 59"), "3 años", promociones o descuentos, cotización, formularios, sello de tiempo ni logos de clientes. Tampoco queda "inmediato" referido a la entrega (las dos únicas apariciones están en los términos y hablan de avisar de una pérdida). Un primer `grep` sobre el HTML daba falsos positivos por nombres de archivos de fuente (`woff2/…`); por eso se midió el texto renderizado.
+- **Las 8 secciones** en cada página nueva, en el orden de §2.2: hero, planes, para qué sirve, requisitos, respaldo y normativa, antes de comprar, preguntas, cierre. El hero lleva los 3 chips ("1 o 2 años", "Desde US$ 20.00", "Entrega aprox. 1 hora"), "Ver planes" (baja a `#planes`) y "Escríbenos por WhatsApp", y la credencial del titular va adelante.
+- **Planes:** cada página muestra solo sus 2 planes (US$ 20.00 y US$ 34.00; "por año" US$ 20.00 y US$ 17.00; "Más elegido" en 2 años), con el mensaje de WhatsApp de ese plan (`…persona jurídica con vigencia de 2 años.`) y el número real. Las 4 anclas (`#natural-1-ano`, `#natural-2-anos`, `#juridica-1-ano`, `#juridica-2-anos`) centran y resaltan la tarjeta en 1440 y 375 px.
+- **Antes de comprar:** devolución (5 días hábiles, 100 % / 80 %, 15 días hábiles, "No procede", correos y enlace a `/terminos-y-condiciones/#política-devolución-de-pago-realizado`, que existe), entrega "≈ 1 hora", pagos (BCP, tarjetas, Izipay, Culqi, Yape) y respaldo legal (acreditación + Ley N.° 27269). El enlace ROPS aparece dos veces ("Verifica nuestra acreditación en INDECOPI" y "Lista de Confianza de INDECOPI") y apunta a la URL que usa girasol.pe (`gob.pe/59924-…-rops`, responde 200).
+- **Normativa:** natural con 5 tarjetas (incluye SIGM y Contraloría, P24); jurídica con 3 (sin sello de tiempo).
+- **Enlaces:** `/certificado-digital/` enlaza a las dos páginas (bloque "¿Cuál necesitas?" y enlace "Ver detalles de … →" en cada fila de la matriz); el inicio, con dos enlaces pequeños bajo "Ver los 4 planes"; y el footer, en la columna "Productos". `/certificado-digital/` conserva sus anclas.
+- **P09:** la pregunta `cuanto-tarda` dice "Aproximadamente 1 hora después de completar tu solicitud y la validación de identidad…" en el inicio y en `/certificado-digital/`.
+- **Preguntas:** el `FAQPage` coincide con las visibles (7 por página nueva). Schema: 2 `Product`/`Offer`, `BreadcrumbList` de 3 niveles y `FAQPage`; canonical con `/` final.
+- **Footer:** el HTML no tiene `font-fr-mono` ni `fr-eyebrow` dentro de `<footer>`; medido en el navegador, todo el footer excepto el logotipo usa Outfit con solo dos pesos (400 y 600).
+- **Sin desborde** en 375 y 1440 px en las dos páginas nuevas, `/certificado-digital/`, el inicio y el footer. Sin JS se ven los botones de WhatsApp y todo el contenido.
+- **Servidor de desarrollo:** el que ya corría en el puerto 4321 sirvió las páginas nuevas con 200; no hizo falta reiniciarlo.
+
+**Decisiones**
+- `[titular].astro` + `certificado-digital/index.astro` (movido con `git mv`; la URL `/certificado-digital/` no cambia). Datos en `titulares.yaml` (con un ancla YAML `&antesDeComprar` para no repetir devolución y entrega); componentes `ParaQueSirve`, `Normativa`, `AntesDeComprar` y `CualNecesitas` sin textos fijos.
+- Los textos que son iguales para todos los titulares van en `config/secciones.ts` (`planesTitular`, `normativa`, `antesDeComprar`, `verPlanes`, `escribenos`) y el enlace ROPS en `site.rops`.
+- `src/lib/planes.ts` (nuevo): la construcción de las celdas de la matriz se comparte entre `/certificado-digital/` y las páginas por titular, para que muestren siempre lo mismo.
+- `MatrizPlanes`: `linea` e `incluye` pasan a ser opcionales, se agrega `enlace` por fila y `trasHero` (en `/certificado-digital/` la matriz ya no va pegada al hero porque ahora lo sigue "¿Cuál necesitas?"). `MediosPago` gana la prop `plano` para usarse dentro de la tarjeta "Pago". `ProductoHero` gana `ctas` (el primero es el botón principal, el segundo es secundario).
+- **Textos míos** (los demás se copiaron de girasol.pe): `h2` "Para qué *sirve.*", los usos de "Para qué sirve" (armados con las palabras de girasol.pe: "Contratos", "Acuerdos", "Cartas y declaraciones", "Trámites con notarios"; y para jurídica, quién firma), "Ver detalles de …", "¿Cuál necesitas?", "Verifica nuestra acreditación en INDECOPI" (en lugar de "Ver listado oficial INDECOPI de prestadores (ROPS)"), los títulos de iconos y el caption de la tabla. Se agregaron dos iconos (`escudo`, `candado`).
+- Las preguntas nuevas llevan `orden` negativo para salir antes de las generales en esas páginas (con `orden: 0` el desempate era alfabético por id).
+- Se quitó de las respuestas el enlace "Ver requisitos ↑" (una respuesta es texto plano), conservando la frase "En la sección de requisitos tienes el detalle de cada uno." La validación de identidad, que en girasol.pe son tres párrafos, es un solo párrafo.
+
+**Contradicciones con girasol.pe (gana `pendientes.md`)**
+1. **Pago:** girasol.pe responde "Pagas en línea cuando haces tu solicitud. Puedes elegir Izipay, Culqi o Yape". Aquí se paga tras hablar con el asesor por WhatsApp (P06, P10, P09). No se copió esa pregunta ("¿Dónde puedo realizar el pago?"): se usa `como-pagar` ("¿Cómo puedo pagar?"), que ya dice que el asesor indica los datos.
+2. **Correos de devolución:** el bloque de devolución cita `soporte@girasolpe.com` y `pagos@girasol.pe` (como girasol.pe y los términos), no el `comercial@girasol.pe` del resto del sitio (P18).
+3. **"Software de firma incluido":** la tarjeta "Software de Firma — Incluye software para firmar tus documentos con validez legal" se copió (el spec lo pide), pero en firmaremota las firmas se compran aparte (bolsas) y el certificado solo no permite firmar. Puede leerse como una promesa que no es del todo cierta; conviene decidir si se reformula.
+4. **Plataforma:** la validación de identidad "desde nuestra plataforma" (girasol.pe) menciona una plataforma que, según `pendientes.md`, no es parte de esta web; se dejó el texto porque describe el proceso de la entidad.
+
+**Pendiente / a revisar**
+- **Contenido duplicado con girasol.pe** (§4): sin `rel=canonical` hacia girasol.pe, como se acordó.
+- Lighthouse y barrido completo de todas las páginas, antes del push (§11.2).
+- P19 (logo y favicon) y P22 (logo de INDECOPI) siguen pendientes; el sitio sigue sin indexarse.

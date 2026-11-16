@@ -41,6 +41,10 @@ const certificado: PiezaCertificado = {
 	puntos: ['Dos certificados: persona natural y persona jurídica', `Vigencia de ${vigenciasTexto}`, 'Vive en la nube: no hay archivo que instalar'],
 	ctaLabel: 'Comprar certificado',
 	enlace: { label: `Ver los ${planes.length} planes`, href: '/certificado-digital/' },
+	enlacesTitular: [
+		{ label: 'Persona natural', href: '/certificado-digital/persona-natural/' },
+		{ label: 'Persona jurídica', href: '/certificado-digital/persona-juridica/' },
+	],
 	leyendaTitular: 'Titular',
 	leyendaVigencia: 'Vigencia',
 	titulares: (['natural', 'juridica'] as const).map((t) => ({

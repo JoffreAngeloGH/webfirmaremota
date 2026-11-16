@@ -58,7 +58,9 @@ const faqs = defineCollection({
 	schema: z.object({
 		pregunta: z.string().endsWith('?'),
 		respuesta: z.string().min(20),
-		paginas: z.array(z.enum(['inicio', 'certificado-digital', 'firmas', 'preguntas-frecuentes'])).min(1),
+		paginas: z
+			.array(z.enum(['inicio', 'certificado-digital', 'persona-natural', 'persona-juridica', 'firmas', 'preguntas-frecuentes']))
+			.min(1),
 		orden: z.number().int(),
 	}),
 });
@@ -106,4 +108,37 @@ const legales = defineCollection({
 	}),
 });
 
-export const collections = { productos, faqs, requisitos, legales };
+/**
+ * Páginas por titular (spec 008): /certificado-digital/persona-natural/ y /persona-juridica/. Los textos vienen de
+ * las páginas de producto de girasol.pe, adaptados. Las preguntas viven en faqs.yaml (`paginas`).
+ */
+const titulares = defineCollection({
+	loader: file('src/content/titulares.yaml'),
+	schema: z.object({
+		slug: z.string(),
+		titular: z.enum(['natural', 'juridica']),
+		nombre: z.string(),
+		h1: z.string(),
+		descripcion: z.string(),
+		/** `description` admite {desde}: el precio mínimo del titular. */
+		seo: z.object({ title: z.string(), description: z.string() }),
+		paraQueSirve: z.object({ titulo: z.string(), acento: z.string(), texto: z.string(), usos: z.array(z.string()).min(1) }),
+		normativa: z
+			.array(z.object({ titulo: z.string(), texto: z.string(), icono: z.enum(NOMBRES_ICONO) }))
+			.min(1),
+		antesDeComprar: z.object({
+			devolucion: z.object({
+				titulo: z.string(),
+				plazo: z.string(),
+				puntos: z.array(z.object({ antes: z.string(), destacado: z.string(), despues: z.string() })).min(1),
+				contacto: z.string(),
+				correos: z.array(z.string()).min(1),
+				enlace: z.string(),
+			}),
+			entrega: z.object({ titulo: z.string(), destacado: z.string(), texto: z.string() }),
+		}),
+		orden: z.number().int(),
+	}),
+});
+
+export const collections = { productos, faqs, requisitos, legales, titulares };

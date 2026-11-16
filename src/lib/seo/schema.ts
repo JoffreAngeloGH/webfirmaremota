@@ -23,17 +23,14 @@ export function organizationSchema(): Organization {
 		'@id': ORG_ID,
 		name: site.name,
 		url: absoluteUrl('/'),
-		legalName: site.company.legalName, // PENDIENTE: P13
-		taxID: site.company.ruc, // PENDIENTE: P13
-		parentOrganization: {
-			'@type': 'Organization',
-			name: site.parent.name, // PENDIENTE: P14
-			url: site.parent.url,
-		},
+		legalName: site.company.legalName,
+		taxID: site.company.ruc,
+		email: site.email,
 		contactPoint: {
 			'@type': 'ContactPoint',
 			contactType: 'sales',
-			telephone: site.whatsapp.display, // PENDIENTE: P17
+			telephone: site.whatsapp.display,
+			email: site.email,
 			areaServed: 'PE',
 			availableLanguage: 'es',
 		},
@@ -78,6 +75,26 @@ export function productSchema(producto: CollectionEntry<'productos'>['data'], pa
 			url: productWhatsappUrl(producto),
 			seller: { '@id': ORG_ID },
 		},
+	};
+}
+
+/** Product "Firmas digitales" con una Offer por bolsa (spec 007). */
+export function firmasSchema(bolsas: CollectionEntry<'productos'>['data'][], pagePath: string): Product {
+	return {
+		'@type': 'Product',
+		name: 'Firmas digitales',
+		description: 'Bolsas de firmas para usar con tu certificado digital. No vencen.',
+		brand: { '@id': ORG_ID },
+		url: absoluteUrl(pagePath),
+		offers: bolsas.map((b) => ({
+			'@type': 'Offer',
+			name: b.nombre,
+			price: b.precio.toFixed(2),
+			priceCurrency: b.moneda,
+			availability: 'https://schema.org/InStock',
+			url: productWhatsappUrl(b),
+			seller: { '@id': ORG_ID },
+		})),
 	};
 }
 

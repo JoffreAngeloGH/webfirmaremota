@@ -1,19 +1,21 @@
 ---
-// /certificado-digital/ (spec 005). Los textos viven aquí; precios, planes, requisitos, mensajes de WhatsApp y
-// preguntas salen de las collections y de site.ts.
+// /certificado-digital/ (specs 005, 006 y 007). Los textos viven aquí; precios, planes, requisitos, mensajes de
+// WhatsApp y preguntas salen de las collections y de site.ts.
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import ProductoHero from '@/components/sections/ProductoHero.astro';
 import MatrizPlanes, { type FilaTitular } from '@/components/sections/MatrizPlanes.astro';
+import MediosPago from '@/components/sections/MediosPago.astro';
+import Acreditacion from '@/components/sections/Acreditacion.astro';
 import CredencialDigital from '@/components/illustrations/CredencialDigital.astro';
 import Requisitos from '@/components/sections/Requisitos.astro';
 import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
 import ComoFunciona from '@/components/sections/ComoFunciona.astro';
 import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
-import { comoFunciona, ctaCierre, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
+import { acreditacion, comoFunciona, ctaCierre, mediosPago, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
 import { formatPrice, vigenciaLabel } from '@/lib/format';
 import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
@@ -26,14 +28,18 @@ const faqs = await getFaqs('certificado-digital');
 
 const vigencias = [...new Set(planes.map((p) => p.vigenciaAnios))].sort();
 const titulares = ['natural', 'juridica'] as const;
+// Textos por titular (P05): qué se puede firmar con cada certificado.
 const textosTitular = {
-	natural: { titulo: 'Persona natural', linea: 'Para firmar a tu nombre: contratos, documentos personales y trámites.' },
-	juridica: { titulo: 'Persona jurídica', linea: 'Para firmar en nombre de tu empresa, como su representante.' },
+	natural: { titulo: 'Persona natural', linea: 'Firma a tu nombre contratos, solicitudes y cualquier documento PDF, con validez legal.' },
+	juridica: {
+		titulo: 'Persona jurídica',
+		linea: 'Firma contratos, actas y documentos legales como persona jurídica, con plena validez legal ante entidades públicas y privadas. También para personas vinculadas a una empresa.',
+	},
 } as const;
 
 // Una fila por titular y una celda por vigencia. El precio por año se calcula, no se escribe.
 const filas: FilaTitular[] = titulares.map((titular) => ({
-	id: `persona-${titular === 'natural' ? 'natural' : 'juridica'}`,
+	id: `persona-${titular}`,
 	...textosTitular[titular],
 	planes: vigencias.flatMap((anios) => {
 		const p = planes.find((x) => x.titular === titular && x.vigenciaAnios === anios);
@@ -53,13 +59,16 @@ const filas: FilaTitular[] = titulares.map((titular) => ({
 }));
 
 const desde = planes.reduce((min, p) => (p.precio < min.precio ? p : min));
+const vigenciasTexto = `${vigencias.slice(0, -1).join(', ')} o ${vigencias[vigencias.length - 1]} años`;
 const description =
-	`Certificado digital para firma remota, persona natural o jurídica, de 1 a 3 años desde ${formatPrice(desde.precio, desde.moneda)}. ` +
+	`Certificado digital para firma remota, persona natural o jurídica, de ${vigenciasTexto} desde ${formatPrice(desde.precio, desde.moneda)}. ` +
 	`Sin instalar nada. Te atiende un asesor por WhatsApp.`;
 
 const chips = [`${titulares.length} titulares`, `${vigencias.length} vigencias`, `Desde ${formatPrice(desde.precio, desde.moneda)}`];
 const migas = [{ label: 'Inicio', href: '/' }, { label: 'Certificado digital' }];
 const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
+// Si todas las columnas de requisitos comparten la misma frase, va una sola vez bajo el título.
+const introComun = requisitos.every((r) => r.intro === requisitos[0]!.intro) ? requisitos[0]!.intro : undefined;
 ---
 
 <BaseLayout
@@ -107,13 +116,24 @@ const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 					'Un asesor te acompaña en la compra',
 				],
 			}}
-		/>
+		>
+			<MediosPago {...mediosPago} medios={[...mediosPago.medios]} class="mt-8" />
+		</MatrizPlanes>
+
+		<!-- P22: logo de INDECOPI en el slot `logo` cuando llegue el archivo (specs/pendientes.md) -->
+		<Acreditacion {...acreditacion} hitos={[...acreditacion.hitos]} sello={{ ...acreditacion.sello }} />
 
 		<Requisitos
 			id="requisitos"
 			titulo="Lo que"
 			acento="necesitas."
-			columnas={requisitos.map((r) => ({ titulo: textosTitular[r.titular].titulo, icono: r.icono, items: r.items }))}
+			intro={introComun}
+			columnas={requisitos.map((r) => ({
+				titulo: textosTitular[r.titular].titulo,
+				icono: r.icono,
+				intro: introComun ? undefined : r.intro,
+				items: r.items,
+			}))}
 			nota="Un asesor te confirma los requisitos antes de la compra."
 		/>
 

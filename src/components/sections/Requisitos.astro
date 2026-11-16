@@ -11,15 +11,23 @@ interface Props {
 	id: string;
 	titulo: string;
 	acento?: string;
-	columnas: { titulo: string; icono: NombreIcono; items: { texto: string; icono: NombreIcono }[] }[];
+	/** Frase común bajo el título. */
+	intro?: string;
+	columnas: {
+		titulo: string;
+		icono: NombreIcono;
+		/** Frase propia de la columna (si no es la misma para todas). */
+		intro?: string;
+		items: { texto: string; detalle?: string; icono: NombreIcono; condicion?: string }[];
+	}[];
 	/** Línea bajo las listas. */
 	nota?: string;
 }
-const { id, titulo, acento, columnas, nota } = Astro.props;
+const { id, titulo, acento, intro, columnas, nota } = Astro.props;
 ---
 
 <section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
-	<SectionHeading id={`${id}-titulo`} titulo={titulo} acento={acento} />
+	<SectionHeading id={`${id}-titulo`} titulo={titulo} acento={acento} intro={intro} />
 
 	<div data-reveal="stagger" class="mt-10 grid gap-6 md:grid-cols-2">
 		{
@@ -31,13 +39,22 @@ const { id, titulo, acento, columnas, nota } = Astro.props;
 						</span>
 						<h3 class="m-0 text-xl font-bold tracking-tight">{col.titulo}</h3>
 					</div>
-					<ul class="mt-6 mb-0 list-none space-y-3 border-t border-dashed border-fr-line-strong p-0 pt-6">
+					{col.intro && <p class="mt-4 mb-0 text-sm text-fr-muted">{col.intro}</p>}
+					<ul class="mt-6 mb-0 list-none space-y-4 border-t border-dashed border-fr-line-strong p-0 pt-6">
 						{col.items.map((item) => (
-							<li class="flex items-center gap-4 text-fr-text">
+							<li class="flex items-start gap-4 text-fr-text">
 								<span class="grid size-10 shrink-0 place-items-center rounded-full border border-fr-line bg-fr-paper text-fr-navy">
 									<Icono nombre={item.icono} class="size-5" />
 								</span>
-								{item.texto}
+								<div class="min-w-0 pt-1.5">
+									<p class="m-0 flex flex-wrap items-center gap-x-3 gap-y-1">
+										{item.texto}
+										{item.condicion && (
+											<span class="rounded-full border border-fr-line px-2.5 py-0.5 font-fr-mono text-xs text-fr-muted">{item.condicion}</span>
+										)}
+									</p>
+									{item.detalle && <p class="mt-1 mb-0 text-sm text-fr-muted">{item.detalle}</p>}
+								</div>
 							</li>
 						))}
 					</ul>

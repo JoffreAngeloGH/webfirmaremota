@@ -4,44 +4,51 @@ import { site } from '@/config/site';
 import { whatsappUrl } from '@/lib/whatsapp';
 
 const year = new Date().getFullYear();
+const enlace = 'inline-flex min-h-8 items-center text-sm text-white hover:text-fr-girasol';
 ---
 
 <footer class="bg-fr-ink text-white">
-	<div class="gs-container grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+	<div class="gs-container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1.2fr_1fr]">
 		<div>
 			<Logotipo tono="dark" class="text-xl" />
 			<p class="mt-3 max-w-xs text-sm leading-relaxed text-white/70">
 				Firma tus documentos desde la nube, sin descargar ni instalar nada.
 			</p>
-			<p class="fr-eyebrow mt-6 text-fr-girasol">
-				<a href={site.parent.url} class="hover:text-white" target="_blank" rel="noopener noreferrer">{site.parent.tagline}</a>
-			</p>
 		</div>
 		<div>
 			<p class="fr-eyebrow m-0 text-white/60">Productos</p>
 			<ul class="m-0 mt-3 flex list-none flex-col gap-1 p-0">
-				<li><a href="/certificado-digital/" class="inline-flex min-h-8 items-center text-sm text-white hover:text-fr-girasol">Certificado digital</a></li>
-				<li><a href="/firmas/" class="inline-flex min-h-8 items-center text-sm text-white hover:text-fr-girasol">Firmas</a></li>
+				<li><a href="/certificado-digital/" class={enlace}>Certificado digital</a></li>
+				<li><a href="/firmas/" class={enlace}>Firmas</a></li>
 			</ul>
 		</div>
 		<div>
 			<p class="fr-eyebrow m-0 text-white/60">Contacto</p>
-			<a
-				href={whatsappUrl()}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="mt-3 inline-block font-fr-mono text-sm text-white hover:text-fr-girasol"
-			>
-				WhatsApp {site.whatsapp.display}
-			</a>
+			<ul class="m-0 mt-3 flex list-none flex-col gap-1 p-0">
+				<li>
+					<a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" class={`${enlace} font-fr-mono`}>
+						WhatsApp {site.whatsapp.display}
+					</a>
+				</li>
+				<li><a href={`mailto:${site.email}`} class={`${enlace} font-fr-mono`}>{site.email}</a></li>
+			</ul>
 		</div>
 		<div>
 			<p class="fr-eyebrow m-0 text-white/60">Empresa</p>
 			<p class="mt-3 text-sm text-white/80">{site.company.legalName}</p>
 			<p class="mt-1 font-fr-mono text-sm text-white/80">RUC {site.company.ruc}</p>
 		</div>
+		<div>
+			<p class="fr-eyebrow m-0 text-white/60">Legal</p>
+			<ul class="m-0 mt-3 flex list-none flex-col gap-1 p-0">
+				<li><a href="/terminos-y-condiciones/" class={enlace}>Términos y condiciones</a></li>
+				<li><a href="/politica-de-privacidad/" class={enlace}>Política de privacidad</a></li>
+			</ul>
+		</div>
 	</div>
 	<div class="border-t border-white/10">
-		<p class="gs-container m-0 py-5 font-fr-mono text-xs text-white/60">© {year} {site.name}</p>
+		<p class="gs-container m-0 py-5 font-fr-mono text-xs text-white/60">
+			© {year} {site.name} · Certificados emitidos por {site.company.legalName}, Entidad de Certificación acreditada ante INDECOPI.
+		</p>
 	</div>
 </footer>

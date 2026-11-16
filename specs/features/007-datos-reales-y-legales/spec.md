@@ -1,6 +1,6 @@
 # [007] Datos reales, bolsas por volumen, confianza y páginas legales
 
-> Estado: `aprobado` · Creado: 2026-11-16 · Actualizado: 2026-11-16
+> Estado: `en-curso` · Creado: 2026-11-16 · Actualizado: 2026-11-16
 > Aprobado por el usuario el 2026-11-16. Las decisiones salen de sus respuestas a P01–P21, registradas en `specs/pendientes.md`: sin plan de 3 años; "vinculado a empresa" dentro de jurídica; acreditación como texto, sin logo por ahora; privacidad como texto + PDF; bolsas con selector + tabla. Se ejecuta en la PC de casa.
 > Constitución: v0.3.2 · Depende de: 006 (implementado)
 > Lo implementa otra sesión. Este spec trae todo lo necesario: no hace falta el historial de la conversación.
@@ -219,24 +219,24 @@ Constitución §7 (sin JS y con "reducir movimiento", todo en su estado final) y
 ## 5. Criterios de aceptación
 
 **Datos**
-- [ ] El WhatsApp real (`51919283658`) está en todos los enlaces `wa.me` y en el schema. No quedan `999 999 999`, `RAZÓN SOCIAL`, `20XXXXXXXXX` ni "3 años" en `src/` (comprobar con `grep`).
-- [ ] 4 planes de certificado (US$ 20 y US$ 34) y 8 bolsas con sus totales exactos. Un total mal escrito en el YAML rompe el build (probarlo y revertir).
-- [ ] `pnpm pendientes` lista solo P19.
+- [x] El WhatsApp real (`51919283658`) está en todos los enlaces `wa.me` y en el schema. No quedan `999 999 999`, `RAZÓN SOCIAL`, `20XXXXXXXXX` ni "3 años" en `src/` (comprobar con `grep`).
+- [x] 4 planes de certificado (US$ 20 y US$ 34) y 8 bolsas con sus totales exactos. Un total mal escrito en el YAML rompe el build (probarlo y revertir).
+- [x] `pnpm pendientes` lista solo P19.
 
 **Páginas**
-- [ ] `/firmas/`: el selector recorre las 8 bolsas con mouse y teclado, y cambian el total, el precio por firma, el ahorro y el mensaje de WhatsApp. La tabla muestra las 8 con sus anclas. Sin JS se ve la bolsa mínima con su botón.
-- [ ] `/certificado-digital/`: matriz de 2 columnas, textos P05, requisitos nuevos con detalle y la etiqueta "Solo si es vinculado a empresa", sección de acreditación y franja de pagos.
-- [ ] Inicio: la sección de acreditación y los puntos nuevos en la tarjeta de firmas.
-- [ ] `/terminos-y-condiciones/`: el texto coincide con girasol.pe/terminos/ (15 secciones, fecha 27/04/2026).
-- [ ] `/politica-de-privacidad/`: texto completo de la V1.6 y el PDF descargable desde `/legal/politica-y-plan-de-privacidad-v1.6.pdf`.
-- [ ] Footer con contacto real, legal y la línea de acreditación; sin "Un producto de Girasol".
-- [ ] Las preguntas nuevas aparecen en sus páginas y el `FAQPage` coincide con lo visible.
+- [x] `/firmas/`: el selector recorre las 8 bolsas con mouse y teclado, y cambian el total, el precio por firma, el ahorro y el mensaje de WhatsApp. La tabla muestra las 8 con sus anclas. Sin JS se ve la bolsa mínima con su botón.
+- [x] `/certificado-digital/`: matriz de 2 columnas, textos P05, requisitos nuevos con detalle y la etiqueta "Solo si es vinculado a empresa", sección de acreditación y franja de pagos.
+- [x] Inicio: la sección de acreditación y los puntos nuevos en la tarjeta de firmas.
+- [x] `/terminos-y-condiciones/`: el texto coincide con girasol.pe/terminos/ (15 secciones, fecha 27/04/2026).
+- [x] `/politica-de-privacidad/`: texto completo de la V1.6 y el PDF descargable desde `/legal/politica-y-plan-de-privacidad-v1.6.pdf`.
+- [x] Footer con contacto real, legal y la línea de acreditación; sin "Un producto de Girasol".
+- [x] Las preguntas nuevas aparecen en sus páginas y el `FAQPage` coincide con lo visible.
 
 **Calidad**
-- [ ] Sin desborde lateral en 375, 768, 1024 y 1280 px en todas las páginas, incluidas las legales con tablas.
-- [ ] Sin JS y con "reducir movimiento", todo visible y en su estado final.
-- [ ] Lighthouse móvil ≥ 90 en las cuatro categorías en `/`, `/certificado-digital/`, `/firmas/` y `/politica-de-privacidad/`.
-- [ ] `pnpm build` sin errores ni advertencias.
+- [x] Sin desborde lateral en 375, 768, 1024 y 1280 px en todas las páginas, incluidas las legales con tablas.
+- [x] Sin JS y con "reducir movimiento", todo visible y en su estado final.
+- [x] Lighthouse móvil ≥ 90 en las cuatro categorías en `/`, `/certificado-digital/`, `/firmas/` y `/politica-de-privacidad/`.
+- [x] `pnpm build` sin errores ni advertencias.
 
 ---
 
@@ -279,15 +279,62 @@ src/pages/terminos-y-condiciones.astro + politica-de-privacidad.astro   (si no s
 
 ## 7. Tareas
 
-- [ ] T1 Datos: `site.ts`, `productos.yaml` (+ `refine`), `requisitos.yaml` (+ esquema), quitar marcas `PENDIENTE` resueltas.
-- [ ] T2 Quitar el plan de 3 años en todos los textos e ilustraciones (§2.2) y aplicar los textos P05 (§2.3).
-- [ ] T3 `/firmas/`: `SelectorBolsas`, tabla de volúmenes, medidor y chips; tarjeta de firmas del inicio.
-- [ ] T4 `Acreditacion`, `MediosPago` y footer.
-- [ ] T5 Preguntas (`faqs.yaml` + variables en `faqs.ts`).
-- [ ] T6 Collection `legales`, layout, `.fr-prosa`, `/terminos-y-condiciones/` y `/politica-de-privacidad/` con su PDF.
-- [ ] T7 Schema (§4) y actualizar `specs/pendientes.md`.
-- [ ] T8 Verificación: criterios de §5 (greps, Chrome sin interfaz con capturas en 375 y 1440 px, selector con teclado, páginas legales, Lighthouse). Anotar resultados y decisiones en §8, y dejar el spec en `en-curso` para revisión.
+- [x] T1 Datos: `site.ts`, `productos.yaml` (+ `refine`), `requisitos.yaml` (+ esquema), quitar marcas `PENDIENTE` resueltas.
+- [x] T2 Quitar el plan de 3 años en todos los textos e ilustraciones (§2.2) y aplicar los textos P05 (§2.3).
+- [x] T3 `/firmas/`: `SelectorBolsas`, tabla de volúmenes, medidor y chips; tarjeta de firmas del inicio.
+- [x] T4 `Acreditacion`, `MediosPago` y footer.
+- [x] T5 Preguntas (`faqs.yaml` + variables en `faqs.ts`).
+- [x] T6 Collection `legales`, layout, `.fr-prosa`, `/terminos-y-condiciones/` y `/politica-de-privacidad/` con su PDF.
+- [x] T7 Schema (§4) y actualizar `specs/pendientes.md`.
+- [x] T8 Verificación: criterios de §5 (greps, Chrome sin interfaz con capturas en 375 y 1440 px, selector con teclado, páginas legales, Lighthouse). Anotar resultados y decisiones en §8, y dejar el spec en `en-curso` para revisión.
 
 ## 8. Notas de implementación
 
-_(vacío)_
+**2026-11-16**
+
+Verificado con Chrome sin interfaz (puppeteer-core) y Lighthouse 12 móvil sobre `INDEXABLE=true pnpm astro build --outDir dist-lh` (borrada al terminar). Capturas revisadas en 375 y 1440 px de `/`, `/certificado-digital/`, `/firmas/` y la política de privacidad.
+
+**Lighthouse móvil**
+
+| Página | Perf. | Accesib. | Buenas prácticas | SEO | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|
+| `/` | 96 | 100 | 100 | 100 | 2466 ms | 0 | 100 ms |
+| `/certificado-digital/` | 97 | 100 | 100 | 100 | 2451 ms | 0 | 70 ms |
+| `/firmas/` | 97 | 100 | 100 | 100 | 2437 ms | 0 | 20 ms |
+| `/politica-de-privacidad/` | 98 | 100 | 100 | 100 | 2267 ms | 0 | 10 ms |
+
+**Comprobaciones**
+- `pnpm build`: 0 errores y 0 advertencias. `pnpm pendientes` lista solo P19 (P22 se sigue en `pendientes.md`, sin marca en el código, como pide el spec).
+- **Greps en `src/`** de `999 999`, `51999999999`, `RAZÓN SOCIAL`, `20XXXXXXXXX`, `Un producto de Girasol`, `natural-3`, `juridica-3` y `3 años`: sin resultados, salvo **una línea del texto legal de los términos** copiada tal cual de girasol.pe ("Los certificados tienen una vigencia de 1 año a 3 años…"), que habla del catálogo general de GIRASOL y no de este sitio. Todos los enlaces `wa.me` de las 5 páginas usan `51919283658`.
+- **Build roto a propósito:** con el total de la bolsa de 500 firmas en `449.00` el build falla con "Bolsa de 500 firmas: precio 449 no es cantidad × precioUnitario (500 × 0.9 = 450)". Revertido.
+- **Selector de bolsas** (1280 y 375 px): con teclado (ArrowRight ×7) recorre las 8 bolsas y en cada una coinciden `aria-valuetext`, el aviso `aria-live`, el precio por firma, el ahorro (0, 0, 5, 10, 15, 25, 35, 50 %) y el mensaje de WhatsApp (`Hola, quiero comprar una bolsa de 500 firmas (US$ 450.00).`). Home y End llevan a 10 y 20 000; un clic al 50 % de la pista elige 1 000. Sin JS se ve la bolsa de 10 con su botón y el medidor en 7; con "reducir movimiento" también funciona. Marcas bajo la pista: 8 visibles desde `sm` y 4 en 375 px, sin solaparse.
+- **Anclas:** las 14 (6 de `/certificado-digital/` y 8 `#bolsa-N`) centran y resaltan, en 1280 y 375 px (28 pruebas). `#natural-3-anos` y `#juridica-3-anos` ya no existen.
+- **Certificado:** matriz de 2 columnas (1 y 2 años; US$ 20.00 y US$ 34.00, "por año" US$ 20.00 y US$ 17.00), chips "2 titulares · 2 vigencias · Desde US$ 20.00", credencial "Vigencia 1–2 años", `description` "de 1 o 2 años desde US$ 20.00", textos P05, requisitos con detalle y la etiqueta "Solo si es vinculado a empresa", acreditación antes de requisitos, franja de pagos bajo la matriz.
+- **Inicio:** acreditación entre "Cómo funciona" y "Preguntas"; puntos de la tarjeta de firmas nuevos; 8 preguntas; footer con WhatsApp, correo, empresa, legal y la línea de acreditación.
+- **Preguntas:** el `FAQPage` coincide con las visibles en las tres páginas (inicio 8, certificado 9, firmas 6).
+- **JSON-LD:** inicio con `Organization` (sin `parentOrganization`; GIRASOL PE S.C.R.L., RUC, correo y teléfono reales), `WebSite`, `Service` con **12** `Offer` (4 planes + 8 bolsas) y `FAQPage`; certificado con 4 `Product`; firmas con **1** `Product` y 8 `Offer`; legales con `BreadcrumbList`. Las cinco páginas son `index, follow`; el sitemap (con `INDEXABLE=true`, sin el chequeo de pendientes) incluye las dos legales y no `/sistema-visual/`.
+- **Sin desborde** en 375, 768, 1024 y 1280 px en las 5 páginas (20 combinaciones). En 375 px la tabla ancha de la política se desplaza dentro de su caja. El espacio hero → sección siguiente de la 006 se mantiene (90/74, 92/71 y 60/81 px a 1440/375).
+
+**Páginas legales**
+- **Términos:** el HTML de girasol.pe/terminos/ se descargó con `curl` y se convirtió a Markdown con un script local (no con un resumidor). El texto resultante tiene las mismas 1373 palabras que el original y 15 secciones, con fecha 27/04/2026.
+- **Política:** el PDF se extrajo con `pdftotext` (UTF-8) y el Markdown se armó con un script que toma cada párrafo directamente del texto extraído; comparado por palabras con el PDF, solo difiere en "1.INTRODUCCIÓN" → "1. INTRODUCCIÓN". Las tablas (carátula, historial, certificados, definiciones, contacto) se reconstruyeron con `pdftotext -table`. El PDF se copió a `public/legal/` y responde 200 (987 110 bytes). El índice del PDF no se copia. Sin `<!-- REVISAR -->`: todo se leyó bien.
+
+**Decisiones**
+- Términos: los encabezados de las 15 secciones (en el original, 14 `h3` y un `h2`) pasan todos a `##`, para que el índice lateral los liste; se conserva su capitalización ("Aceptación De Términos"). Se omite el glifo "•" que el original escribe al inicio de cada viñeta, porque Markdown ya pone la viñeta.
+- Frontmatter de `legales`: además de los campos del spec se agregan `descripcion` (meta description) y `tituloSeo` (título del `<title>`, distinto del `h1`). La página muestra también la fuente cuando existe.
+- Ruta única `src/pages/[legal].astro` + `LegalLayout.astro`; el slug es el nombre del archivo.
+- `Bolsas.astro` se reescribió: ya no pinta tarjetas (con 8 bolsas no tienen sentido) sino un hueco para el selector, otro para el medidor y otro para la tabla. `TablaBolsas.astro` es una sola `<table>` con roles ARIA explícitos que pasa a bloques por debajo de 640 px (mismo patrón que `MatrizPlanes`). El `h2` sigue siendo "Bolsas de firmas".
+- Selector: control `<input type="range">` con índice 0–7 (no con la cantidad), pulgar en tinta y pista recorrida en ámbar (`.fr-range` en `global.css`); chip de ahorro en navy con texto ámbar.
+- Mensaje de WhatsApp de bolsas: "Hola, quiero comprar una bolsa de {cantidad} firmas ({total})." con el total en formato de marca ("US$ 3,750.00") y la cantidad con espacio de miles.
+- El esquema de `productos` limita `vigenciaAnios` a 1 o 2 (un plan de 3 años rompería el build) y exige `precioUnitario` en las bolsas.
+- Se eliminó `site.parent` (ya nada lo usa) y las variables de FAQ `precio_certificado`, `precio_firmas` y `cantidad_firmas`, reemplazadas por las del spec.
+- La intro de requisitos es la misma en ambos titulares: se muestra una sola vez bajo el título (si difirieran, cada columna mostraría la suya). El texto "Un asesor te confirma los requisitos antes de la compra." se mantiene.
+- Textos míos que el spec no definía: etiqueta "Tu bolsa" y rótulo "Elige cuántas firmas necesitas" del selector, "Total", "Ahorras", "Sin ahorro" (accesible), los captions de las tablas, los chips "Tarjeta de crédito" y "Tarjeta de débito" de la franja de pagos y el contenido del sello ("Entidad de Certificación · Acreditada ante INDECOPI"). La acreditación va sobre fondo blanco (`fr-sheet`) para separarla de las secciones vecinas.
+- El comentario de P22 (logo de INDECOPI) está en `index.astro` y `certificado-digital.astro`, con un slot `logo` libre en `Acreditacion.astro`.
+
+**Pendiente / a revisar**
+- **Indexación:** `INDEXABLE=true pnpm build` sigue fallando a propósito por P19. Para publicar falta el logo y favicon de firmaremota.pe.
+- **P22:** el logo de INDECOPI sigue pendiente (sello de texto mientras tanto).
+- **PDF de privacidad:** no se pudo ver como imagen (no hay renderizador de páginas en esta máquina); las tablas se reconstruyeron desde las coordenadas del texto. Conviene una lectura visual de las tablas de la página contra el PDF, sobre todo el historial de versiones. El PDF tiene 15 páginas, no 16.
+- **Términos:** el texto de girasol.pe es de GIRASOL y habla de certificados de "1 año a 3 años"; es el texto aprobado tal cual, pero no coincide con los dos planes que vende este sitio.
+- La política cita el correo soporte@girasolpe.com y no el comercial@girasol.pe del sitio (es el texto oficial).

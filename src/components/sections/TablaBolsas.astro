@@ -1,0 +1,93 @@
+---
+/**
+ * Tabla de volúmenes: las bolsas en filas (spec 007 §2.4). Una sola <table> con roles ARIA explícitos: desde `sm`
+ * se ve como tabla y por debajo cada fila pasa a ser un bloque compacto. Cada fila lleva su ancla (`id`) y
+ * `data-destacable` para que destacar.ts la centre y resalte. Los textos y los datos llegan por props.
+ */
+import { buttonVariants } from '@/components/ui/button';
+
+export interface FilaBolsa {
+	/** Ancla de la fila, p. ej. "bolsa-500". */
+	id: string;
+	/** "1 000" */
+	cantidad: string;
+	/** "US$ 0.85" */
+	unitario: string;
+	/** "US$ 850.00" */
+	total: string;
+	/** Ahorro en % entero; 0 si no hay. */
+	ahorro: number;
+	nombre: string;
+	href: string;
+}
+
+interface Props {
+	caption: string;
+	columnas: { firmas: string; porFirma: string; total: string; ahorro: string };
+	filas: FilaBolsa[];
+	ctaLabel: string;
+	/** "Ahorras" */
+	ahorraLabel: string;
+	/** Texto accesible cuando una bolsa no tiene ahorro. */
+	sinAhorroLabel: string;
+	/** "firmas" */
+	firmasLabel: string;
+}
+const { caption, columnas, filas, ctaLabel, ahorraLabel, sinAhorroLabel, firmasLabel } = Astro.props;
+const th = 'p-4 text-xs font-medium tracking-wider text-fr-muted uppercase font-fr-mono';
+---
+
+<div data-reveal class="overflow-hidden rounded-fr-card border border-fr-line bg-fr-sheet shadow-fr-sheet">
+	<table role="table" class="w-full border-collapse text-left max-sm:block">
+		<caption class="sr-only">{caption}</caption>
+		<thead role="rowgroup" class="max-sm:sr-only">
+			<tr role="row" class="border-b border-fr-line">
+				<th role="columnheader" scope="col" class:list={[th, 'sm:pl-6']}>{columnas.firmas}</th>
+				<th role="columnheader" scope="col" class={th}>{columnas.porFirma}</th>
+				<th role="columnheader" scope="col" class={th}>{columnas.total}</th>
+				<th role="columnheader" scope="col" class={th}>{columnas.ahorro}</th>
+				<th role="columnheader" scope="col" class={th}><span class="sr-only">{ctaLabel}</span></th>
+			</tr>
+		</thead>
+		<tbody role="rowgroup" class="max-sm:block">
+			{
+				filas.map((f) => (
+					<tr
+						role="row"
+						id={f.id}
+						data-destacable
+						class="border-b border-fr-line last:border-b-0 max-sm:grid max-sm:grid-cols-[1fr_auto] max-sm:items-center max-sm:gap-x-4 max-sm:gap-y-1 max-sm:p-4"
+					>
+						<th role="rowheader" scope="row" class="font-fr-display text-xl font-bold text-fr-navy tabular-nums max-sm:col-start-1 max-sm:p-0 sm:p-4 sm:pl-6">
+							{f.cantidad} <span class="text-sm font-semibold text-fr-muted">{firmasLabel}</span>
+						</th>
+						<td role="cell" class="text-sm text-fr-text tabular-nums max-sm:col-start-1 max-sm:p-0 sm:p-4">
+							{f.unitario} <span class="text-fr-muted sm:sr-only">por firma</span>
+						</td>
+						<td role="cell" class="font-fr-display text-lg font-bold text-fr-navy tabular-nums max-sm:col-start-2 max-sm:row-start-1 max-sm:p-0 max-sm:text-right sm:p-4">
+							{f.total}
+						</td>
+						<td role="cell" class="max-sm:col-start-1 max-sm:p-0 sm:p-4">
+							{f.ahorro > 0 ? (
+								<span class="inline-block rounded-full bg-fr-navy px-3 py-1 font-fr-mono text-xs font-medium text-fr-girasol">
+									{ahorraLabel} {f.ahorro} %
+								</span>
+							) : (
+								<span class="font-fr-mono text-xs text-fr-muted">
+									<span aria-hidden="true">—</span>
+									<span class="sr-only">{sinAhorroLabel}</span>
+								</span>
+							)}
+						</td>
+						<td role="cell" class="max-sm:col-start-2 max-sm:row-span-2 max-sm:row-start-2 max-sm:p-0 max-sm:text-right sm:p-4 sm:pr-6 sm:text-right">
+							<a href={f.href} target="_blank" rel="noopener noreferrer" class={buttonVariants({ variant: 'outline', className: 'max-sm:px-5' })}>
+								{ctaLabel}
+								<span class="sr-only"> {f.nombre}</span>
+							</a>
+						</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</div>

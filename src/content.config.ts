@@ -1,5 +1,5 @@
 import { defineCollection } from 'astro:content';
-import { file } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { NOMBRES_ICONO } from './lib/iconos';
 
@@ -18,20 +18,35 @@ const base = {
 
 const productos = defineCollection({
 	loader: file('src/content/productos.yaml'),
-	schema: z.discriminatedUnion('tipo', [
+	schema: z
+		.discriminatedUnion('tipo', [
 		z.object({
 			...base,
 			tipo: z.literal('certificado'),
 			titular: z.enum(['natural', 'juridica']),
-			vigenciaAnios: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+			vigenciaAnios: z.union([z.literal(1), z.literal(2)]),
 		}),
 		z.object({
 			...base,
 			tipo: z.literal('firmas'),
 			cantidad: z.number().int().min(10),
 			vence: z.boolean(),
+			/** Precio de cada firma; `precio` es el total de la bolsa. */
+			precioUnitario: z.number().positive(),
 		}),
-	]),
+	])
+	// El total de una bolsa debe ser cantidad × precioUnitario; se compara en centavos (coma flotante).
+	.superRefine((p, ctx) => {
+		if (p.tipo !== 'firmas') return;
+		const esperado = Math.round(p.cantidad * p.precioUnitario * 100);
+		if (Math.round(p.precio * 100) !== esperado) {
+			ctx.addIssue({
+				code: 'custom',
+				message: `Bolsa de ${p.cantidad} firmas: precio ${p.precio} no es cantidad × precioUnitario (${p.cantidad} × ${p.precioUnitario} = ${esperado / 100}).`,
+				path: ['precio'],
+			});
+		}
+	}),
 });
 
 /**
@@ -55,10 +70,40 @@ const requisitos = defineCollection({
 		titular: z.enum(['natural', 'juridica']),
 		/** Ícono grande de la columna. */
 		icono: z.enum(NOMBRES_ICONO),
-		/** Cada requisito con su ícono lineal (spec 006). */
-		items: z.array(z.object({ texto: z.string(), icono: z.enum(NOMBRES_ICONO) })).min(1),
+		/** Frase que antecede a la lista. */
+		intro: z.string(),
+		/** Cada requisito con su ícono lineal; `detalle` y `condicion` son opcionales. */
+		items: z
+			.array(
+				z.object({
+					texto: z.string(),
+					detalle: z.string().optional(),
+					icono: z.enum(NOMBRES_ICONO),
+					condicion: z.string().optional(),
+				}),
+			)
+			.min(1),
 		orden: z.number().int(),
 	}),
 });
 
-export const collections = { productos, faqs, requisitos };
+/**
+ * Textos legales en Markdown (spec 007): términos y condiciones y política de privacidad. Se copian tal cual
+ * de su fuente; `fuente`, `version` y `pdf` son opcionales. `descripcion` es la meta description de la página.
+ */
+const legales = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/content/legales' }),
+	schema: z.object({
+		titulo: z.string(),
+		/** Título para el <title>, si difiere del h1. */
+		tituloSeo: z.string().optional(),
+		descripcion: z.string(),
+		actualizado: z.coerce.date(),
+		fuente: z.url().optional(),
+		version: z.string().optional(),
+		/** Ruta pública del PDF oficial. */
+		pdf: z.string().startsWith('/').optional(),
+	}),
+});
+
+export const collections = { productos, faqs, requisitos, legales };

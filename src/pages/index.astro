@@ -10,30 +10,35 @@ import Ventajas from '@/components/sections/Ventajas.astro';
 import Productos, { type PiezaCertificado, type PiezaFirmas } from '@/components/sections/Productos.astro';
 import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
 import ComoFunciona from '@/components/sections/ComoFunciona.astro';
+import Acreditacion from '@/components/sections/Acreditacion.astro';
 import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
-import { comoFunciona, ctaCierre, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
+import { acreditacion, comoFunciona, ctaCierre, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
-import { formatPrice, titularLabel, vigenciaLabel } from '@/lib/format';
+import { formatCantidad, formatPrice, titularLabel, vigenciaLabel } from '@/lib/format';
 import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
 import { faqSchema, serviceSchema } from '@/lib/seo/schema';
 
 const productos = (await getCollection('productos')).map((p) => p.data).sort((a, b) => a.orden - b.orden);
 const planes = productos.filter((p) => p.tipo === 'certificado');
-const firmas = productos.find((p) => p.tipo === 'firmas')!;
-const cantidadFirmas = firmas.tipo === 'firmas' ? firmas.cantidad : 10;
+const bolsas = productos.flatMap((p) => (p.tipo === 'firmas' ? [p] : []));
+const firmas = bolsas[0]!; // la bolsa mínima (orden más bajo)
+const masGrande = bolsas.reduce((a, b) => (b.cantidad > a.cantidad ? b : a), firmas);
+const masBarata = bolsas.reduce((a, b) => (b.precioUnitario < a.precioUnitario ? b : a), firmas);
+const vigencias = [...new Set(planes.map((p) => (p.tipo === 'certificado' ? p.vigenciaAnios : 0)))].sort();
+const vigenciasTexto = `${vigencias.slice(0, -1).join(', ')} o ${vigencias[vigencias.length - 1]} años`;
 const faqs = await getFaqs('inicio');
 
 const comprar = { label: 'Comprar', href: whatsappUrl() };
 const iva = (incluye: boolean) => (incluye ? 'Incluye IGV' : undefined);
 
-// Certificado: 2 titulares × 3 vigencias (spec 004). Todo sale de la collection.
+// Certificado: 2 titulares × 2 vigencias (spec 004). Todo sale de la collection.
 const certificado: PiezaCertificado = {
 	numero: '01',
 	etiqueta: 'Certificado digital',
 	titulo: 'Tu identidad para firmar',
 	nota: iva(planes[0]!.incluyeIgv),
-	puntos: ['Dos certificados: persona natural y persona jurídica', 'Vigencia de 1, 2 o 3 años', 'Vive en la nube: no hay archivo que instalar'],
+	puntos: ['Dos certificados: persona natural y persona jurídica', `Vigencia de ${vigenciasTexto}`, 'Vive en la nube: no hay archivo que instalar'],
 	ctaLabel: 'Comprar certificado',
 	enlace: { label: `Ver los ${planes.length} planes`, href: '/certificado-digital/' },
 	leyendaTitular: 'Titular',
@@ -42,9 +47,7 @@ const certificado: PiezaCertificado = {
 		value: t,
 		label: titularLabel[t].replace(/^persona/, 'Persona'),
 	})),
-	vigencias: [...new Set(planes.map((p) => (p.tipo === 'certificado' ? p.vigenciaAnios : 0)))]
-		.sort()
-		.map((v) => ({ value: v, label: vigenciaLabel(v) })),
+	vigencias: vigencias.map((v) => ({ value: v, label: vigenciaLabel(v) })),
 	planes: planes.flatMap((p) =>
 		p.tipo === 'certificado'
 			? [
@@ -68,9 +71,14 @@ const piezaFirmas: PiezaFirmas = {
 	etiqueta: 'Firmas',
 	titulo: 'El saldo que usas al firmar',
 	precio: formatPrice(firmas.precio, firmas.moneda),
-	cantidad: cantidadFirmas,
+	cantidad: firmas.cantidad,
 	nota: iva(firmas.incluyeIgv),
-	puntos: [`Bolsa de ${cantidadFirmas} firmas`, 'Las firmas no vencen', 'Sirven con tu certificado, sea nuestro o de otro proveedor'],
+	puntos: [
+		`Desde ${formatCantidad(firmas.cantidad)} firmas`,
+		`Hasta ${formatCantidad(masGrande.cantidad)} firmas, desde ${formatPrice(masBarata.precioUnitario, masBarata.moneda)} c/u`,
+		'Las firmas no vencen',
+		'Sirven con tu certificado, sea nuestro o de otro proveedor',
+	],
 	cta: { label: 'Comprar firmas', href: productWhatsappUrl(firmas) },
 	enlace: { label: 'Ver bolsas de firmas', href: '/firmas/' },
 };
@@ -134,6 +142,9 @@ const description =
 		<NecesitasLosDos {...necesitasLosDos} />
 
 		<ComoFunciona {...comoFunciona} pasos={[...comoFunciona.pasos]} />
+
+		<!-- P22: logo de INDECOPI en el slot `logo` cuando llegue el archivo (specs/pendientes.md) -->
+		<Acreditacion {...acreditacion} hitos={[...acreditacion.hitos]} sello={{ ...acreditacion.sello }} />
 
 		<Preguntas {...preguntas} faqs={faqs} />
 

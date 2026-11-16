@@ -15,30 +15,27 @@ export const site = {
 	ogImage: '/og/default.png', // PENDIENTE: P19 (imagen provisional, sin logo)
 
 	whatsapp: {
-		number: '51999999999', // PENDIENTE: P17 (solo dígitos, con código de país)
-		display: '+51 999 999 999', // PENDIENTE: P17
+		number: '51919283658', // solo dígitos, con código de país
+		display: '+51 919 283 658',
 	},
 
+	email: 'comercial@girasol.pe',
+
+	// Entidad que emite los certificados y a cuyo nombre se vende (razón social y RUC confirmados).
 	company: {
-		legalName: 'RAZÓN SOCIAL S.A.C.', // PENDIENTE: P13
-		ruc: '20XXXXXXXXX', // PENDIENTE: P13
-	},
-
-	parent: {
-		name: 'Girasol',
-		url: 'https://girasol.pe',
-		tagline: 'Un producto de Girasol', // PENDIENTE: P14 (¿se menciona? ¿con logo?)
+		legalName: 'GIRASOL PE S.C.R.L.',
+		ruc: '20605042512',
 	},
 
 	/**
-	 * Mensajes prellenados de WhatsApp. // PENDIENTE: P10
-	 * Variables: {titular}, {vigencia}, {cantidad}.
+	 * Mensajes prellenados de WhatsApp, según lo que el cliente elige.
+	 * Variables: {titular}, {vigencia}, {cantidad}, {total}.
 	 */
 	whatsappMessages: {
 		general: 'Hola, quiero información sobre la firma remota.',
 		certificadoGeneral: 'Hola, quiero comprar un certificado digital para firma remota.',
 		certificado: 'Hola, quiero comprar el certificado digital para {titular} con vigencia de {vigencia}.',
-		firmas: 'Hola, quiero comprar una bolsa de {cantidad} firmas.',
+		firmas: 'Hola, quiero comprar una bolsa de {cantidad} firmas ({total}).',
 	},
 } as const;
 

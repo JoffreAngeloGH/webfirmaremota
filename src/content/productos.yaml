@@ -1,8 +1,5 @@
-# Productos de firmaremota.pe (specs/site.md §1).
-# Precios con IGV incluido. Ver specs/pendientes.md.
-# PENDIENTE: P01 — precio real de cada plan de certificado (todos a US$ 20.00 como placeholder).
-# PENDIENTE: P02 — bolsas de firmas adicionales (solo existe la mínima de 10).
-# PENDIENTE: P03 — moneda: ¿solo USD o también soles?
+# Productos de firmaremota.pe (specs/site.md §1 y spec 007). Precios en dólares, con IGV incluido.
+# En las bolsas, `precio` es el total y debe ser cantidad × precioUnitario (el build lo comprueba).
 
 - id: certificado-natural-1
   tipo: certificado
@@ -19,20 +16,10 @@
   titular: natural
   vigenciaAnios: 2
   nombre: Certificado digital persona natural · 2 años
-  precio: 20
+  precio: 34
   moneda: USD
   incluyeIgv: true
   orden: 2
-
-- id: certificado-natural-3
-  tipo: certificado
-  titular: natural
-  vigenciaAnios: 3
-  nombre: Certificado digital persona natural · 3 años
-  precio: 20
-  moneda: USD
-  incluyeIgv: true
-  orden: 3
 
 - id: certificado-juridica-1
   tipo: certificado
@@ -42,34 +29,102 @@
   precio: 20
   moneda: USD
   incluyeIgv: true
-  orden: 4
+  orden: 3
 
 - id: certificado-juridica-2
   tipo: certificado
   titular: juridica
   vigenciaAnios: 2
   nombre: Certificado digital persona jurídica · 2 años
-  precio: 20
+  precio: 34
   moneda: USD
   incluyeIgv: true
-  orden: 5
-
-- id: certificado-juridica-3
-  tipo: certificado
-  titular: juridica
-  vigenciaAnios: 3
-  nombre: Certificado digital persona jurídica · 3 años
-  precio: 20
-  moneda: USD
-  incluyeIgv: true
-  orden: 6
+  orden: 4
 
 - id: firmas-10
   tipo: firmas
   cantidad: 10
   vence: false
   nombre: Bolsa de 10 firmas
-  precio: 10
+  precioUnitario: 1.00
+  precio: 10.00
   moneda: USD
   incluyeIgv: true
   orden: 10
+
+- id: firmas-50
+  tipo: firmas
+  cantidad: 50
+  vence: false
+  nombre: Bolsa de 50 firmas
+  precioUnitario: 1.00
+  precio: 50.00
+  moneda: USD
+  incluyeIgv: true
+  orden: 11
+
+- id: firmas-100
+  tipo: firmas
+  cantidad: 100
+  vence: false
+  nombre: Bolsa de 100 firmas
+  precioUnitario: 0.95
+  precio: 95.00
+  moneda: USD
+  incluyeIgv: true
+  orden: 12
+
+- id: firmas-500
+  tipo: firmas
+  cantidad: 500
+  vence: false
+  nombre: Bolsa de 500 firmas
+  precioUnitario: 0.90
+  precio: 450.00
+  moneda: USD
+  incluyeIgv: true
+  orden: 13
+
+- id: firmas-1000
+  tipo: firmas
+  cantidad: 1000
+  vence: false
+  nombre: Bolsa de 1 000 firmas
+  precioUnitario: 0.85
+  precio: 850.00
+  moneda: USD
+  incluyeIgv: true
+  orden: 14
+
+- id: firmas-5000
+  tipo: firmas
+  cantidad: 5000
+  vence: false
+  nombre: Bolsa de 5 000 firmas
+  precioUnitario: 0.75
+  precio: 3750.00
+  moneda: USD
+  incluyeIgv: true
+  orden: 15
+
+- id: firmas-10000
+  tipo: firmas
+  cantidad: 10000
+  vence: false
+  nombre: Bolsa de 10 000 firmas
+  precioUnitario: 0.65
+  precio: 6500.00
+  moneda: USD
+  incluyeIgv: true
+  orden: 16
+
+- id: firmas-20000
+  tipo: firmas
+  cantidad: 20000
+  vence: false
+  nombre: Bolsa de 20 000 firmas
+  precioUnitario: 0.50
+  precio: 10000.00
+  moneda: USD
+  incluyeIgv: true
+  orden: 17

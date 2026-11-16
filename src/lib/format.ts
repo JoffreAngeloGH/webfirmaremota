@@ -16,3 +16,8 @@ export const titularLabel = {
 export function vigenciaLabel(anios: number): string {
 	return anios === 1 ? '1 año' : `${anios} años`;
 }
+
+/** Cantidad con miles separados por espacio, como en español: 1 000, 20 000. */
+export function formatCantidad(n: number): string {
+	return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}

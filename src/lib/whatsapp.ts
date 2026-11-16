@@ -1,6 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
 import { site } from '@/config/site';
-import { titularLabel, vigenciaLabel } from '@/lib/format';
+import { formatCantidad, formatPrice, titularLabel, vigenciaLabel } from '@/lib/format';
 
 /** Enlace wa.me con mensaje prellenado. */
 export function whatsappUrl(message: string = site.whatsappMessages.general): string {
@@ -19,7 +19,10 @@ export function productMessage(producto: CollectionEntry<'productos'>['data']): 
 			vigencia: vigenciaLabel(producto.vigenciaAnios),
 		});
 	}
-	return fill(site.whatsappMessages.firmas, { cantidad: producto.cantidad });
+	return fill(site.whatsappMessages.firmas, {
+		cantidad: formatCantidad(producto.cantidad),
+		total: formatPrice(producto.precio, producto.moneda),
+	});
 }
 
 /** Enlace de compra de un producto. */

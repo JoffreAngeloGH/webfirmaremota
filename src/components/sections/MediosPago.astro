@@ -1,0 +1,19 @@
+---
+/**
+ * Franja de medios de pago (spec 007 §2.5). Los nombres van como chips de texto, sin logos de marca.
+ * Los textos llegan por props (viven en config/secciones.ts).
+ */
+interface Props {
+	texto: string;
+	medios: string[];
+	class?: string;
+}
+const { texto, medios, class: className } = Astro.props;
+---
+
+<div class:list={['flex flex-col gap-4 rounded-fr-card border border-dashed border-fr-line-strong bg-fr-sheet p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between', className]}>
+	<p class="m-0 max-w-2xl text-sm text-fr-text md:text-base">{texto}</p>
+	<ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+		{medios.map((m) => <li class="rounded-full border border-fr-line bg-fr-paper px-3 py-1.5 font-fr-mono text-xs text-fr-navy">{m}</li>)}
+	</ul>
+</div>

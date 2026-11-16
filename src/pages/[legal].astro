@@ -1,0 +1,29 @@
+---
+// /terminos-y-condiciones/ y /politica-de-privacidad/ (spec 007): una página por entrada de la collection `legales`.
+// El slug es el nombre del archivo en src/content/legales/.
+import { getCollection, render } from 'astro:content';
+import LegalLayout from '@/layouts/LegalLayout.astro';
+
+export async function getStaticPaths() {
+	const legales = await getCollection('legales');
+	return legales.map((entry) => ({ params: { legal: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const { titulo, tituloSeo, descripcion, actualizado, fuente, version, pdf } = entry.data;
+---
+
+<LegalLayout
+	titulo={titulo}
+	tituloSeo={tituloSeo}
+	descripcion={descripcion}
+	ruta={`/${entry.id}/`}
+	actualizado={actualizado}
+	fuente={fuente}
+	version={version}
+	pdf={pdf}
+	headings={headings}
+>
+	<Content />
+</LegalLayout>

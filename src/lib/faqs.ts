@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { formatPrice } from '@/lib/format';
+import { formatCantidad, formatPrice } from '@/lib/format';
 
 type Pagina = CollectionEntry<'faqs'>['data']['paginas'][number];
 
@@ -12,12 +12,20 @@ export interface Faq {
 /** Valores que las respuestas pueden usar como {variable}. Salen de la collection productos. */
 async function variables(): Promise<Record<string, string>> {
 	const productos = (await getCollection('productos')).map((p) => p.data).sort((a, b) => a.orden - b.orden);
-	const certificado = productos.find((p) => p.tipo === 'certificado');
-	const firmas = productos.find((p) => p.tipo === 'firmas');
+	const certificados = productos.filter((p) => p.tipo === 'certificado');
+	const bolsas = productos.flatMap((p) => (p.tipo === 'firmas' ? [p] : []));
+	const cert = (anios: number) => {
+		const c = certificados.find((p) => p.vigenciaAnios === anios);
+		return c ? formatPrice(c.precio, c.moneda) : '';
+	};
+	const minima = bolsas.reduce((a, b) => (b.cantidad < a.cantidad ? b : a), bolsas[0]!);
+	const masBarata = bolsas.reduce((a, b) => (b.precioUnitario < a.precioUnitario ? b : a), bolsas[0]!);
 	return {
-		precio_certificado: certificado ? formatPrice(certificado.precio, certificado.moneda) : '',
-		precio_firmas: firmas ? formatPrice(firmas.precio, firmas.moneda) : '',
-		cantidad_firmas: firmas && firmas.tipo === 'firmas' ? String(firmas.cantidad) : '',
+		precio_cert_1: cert(1),
+		precio_cert_2: cert(2),
+		cantidad_bolsa_min: formatCantidad(minima.cantidad),
+		precio_bolsa_min: formatPrice(minima.precio, minima.moneda),
+		precio_firma_min: formatPrice(masBarata.precioUnitario, masBarata.moneda),
 	};
 }
 

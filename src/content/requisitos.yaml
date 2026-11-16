@@ -1,23 +1,25 @@
-# Requisitos de compra por titular (spec 005). Un asesor los confirma antes de la compra.
-# `icono`: nombre de un ícono de src/lib/iconos.ts (spec 006).
+# Requisitos de compra por titular (specs 005 y 007). Un asesor los confirma antes de la compra.
+# `icono`: nombre de un ícono de src/lib/iconos.ts. `condicion`: etiqueta que acompaña al ítem.
 
-# PENDIENTE: P07
 - id: natural
   titular: natural
   icono: persona
+  intro: Prepara estos documentos antes de iniciar tu flujo de validación en línea. Es un proceso rápido, diseñado para completarse en minutos.
   items:
-    - { texto: DNI, icono: dni }
-    - { texto: Correo electrónico, icono: sobre }
-    - { texto: Celular con WhatsApp, icono: telefono }
+    - { texto: DNI y/o CE vigente, detalle: Ambas caras., icono: dni }
+    - { texto: Contrato, detalle: Leer antes de la validación., icono: contrato }
+    - { texto: Validación de identidad, icono: identidad }
   orden: 1
 
-# PENDIENTE: P08
 - id: juridica
   titular: juridica
   icono: edificio
+  intro: Prepara estos documentos antes de iniciar tu flujo de validación en línea. Es un proceso rápido, diseñado para completarse en minutos.
   items:
-    - { texto: RUC de la empresa, icono: documento }
-    - { texto: DNI del representante legal, icono: dni }
-    - { texto: Vigencia de poder, icono: documento-sello }
-    - { texto: Celular con WhatsApp, icono: telefono }
+    - { texto: DNI y/o CE vigente, detalle: Ambas caras., icono: dni }
+    - { texto: Validación de RUC en SUNAT, detalle: 'Se valida en SUNAT; si no cumple, adjuntar Ficha RUC QR (máx. 15 días).', icono: documento }
+    - { texto: Vigencia de poder, detalle: Con una antigüedad menor a 90 días., icono: documento-sello }
+    - { texto: Contrato, detalle: Leer antes de la validación., icono: contrato }
+    - { texto: Lista de suscriptores, detalle: Firmada por el representante legal., icono: lista, condicion: Solo si es vinculado a empresa }
+    - { texto: Validación de identidad, icono: identidad }
   orden: 2

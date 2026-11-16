@@ -78,7 +78,7 @@ Aplicados en el código con el **spec 007** (2026-11-16). En el código ya no qu
 |---|---|---|
 | Dominio | `firmaremota.pe` | 2026-11-16 |
 | Vigencias del certificado | **1 y 2 años** (el plan de 3 años se quitó el 2026-11-16), para persona natural y jurídica | 2026-11-16 |
-| IGV | Los precios incluyen IGV; se indica de forma discreta pero visible | 2026-11-16 |
+| IGV | **Corregido el 2026-11-16: los precios NO incluyen IGV.** Se muestra el precio base con "+ IGV", en todos los productos (certificados y bolsas), sin calcular el total; el total lo da el asesor. Antes decía "incluyen IGV". Se aplica con el spec 009. | 2026-11-16 |
 | Vencimiento de las firmas | Las firmas no vencen | 2026-11-16 |
 | Bolsa mínima de firmas | 10 firmas | 2026-11-16 |
 | Plataforma de firma | No forma parte de esta web: no hay login ni botón "Ingresar" | 2026-11-16 |

@@ -1,6 +1,6 @@
 # Constitución — Web Firma Remota
 
-> Versión 0.4.0 · 2026-11-16 · Estado: **borrador, pendiente de aprobación**
+> Versión 0.5.0 · 2026-11-17 · Estado: **borrador, pendiente de aprobación**
 
 Reglas que no cambian de una funcionalidad a otra. Todo spec, plan e implementación de este repositorio las cumple. Si una tarea choca con esta constitución, se detiene y se propone un cambio a la constitución (ver §12) antes de seguir.
 
@@ -113,14 +113,14 @@ src/
 - Precios con formato de marca: `S/ 472.00`, `US$ 15.00`.
 - Promociones con fecha: el periodo se ve en pantalla y el spec indica cuándo retirarlas.
 
-### 5.1 Placeholders y versión de presentación
+### 5.1 Placeholders e indexación
 
 Para poder presentar una primera versión antes de tener todos los datos, se permiten **placeholders** con estas reglas:
 
 - **Solo los autoriza el usuario.** Cada uno se registra en [`specs/pendientes.md`](pendientes.md) con un ID (`P01`…) y el valor que se usa mientras tanto. Un dato que no está en esa lista sigue la regla general: no se inventa.
 - **Solo viven en los datos** (`site.ts` o las collections), nunca dentro de un componente, y llevan un comentario con su ID (`// PENDIENTE: P15`). Así se encuentran todos con una búsqueda y reemplazarlos no toca el diseño.
 - **Se ven como datos reales** en pantalla, para que la presentación sea creíble. Lo que los distingue está en el código y en `pendientes.md`, no en la página.
-- **Mientras quede alguno pendiente, el sitio no se indexa:** el build agrega `noindex` y bloquea el sitemap, para que Google no guarde precios o datos de prueba. Al confirmarse todos, se quita.
+- **El sitio está publicado y siempre se indexa** (desde el 2026-11-17). Si aparece un placeholder (`PENDIENTE: Pxx`), `pnpm build` **falla**, para que Google no guarde precios o datos de prueba. Solo las páginas internas (la 404, `/sistema-visual/`) llevan `noindex`, con la prop `noindex` del layout.
 
 ---
 
@@ -221,6 +221,7 @@ Traen su propio aspecto y por defecto **no se ven como la marca**. Por eso:
 - Un componente por archivo; una carpeta por sección.
 - Comentarios solo donde el porqué no es obvio.
 - Git: commits pequeños, uno o varios por tarea del spec, con el número del spec en el mensaje (`[002] hero: …`).
+- **Los `.env` son solo para secretos** (claves, tokens) o datos de una sola PC. La configuración del proyecto (indexación, hosts del servidor de desarrollo, etc.) va en el código, para que quien clone el repo pueda trabajar sin crear archivos.
 
 ---
 
@@ -268,3 +269,4 @@ Cuando el usuario decide subir, una sola vez sobre todo lo acumulado:
 - **0.3.1** (2026-11-16): §6.2 reparte el color: azul tinta solo para lo accionable y ámbar girasol como acento decorativo.
 - **0.3.2** (2026-11-16): §6.2 regla de WhatsApp: "Comprar" usa el botón primario (P20).
 - **0.4.0** (2026-11-16): §11 se divide en verificación ligera (cada spec) y verificación completa (Lighthouse y barridos, solo antes de un push).
+- **0.5.0** (2026-11-17): §5.1 el sitio se publica y siempre se indexa; un placeholder hace fallar el build. §10 los `.env` quedan solo para secretos; la configuración del proyecto vive en el código.

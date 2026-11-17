@@ -1,5 +1,4 @@
 ---
-import { INDEXABLE } from 'astro:env/server';
 import { site } from '@/config/site';
 import { absoluteUrl } from '@/lib/seo/schema';
 
@@ -13,7 +12,7 @@ export interface SeoProps {
 	/** Ruta de la imagen Open Graph. */
 	image?: string;
 	type?: 'website' | 'article';
-	/** Fuerza noindex aunque el sitio sea indexable (por ejemplo, la 404). */
+	/** noindex para páginas que no deben aparecer en buscadores (la 404, /sistema-visual/). */
 	noindex?: boolean;
 }
 
@@ -29,8 +28,8 @@ const {
 const fullTitle = titleAbsolute ? title : site.titleTemplate.replace('%s', title);
 const canonical = absoluteUrl(Astro.url.pathname);
 const imageUrl = absoluteUrl(image);
-// Constitución §5.1: sin INDEXABLE=true, nada se indexa.
-const robots = INDEXABLE && !noindex ? 'index, follow' : 'noindex, nofollow';
+// Constitución §5.1: el sitio se indexa; solo las páginas marcadas llevan noindex.
+const robots = noindex ? 'noindex, nofollow' : 'index, follow';
 ---
 
 <title>{fullTitle}</title>

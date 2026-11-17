@@ -12,7 +12,7 @@ export const site = {
 	defaultTitle: 'Firma remota: firma digital en la nube',
 	defaultDescription:
 		'Firma tus documentos desde la nube, sin descargar ni instalar nada. Certificado digital y firmas para persona natural y jurídica.',
-	ogImage: '/og/default.png', // PENDIENTE: P19 (imagen provisional, sin logo)
+	ogImage: '/og/default.png', // Provisional, sin logo: P19 aceptado como provisional (specs/pendientes.md)
 
 	whatsapp: {
 		number: '51919283658', // solo dígitos, con código de país

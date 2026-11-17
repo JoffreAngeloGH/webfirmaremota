@@ -1,12 +1,11 @@
 // @ts-check
-import { defineConfig, envField, fontProviders } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import { devAllowedHosts, isIndexable } from './scripts/indexable.mjs';
 
-// Constitución §8 (SEO) y §5.1 (indexación solo con INDEXABLE=true).
-const indexable = isIndexable();
+// Constitución §8 (SEO) y §5.1: el sitio está publicado y siempre es indexable. Nada de esto depende de .env
+// (los .env quedan solo para secretos, constitución §10).
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,22 +13,14 @@ export default defineConfig({
 	trailingSlash: 'always',
 	build: { format: 'directory' },
 
-	// Servidor de desarrollo: hosts extra solo si se piden en DEV_ALLOWED_HOSTS (p. ej. túnel de Cloudflare
-	// en la PC de trabajo, vía .env.local). Sin la variable, solo localhost.
-	server: { allowedHosts: devAllowedHosts() },
-
-	env: {
-		schema: {
-			// Se lee en SEO.astro y robots.txt. Activar solo cuando pendientes.md esté vacío.
-			INDEXABLE: envField.boolean({ context: 'server', access: 'public', default: false }),
-		},
-	},
+	// Servidor de desarrollo: además de localhost, acepta los túneles rápidos de Cloudflare
+	// (`cloudflared tunnel --url http://localhost:4321`), para cualquiera que clone el repo.
+	server: { allowedHosts: ['.trycloudflare.com'] },
 
 	integrations: [
 		react(),
-		// El sitemap solo existe cuando el sitio es indexable; mientras tanto robots.txt bloquea todo.
 		// /sistema-visual/ es interna: nunca entra al sitemap (spec 003).
-		...(indexable ? [sitemap({ filter: (page) => !page.includes('/sistema-visual/') })] : []),
+		sitemap({ filter: (page) => !page.includes('/sistema-visual/') }),
 	],
 
 	// Fuentes servidas desde el propio dominio (descargadas en el build), con precarga.

@@ -1,10 +1,7 @@
 import type { APIRoute } from 'astro';
-import { INDEXABLE } from 'astro:env/server';
 
-// Constitución §5.1: mientras haya placeholders, el sitio no se indexa.
+// Constitución §5.1: el sitio está publicado y se indexa. /sistema-visual/ y la 404 llevan noindex en su <meta>.
 export const GET: APIRoute = ({ site }) => {
-	const body = INDEXABLE
-		? `User-agent: *\nAllow: /\n\nSitemap: ${new URL('sitemap-index.xml', site).href}\n`
-		: 'User-agent: *\nDisallow: /\n';
+	const body = `User-agent: *\nAllow: /\n\nSitemap: ${new URL('sitemap-index.xml', site).href}\n`;
 	return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 };

@@ -24,15 +24,17 @@ Abre http://localhost:4321.
 | `pnpm check` | Revisa tipos |
 | `pnpm pendientes` | Lista los placeholders del código (ver `specs/pendientes.md`) |
 
-## Configuración por PC (`.env.local`)
+## Configuración
 
-Copia `.env.example` como `.env.local`. Ese archivo no se sube a git, así que cada PC tiene el suyo.
+Clonar y correr: no hace falta ningún `.env`. Toda la configuración del proyecto vive en el código.
 
-- **Cloudflare Tunnel:** si ves el sitio a través de un túnel (`*.trycloudflare.com`), agrega
-  `DEV_ALLOWED_HOSTS=.trycloudflare.com` y reinicia `pnpm dev`. Sin esa línea, el servidor solo acepta
-  `localhost` y bloquea el túnel con el error "Blocked request. This host … is not allowed".
-- **Indexación:** el sitio sale con `noindex` mientras haya placeholders. `INDEXABLE=true` solo cuando
-  `specs/pendientes.md` esté vacío; si no, el build falla a propósito.
+- **Cloudflare Tunnel:** con `pnpm dev` corriendo, en otra terminal:
+  `cloudflared tunnel --url http://localhost:4321`. El servidor ya acepta `*.trycloudflare.com`
+  (`astro.config.mjs` → `server.allowedHosts`).
+- **Indexación:** el sitio está publicado y siempre se indexa. Si queda un placeholder
+  (`PENDIENTE: Pxx`, ver `specs/pendientes.md`), `pnpm build` falla a propósito.
+- **`.env`:** solo para secretos (claves de API, etc.). Hoy no hay ninguno; si aparece, se documenta en
+  `.env.example` y cada uno lo pone en su `.env.local`, que no se sube a git.
 
 ## Cómo se trabaja
 

@@ -4,12 +4,11 @@
  *
  *   pnpm pendientes          → lista los pendientes agrupados por ID
  *   node scripts/pendientes.mjs --check
- *                            → igual, pero si INDEXABLE=true y queda alguno, sale con error.
- *                              Lo usa `pnpm build` para que no se indexe un sitio con datos de prueba.
+ *                            → igual, pero si queda alguno, sale con error.
+ *                              Lo usa `pnpm build`: el sitio está publicado y no se indexan datos de prueba.
  */
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { isIndexable } from './indexable.mjs';
 
 const ROOT = process.cwd();
 const SRC = join(ROOT, 'src');
@@ -51,13 +50,11 @@ if (ids.length === 0) {
 }
 
 if (process.argv.includes('--check')) {
-	const indexable = isIndexable(ROOT);
-	if (indexable && ids.length > 0) {
+	if (ids.length > 0) {
 		console.error(
-			`\n✗ INDEXABLE=true pero quedan ${ids.length} placeholders (${ids.join(', ')}).` +
-				'\n  Confírmalos en specs/pendientes.md o compila sin INDEXABLE.',
+			`\n✗ Quedan ${ids.length} placeholders (${ids.join(', ')}) y el sitio está publicado.` +
+				'\n  Confírmalos en specs/pendientes.md antes de compilar.',
 		);
 		process.exit(1);
 	}
-	console.log(indexable ? '\n✓ Sitio indexable.' : '\n• Build de presentación: el sitio sale con noindex.');
 }

@@ -1,8 +1,8 @@
 # Pendientes por confirmar
 
-> Actualizado: 2026-11-16 (respuestas del usuario a P01–P25, aplicadas en el código con los specs 007 y 008)
+> Actualizado: 2026-11-17 (P19 aceptado como provisional; el sitio se publica y **siempre es indexable**, constitución 0.5.0)
 
-Datos que la web usa con un **placeholder** o que aún no tienen respuesta. Mientras quede alguno en `Pendiente`, el sitio es una **versión de presentación** y no se publica como definitiva (constitución §5.1).
+Datos que la web usa con un **placeholder** o que aún no tienen respuesta. El sitio ya está publicado y es indexable: un placeholder nuevo **hace fallar el build** hasta que se confirme (constitución §5.1).
 
 **Cómo usar esta lista**
 - Cada dato tiene un ID (`P01`, `P02`…). En el código, el placeholder lleva un comentario con ese ID (`// PENDIENTE: P15`) para encontrarlo rápido.
@@ -15,7 +15,7 @@ Datos que la web usa con un **placeholder** o que aún no tienen respuesta. Mien
 
 | ID | Qué falta | Placeholder en la web | Estado |
 |---|---|---|---|
-| P19 | Logo y favicon de firmaremota.pe | Logotipo de texto "firma*remota*•pe" y favicon provisional | Pendiente (el usuario aún no tiene logo) |
+| P19 | Logo y favicon de firmaremota.pe | Logotipo de texto "firma*remota*•pe", favicon e imagen OG (`/og/default.png`) provisionales | **Aceptado como provisional el 2026-11-17** para publicar e indexar ya. Se reemplaza cuando el usuario tenga el logo; no bloquea el build indexable |
 | P22 | Archivo del logo de INDECOPI para mostrar junto a la acreditación (P12 permite mostrarlo) | Sello de texto "Entidad de Certificación acreditada ante INDECOPI", sin logo | Pendiente (cuando el usuario pase el archivo) |
 | P21 | Contraste AA del color `action` de Girasol (#4489E8) | Resuelto en firmaremota.pe con el azul tinta (spec 002) | Abierto solo para el design system de Girasol; el usuario lo tiene en cuenta |
 
@@ -23,7 +23,7 @@ Datos que la web usa con un **placeholder** o que aún no tienen respuesta. Mien
 
 ## Confirmados
 
-Aplicados en el código con el **spec 007** (2026-11-16). En el código ya no queda ningún placeholder de estos datos: `pnpm pendientes` lista solo P19.
+Aplicados en el código con el **spec 007** (2026-11-16). En el código ya no queda ningún placeholder de estos datos: `pnpm pendientes` no lista ninguno (P19 se aceptó como provisional el 2026-11-17).
 
 ### Productos y precios
 

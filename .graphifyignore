@@ -1,0 +1,18 @@
+# Qué NO entra al grafo de graphify (mismo formato que .gitignore).
+# El grafo es del código de src/; lo demás no aporta o gasta tokens sin necesidad.
+
+# Textos legales copiados de girasol.pe: son documentos largos y no explican el código.
+src/content/legales/
+
+# Tokens de Girasol: los genera la skill girasol-design, no se editan a mano.
+src/styles/girasol/
+
+# Archivos estáticos y builds
+public/
+dist/
+dist-lh/
+node_modules/
+.astro/
+
+# Specs: se pueden sumar más adelante (se procesan como documentos, con costo de tokens).
+specs/

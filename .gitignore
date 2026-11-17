@@ -29,3 +29,6 @@ pnpm-debug.log*
 # variables de entorno locales
 .env.local
 .env.*.local
+
+# grafo local de graphify (se regenera en cada PC)
+graphify-out/

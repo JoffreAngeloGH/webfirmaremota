@@ -122,20 +122,40 @@ const titulares = defineCollection({
 		descripcion: z.string(),
 		/** `description` admite {desde}: el precio mínimo del titular. */
 		seo: z.object({ title: z.string(), description: z.string() }),
-		paraQueSirve: z.object({ titulo: z.string(), acento: z.string(), texto: z.string(), usos: z.array(z.string()).min(1) }),
-		normativa: z
-			.array(z.object({ titulo: z.string(), texto: z.string(), icono: z.enum(NOMBRES_ICONO) }))
-			.min(1),
+		paraQueSirve: z.object({
+			etiqueta: z.string(),
+			titulo: z.string(),
+			acento: z.string(),
+			texto: z.string(),
+			usos: z.array(z.object({ texto: z.string(), icono: z.enum(NOMBRES_ICONO) })).min(1),
+			/** Solo natural: SIGM y Contraloría. */
+			validoParaTitulo: z.string().optional(),
+			validoPara: z.array(z.object({ texto: z.string(), icono: z.enum(NOMBRES_ICONO) })).optional(),
+			/** Dibujo del PDF firmado: todos los datos son ficticios. */
+			ejemplo: z.object({
+				documento: z.string(),
+				pagina: z.string(),
+				firmadoPor: z.string(),
+				nombre: z.string(),
+				datos: z.string(),
+				validez: z.string(),
+				nota: z.object({ antes: z.string(), destacado: z.string(), despues: z.string() }),
+			}),
+		}),
 		antesDeComprar: z.object({
 			devolucion: z.object({
 				titulo: z.string(),
 				plazo: z.string(),
-				puntos: z.array(z.object({ antes: z.string(), destacado: z.string(), despues: z.string() })).min(1),
+				/** Casillas del gráfico: días hábiles para pedirla. */
+				dias: z.number().int().positive(),
+				diaLabel: z.string(),
+				fueraDePlazo: z.string(),
+				casos: z.array(z.object({ destacado: z.string(), texto: z.string() })).min(1),
 				contacto: z.string(),
 				correos: z.array(z.string()).min(1),
 				enlace: z.string(),
 			}),
-			entrega: z.object({ titulo: z.string(), destacado: z.string(), texto: z.string() }),
+			entrega: z.object({ destacado: z.string() }),
 		}),
 		orden: z.number().int(),
 	}),

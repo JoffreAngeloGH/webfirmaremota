@@ -8,7 +8,7 @@
   items:
     - { texto: DNI y/o CE vigente, detalle: Ambas caras., icono: dni }
     - { texto: Contrato, detalle: Leer antes de la validación., icono: contrato }
-    - { texto: Validación de identidad, icono: identidad }
+    - { texto: Validación de identidad, detalle: 'En línea, desde tu celular.', icono: identidad }
   orden: 1
 
 - id: juridica
@@ -21,5 +21,5 @@
     - { texto: Vigencia de poder, detalle: Con una antigüedad menor a 90 días., icono: documento-sello }
     - { texto: Contrato, detalle: Leer antes de la validación., icono: contrato }
     - { texto: Lista de suscriptores, detalle: Firmada por el representante legal., icono: lista, condicion: Solo si es vinculado a empresa }
-    - { texto: Validación de identidad, icono: identidad }
+    - { texto: Validación de identidad, detalle: 'En línea, desde tu celular.', icono: identidad }
   orden: 2

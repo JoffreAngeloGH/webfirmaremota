@@ -1,31 +1,9 @@
-/**
- * Celdas de la matriz de planes (specs 006 y 008): una por vigencia, con el precio por año calculado.
- * Lo usan /certificado-digital/ y las páginas por titular, para que ambas muestren lo mismo.
- */
-import type { CollectionEntry } from 'astro:content';
-import type { CeldaPlan } from '@/components/sections/MatrizPlanes.astro';
-import { formatPrice, notaIgv } from '@/lib/format';
-import { productWhatsappUrl } from '@/lib/whatsapp';
+/** Cálculos de los planes de certificado (precio por año, texto de vigencias). Los usan el inicio y las páginas por titular. */
+import { formatPrice } from '@/lib/format';
 
-type Producto = CollectionEntry<'productos'>['data'];
-type Certificado = Extract<Producto, { tipo: 'certificado' }>;
-
-export function celdasDe(planes: Certificado[], titular: 'natural' | 'juridica', vigencias: number[]): CeldaPlan[] {
-	return vigencias.flatMap((anios) => {
-		const p = planes.find((x) => x.titular === titular && x.vigenciaAnios === anios);
-		if (!p) return [];
-		const porAnio = p.precio / p.vigenciaAnios;
-		return [
-			{
-				id: `${titular}-${anios}-${anios === 1 ? 'ano' : 'anos'}`,
-				precio: formatPrice(p.precio, p.moneda),
-				porAnio: `${formatPrice(porAnio, p.moneda)} por año`,
-				nota: notaIgv(p.incluyeIgv),
-				nombre: p.nombre,
-				href: productWhatsappUrl(p),
-			},
-		];
-	});
+/** Precio por año, ya formateado: "US$ 17.00". */
+export function precioPorAnio(precio: number, anios: number, moneda: 'USD' | 'PEN'): string {
+	return formatPrice(precio / anios, moneda);
 }
 
 /** "1 o 2 años", "1, 2 o 3 años". */

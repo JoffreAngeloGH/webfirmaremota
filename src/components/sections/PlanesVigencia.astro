@@ -1,0 +1,125 @@
+---
+/**
+ * Vigencia del certificado de un titular (spec 012): una tarjeta por vigencia con una barra de duración (marcas cada
+ * mes), el precio y su botón de compra. La tarjeta destacada es la única con el botón principal. Los textos y los
+ * datos llegan por props; la barra es decorativa (`aria-hidden`) porque la duración ya está en el título.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+import { buttonVariants } from '@/components/ui/button';
+
+interface Plan {
+	/** Ancla de la tarjeta. */
+	id: string;
+	/** "1 año" */
+	titulo: string;
+	anios: number;
+	meses: number;
+	/** "12 meses" */
+	mesesTexto: string;
+	precio: string;
+	/** "+ IGV" */
+	nota?: string;
+	/** Texto bajo el precio; lo que va entre ** ** se pone en negrita. */
+	lineaBajo: string;
+	/** "Más elegido" */
+	destacado?: string;
+	/** "Ahorras 15 %" */
+	ahorro?: string;
+	ctaLabel: string;
+	/** Nombre completo, para lectores de pantalla. */
+	nombre: string;
+	href: string;
+	principal: boolean;
+}
+interface Props {
+	id: string;
+	etiqueta: string;
+	titulo: string;
+	acento?: string;
+	intro?: string;
+	planes: Plan[];
+	/** Escala de la barra: meses totales y rótulos (posición en meses). */
+	escala: { meses: number; rotulos: { texto: string; meses: number }[] };
+}
+const { id, etiqueta, titulo, acento, intro, planes, escala } = Astro.props;
+
+const marcas = (color: string) =>
+	`background-image: repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / ${escala.meses} - 1px), ${color} calc(100% / ${escala.meses} - 1px), ${color} calc(100% / ${escala.meses}))`;
+const pct = (meses: number) => (meses / escala.meses) * 100;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="border-y border-fr-line bg-fr-paper-2">
+	<div class="gs-container gs-section-tras-hero">
+		<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={intro} />
+
+		<ul data-reveal="stagger" class="mt-10 grid list-none gap-6 p-0 md:grid-cols-2">
+			{
+				planes.map((p) => (
+					<li
+						id={p.id}
+						class:list={[
+							'relative overflow-hidden rounded-fr-card bg-fr-sheet p-6 sm:p-8',
+							p.principal
+								? 'border-2 border-fr-tinta/55 shadow-[0_22px_44px_-22px_rgb(36_67_214/0.4)]'
+								: 'border border-fr-line shadow-fr-sheet',
+						]}
+					>
+						<span aria-hidden="true" class="pointer-events-none absolute -top-5 right-5 font-fr-display text-[9rem] leading-none font-extrabold text-fr-navy/[0.04] select-none">
+							{p.anios}
+						</span>
+
+						<div class="relative flex items-baseline justify-between gap-3">
+							<h3 class="m-0 text-2xl font-bold tracking-tight">{p.titulo}</h3>
+							<p class="m-0 font-fr-mono text-xs text-fr-muted">{p.mesesTexto}</p>
+						</div>
+
+						<div class="relative mt-3 flex flex-wrap gap-2 md:min-h-7">
+							{p.destacado && <span class="rounded-full bg-fr-navy px-3 py-1 font-fr-mono text-xs font-medium text-white">{p.destacado}</span>}
+							{p.ahorro && (
+								<span class="inline-flex items-center rounded-full border border-fr-line-strong bg-fr-paper px-2.5 py-1 text-xs leading-none font-semibold text-fr-navy">{p.ahorro}</span>
+							)}
+						</div>
+
+						<!-- Barra de duración: se rellena con los meses del plan. -->
+						<div aria-hidden="true" class="relative mt-6">
+							<div class="relative h-3.5 overflow-hidden rounded-full border border-fr-line bg-fr-paper-2">
+								<div class="absolute inset-0" style={marcas('var(--color-fr-line-strong)')} />
+								<div class="absolute inset-y-0 left-0 bg-fr-navy" style={`width:${pct(p.meses)}%`}>
+									<div class="absolute inset-0" style={marcas('rgb(255 255 255 / 0.5)')} />
+								</div>
+							</div>
+							<div class="relative mt-2 h-4 font-fr-mono text-xs">
+								{escala.rotulos.map((r) => (
+									<span
+										class:list={['absolute whitespace-nowrap', r.meses > p.meses ? 'text-fr-muted/55' : 'text-fr-navy']}
+										style={`left:${pct(r.meses)}%;transform:translateX(-${pct(r.meses)}%)`}
+									>
+										{r.texto}
+									</span>
+								))}
+							</div>
+						</div>
+
+						<p class="relative mt-6 mb-0 font-fr-display text-[2.6rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums">
+							{p.precio}
+							{p.nota && <span class="ml-1 text-sm font-semibold tracking-normal text-fr-muted">{p.nota}</span>}
+						</p>
+						<p class="relative mt-3 mb-0 text-sm text-fr-muted">
+							{p.lineaBajo.split('**').map((parte, i) => (i % 2 === 1 ? <strong class="font-bold text-fr-navy">{parte}</strong> : parte))}
+						</p>
+
+						<a
+							href={p.href}
+							target="_blank"
+							rel="noopener noreferrer"
+							class={buttonVariants({ variant: p.principal ? 'default' : 'outline', className: 'relative mt-7 w-full' })}
+						>
+							{p.ctaLabel}
+							<span class="sr-only"> {p.nombre}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

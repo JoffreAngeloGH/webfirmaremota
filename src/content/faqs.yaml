@@ -18,7 +18,7 @@
 
 - id: certificado-de-otro-proveedor
   pregunta: ¿Puedo usar un certificado de otro proveedor?
-  respuesta: "Sí. Puedes comprarnos solo las firmas y usarlas con tu certificado, o comprarnos el certificado y gestionar tus firmas por otro lado."
+  respuesta: "Sí. Puedes comprarnos solo las firmas y usarlas con tu certificado, o comprarnos el certificado y gestionar tus firmas por otro lado. Si compras los dos con nosotros, un mismo asesor te ayuda con el certificado y las firmas."
   paginas: [inicio, certificado-digital, firmas]
   orden: 3
 

@@ -31,3 +31,8 @@ export function notaIgv(incluyeIgv: boolean): string {
 export function notaIgvAccesible(incluyeIgv: boolean): string {
 	return incluyeIgv ? 'IGV incluido' : 'más IGV';
 }
+
+/** Rellena una plantilla con variables `{nombre}`; si falta una, la deja tal cual. Sin dependencias: sirve en servidor y cliente. */
+export function rellenar(plantilla: string, vars: Record<string, string | number>): string {
+	return plantilla.replace(/\{(\w+)\}/g, (_, key: string) => String(vars[key] ?? `{${key}}`));
+}

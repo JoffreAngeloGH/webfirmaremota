@@ -8,11 +8,10 @@ import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import ProductoHero from '@/components/sections/ProductoHero.astro';
 import CredencialDigital from '@/components/illustrations/CredencialDigital.astro';
-import MatrizPlanes from '@/components/sections/MatrizPlanes.astro';
+import PlanesVigencia from '@/components/sections/PlanesVigencia.astro';
 import ParaQueSirve from '@/components/sections/ParaQueSirve.astro';
 import Requisitos from '@/components/sections/Requisitos.astro';
-import Acreditacion from '@/components/sections/Acreditacion.astro';
-import Normativa from '@/components/sections/Normativa.astro';
+import Respaldo from '@/components/sections/Respaldo.astro';
 import AntesDeComprar from '@/components/sections/AntesDeComprar.astro';
 import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
@@ -23,15 +22,18 @@ import {
 	ctaCierre,
 	escribenos,
 	mediosPago,
-	normativa,
 	notaAtencion,
 	planesTitular,
 	preguntas,
+	recorridoRequisitos,
+	respaldoTitular,
 	verPlanes,
 } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
-import { formatPrice, notaIgv, vigenciaLabel } from '@/lib/format';
-import { celdasDe, vigenciasTexto } from '@/lib/planes';
+import { ahorroDe } from '@/lib/bolsas';
+import { formatPrice, notaIgv, rellenar, titularLabel, vigenciaLabel } from '@/lib/format';
+import { precioPorAnio, vigenciasTexto } from '@/lib/planes';
+import { productWhatsappUrl } from '@/lib/whatsapp';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { breadcrumbSchema, faqSchema, productSchema } from '@/lib/seo/schema';
 
@@ -53,6 +55,35 @@ const desdeTexto = formatPrice(desde.precio, desde.moneda);
 const requisitos = (await getCollection('requisitos')).map((r) => r.data).find((r) => r.titular === datos.titular)!;
 const faqs = await getFaqs(datos.slug as 'persona-natural' | 'persona-juridica');
 const { devolucion, entrega } = datos.antesDeComprar;
+
+// Una tarjeta de vigencia por plan del titular: meses, ahorro y precio por año se calculan de la collection.
+const base = planes.find((p) => p.vigenciaAnios === vigencias[0])!;
+const maxMeses = Math.max(...vigencias) * 12;
+const planesVigencia = vigencias.map((anios) => {
+	const p = planes.find((x) => x.vigenciaAnios === anios)!;
+	const ahorro = ahorroDe(p.precio / anios, base.precio / vigencias[0]!);
+	const destacado = anios === 2;
+	return {
+		id: `${datos.slug}-${anios}-${anios === 1 ? 'ano' : 'anos'}`,
+		titulo: vigenciaLabel(anios),
+		anios,
+		meses: anios * 12,
+		mesesTexto: rellenar(planesTitular.mesesLabel, { n: anios * 12 }),
+		precio: formatPrice(p.precio, p.moneda),
+		nota: notaIgv(p.incluyeIgv),
+		lineaBajo: rellenar(anios > 1 ? planesTitular.lineaVariosAnios : planesTitular.lineaUnAnio, { precio: precioPorAnio(p.precio, anios, p.moneda) }),
+		destacado: destacado ? planesTitular.masElegido : undefined,
+		ahorro: ahorro > 0 ? rellenar(planesTitular.ahorraLabel, { n: ahorro }) : undefined,
+		ctaLabel: rellenar(planesTitular.ctaLabel, { vigencia: vigenciaLabel(anios) }),
+		nombre: p.nombre,
+		href: productWhatsappUrl(p),
+		principal: destacado,
+	};
+});
+const escala = {
+	meses: maxMeses,
+	rotulos: [{ texto: planesTitular.hoy, meses: 0 }, ...vigencias.map((a) => ({ texto: rellenar(planesTitular.mesesLabel, { n: a * 12 }), meses: a * 12 }))],
+};
 
 // El h1 se parte en "Certificado digital" + "para …" (la segunda parte va en serif).
 const corte = datos.h1.indexOf(' para ');
@@ -97,38 +128,39 @@ const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 			<CredencialDigital adelante={datos.titular} />
 		</ProductoHero>
 
-		<MatrizPlanes
+		<PlanesVigencia
 			id={planesTitular.id}
 			etiqueta={planesTitular.etiqueta}
 			titulo={planesTitular.titulo}
 			acento={planesTitular.acento}
-			caption={`Planes de certificado digital para ${datos.nombre.toLowerCase()}: precio por vigencia`}
-			columnaTitular="Titular"
-			vigencias={vigencias.map((v) => ({ label: vigenciaLabel(v), destacado: v === 2 ? planesTitular.masElegido : undefined }))}
-			filas={[{ id: datos.slug, titulo: datos.nombre, planes: celdasDe(todos, datos.titular, vigencias) }]}
-			ctaLabel={planesTitular.ctaLabel}
+			intro={rellenar(planesTitular.intro, { titular: titularLabel[datos.titular] })}
+			planes={planesVigencia}
+			escala={escala}
 		/>
 
-		<ParaQueSirve id="para-que-sirve" {...datos.paraQueSirve} usos={[...datos.paraQueSirve.usos]} />
+		<ParaQueSirve id="para-que-sirve" {...datos.paraQueSirve} usos={[...datos.paraQueSirve.usos]} validoPara={datos.paraQueSirve.validoPara && [...datos.paraQueSirve.validoPara]} />
 
 		<Requisitos
 			id="requisitos"
-			titulo="Lo que"
-			acento="necesitas."
+			etiqueta={recorridoRequisitos.etiqueta}
+			titulo={recorridoRequisitos.titulo}
+			acento={recorridoRequisitos.acento}
 			intro={requisitos.intro}
-			columnas={[{ titulo: datos.nombre, icono: requisitos.icono, items: requisitos.items }]}
-			nota="Un asesor te confirma los requisitos antes de la compra."
+			pasos={requisitos.items}
+			final={{ icono: recorridoRequisitos.final.icono, destacado: entrega.destacado, resto: recorridoRequisitos.final.resto, texto: recorridoRequisitos.final.texto }}
+			nota={recorridoRequisitos.nota}
 		/>
 
-		<!-- P22: logo de INDECOPI en el slot `logo` cuando llegue el archivo (specs/pendientes.md) -->
-		<Acreditacion {...acreditacion} hitos={[...acreditacion.hitos]} sello={{ ...acreditacion.sello }} />
-		<Normativa
-			id={normativa.id}
-			titulo={normativa.titulo}
-			acento={normativa.acento}
-			intro={normativa.intro}
-			tarjetas={datos.normativa}
-			enlace={{ label: normativa.enlaceLabel, href: site.rops }}
+		<!-- P22: logo de INDECOPI en el sello cuando llegue el archivo (specs/pendientes.md) -->
+		<Respaldo
+			id={respaldoTitular.id}
+			etiqueta={respaldoTitular.etiqueta}
+			titulo={respaldoTitular.titulo}
+			acento={respaldoTitular.acento}
+			intro={acreditacion.intro}
+			selloTexto={acreditacion.sello.texto}
+			enlace={{ label: respaldoTitular.enlaceLabel, href: site.rops }}
+			hitos={acreditacion.hitos.map((h) => ({ anio: h.anio, titulo: h.titulo, detalle: h.detalle }))}
 		/>
 
 		<AntesDeComprar
@@ -139,18 +171,13 @@ const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 			intro={antesDeComprar.intro}
 			devolucion={{
 				...devolucion,
-				puntos: devolucion.puntos,
 				correos: devolucion.correos,
 				enlace: { label: devolucion.enlace, href: '/terminos-y-condiciones/#política-devolución-de-pago-realizado' },
 			}}
-			entrega={entrega}
-			pagos={{ titulo: antesDeComprar.pagosTitulo, texto: mediosPago.texto, medios: [...mediosPago.medios] }}
-			respaldo={{
-				titulo: antesDeComprar.respaldo.titulo,
-				intro: antesDeComprar.respaldo.intro,
-				items: [...antesDeComprar.respaldo.items],
-				ley: antesDeComprar.respaldo.ley,
-				enlace: { label: antesDeComprar.respaldo.enlaceLabel, href: site.rops },
+			pagos={{
+				titulo: antesDeComprar.pagos.titulo,
+				texto: antesDeComprar.pagos.texto,
+				medios: mediosPago.medios.map((nombre, i) => ({ nombre, monograma: antesDeComprar.pagos.monogramas[i] ?? nombre.slice(0, 2).toUpperCase() })),
 			}}
 		/>
 

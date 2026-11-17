@@ -53,9 +53,24 @@ export const acreditacion = {
 	acento: 'validez legal.',
 	intro: `Los certificados los emite ${site.company.legalName}, Entidad de Certificación acreditada ante INDECOPI, conforme a la Ley N.° 27269, Ley de Firmas y Certificados Digitales, y su Reglamento (D.S. N.° 052-2008-PCM).`,
 	hitos: [
-		{ anio: '2020', texto: 'Entidad de Registro acreditada ante INDECOPI' },
-		{ anio: '2023', texto: 'Software de firma Firmeasy acreditado' },
-		{ anio: '2024', texto: 'Entidad de Certificación acreditada ante INDECOPI' },
+		{
+			anio: '2020',
+			texto: 'Entidad de Registro acreditada ante INDECOPI',
+			titulo: 'Entidad de Registro',
+			detalle: 'Validamos tu identidad de forma directa y confidencial, sin intermediarios.',
+		},
+		{
+			anio: '2023',
+			texto: 'Software de firma Firmeasy acreditado',
+			titulo: 'Software de firma Firmeasy',
+			detalle: 'Incluye software acreditado para firmar tus documentos con validez legal.',
+		},
+		{
+			anio: '2024',
+			texto: 'Entidad de Certificación acreditada ante INDECOPI',
+			titulo: 'Entidad de Certificación',
+			detalle: 'Emitimos tu certificado con los más altos estándares de seguridad para garantizar su valor legal.',
+		},
 	],
 	sello: { texto: 'Acreditada ante INDECOPI · ', titulo: 'Entidad de Certificación', subtitulo: 'Acreditada ante INDECOPI' },
 } as const;
@@ -66,21 +81,33 @@ export const mediosPago = {
 	medios: ['BCP', 'Tarjeta de crédito', 'Tarjeta de débito', 'Izipay', 'Culqi', 'Yape'],
 } as const;
 
-/** Páginas por titular (spec 008). */
+/** Páginas por titular (specs 008 y 012). */
 export const planesTitular = {
 	id: 'planes',
 	etiqueta: 'Planes',
 	titulo: 'Elige tu',
 	acento: 'vigencia.',
-	ctaLabel: 'Comprar',
+	/** {titular} = "persona natural" / "persona jurídica". */
+	intro: 'El mismo certificado de {titular}. Cambia cuánto tiempo dura y cuánto pagas por año.',
+	/** {vigencia} = "1 año" / "2 años". */
+	ctaLabel: 'Comprar {vigencia}',
 	masElegido: 'Más elegido',
+	/** {n} = porcentaje entero. */
+	ahorraLabel: 'Ahorras {n} %',
+	/** {n} = meses. */
+	mesesLabel: '{n} meses',
+	hoy: 'Hoy',
+	/** Línea bajo el precio; **negrita** entre asteriscos; {precio} = precio por año. */
+	lineaUnAnio: '**{precio} por año** · renuevas al año',
+	lineaVariosAnios: 'Equivale a **{precio} por año** · un solo pago',
 } as const;
 
-export const normativa = {
-	id: 'normativa',
+/** Respaldo de las páginas por titular: reúne la acreditación y la normativa (spec 012). */
+export const respaldoTitular = {
+	id: 'respaldo',
+	etiqueta: 'Respaldo',
 	titulo: 'Cumplimos con las',
 	acento: 'normativas peruanas.',
-	intro: 'Tu certificado está respaldado por nuestra infraestructura como Entidad de Certificación (EC) y Entidad de Registro (ER) acreditada por INDECOPI.',
 	enlaceLabel: 'Verifica nuestra acreditación en INDECOPI',
 } as const;
 
@@ -89,15 +116,22 @@ export const antesDeComprar = {
 	etiqueta: 'Antes de comprar',
 	titulo: 'Compra con',
 	acento: 'tranquilidad.',
-	intro: 'Cómo pagas, cuándo lo recibes y qué pasa si cambias de opinión.',
-	pagosTitulo: 'Pago',
-	respaldo: {
-		titulo: 'Respaldo legal',
-		intro: 'Estamos acreditados por INDECOPI:',
-		items: ['Entidad de Certificación', 'Entidad de Registro'],
-		ley: 'Conforme a la Ley N.° 27269, Ley de Firmas y Certificados Digitales.',
-		enlaceLabel: 'Lista de Confianza de INDECOPI',
+	intro: 'Cómo pagas y qué pasa si cambias de opinión.',
+	pagos: {
+		titulo: 'Pagas como prefieras',
+		texto: 'Tu asesor te indica los datos al confirmar la compra.',
+		/** Monogramas tipográficos, en el mismo orden que `mediosPago.medios` (no son logotipos). */
+		monogramas: ['BCP', 'TC', 'TD', 'IZ', 'CQ', 'YP'],
 	},
+} as const;
+
+/** Requisitos de las páginas por titular: paso final y nota (spec 012). */
+export const recorridoRequisitos = {
+	etiqueta: 'Requisitos',
+	titulo: 'Lo que',
+	acento: 'necesitas.',
+	final: { icono: 'reloj', resto: 'y listo', texto: 'Recibes tu usuario y contraseña para firmar.' },
+	nota: 'Un asesor te confirma los requisitos antes de la compra.',
 } as const;
 
 export const verPlanes = 'Ver planes';

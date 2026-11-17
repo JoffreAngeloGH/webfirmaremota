@@ -8,14 +8,18 @@ import Footer from '@/components/layout/Footer.astro';
 import Hero from '@/components/sections/Hero.astro';
 import Ventajas from '@/components/sections/Ventajas.astro';
 import Productos, { type PiezaCertificado, type PiezaFirmas } from '@/components/sections/Productos.astro';
+import type { PropsCompraConjunta } from '@/components/islands/CompraConjunta';
 import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
 import ComoFunciona from '@/components/sections/ComoFunciona.astro';
 import Acreditacion from '@/components/sections/Acreditacion.astro';
 import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
 import { acreditacion, comoFunciona, ctaCierre, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
+import { ahorroDe } from '@/lib/bolsas';
 import { getFaqs } from '@/lib/faqs';
 import { formatCantidad, formatPrice, notaIgv, notaIgvAccesible, titularLabel, vigenciaLabel } from '@/lib/format';
+import { precioPorAnio } from '@/lib/planes';
+import { site } from '@/config/site';
 import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
 import { faqSchema, serviceSchema } from '@/lib/seo/schema';
 
@@ -23,35 +27,49 @@ const productos = (await getCollection('productos')).map((p) => p.data).sort((a,
 const planes = productos.filter((p) => p.tipo === 'certificado');
 const bolsas = productos.flatMap((p) => (p.tipo === 'firmas' ? [p] : []));
 const firmas = bolsas[0]!; // la bolsa mínima (orden más bajo)
-const masGrande = bolsas.reduce((a, b) => (b.cantidad > a.cantidad ? b : a), firmas);
-const masBarata = bolsas.reduce((a, b) => (b.precioUnitario < a.precioUnitario ? b : a), firmas);
 const vigencias = [...new Set(planes.map((p) => (p.tipo === 'certificado' ? p.vigenciaAnios : 0)))].sort();
 const vigenciasTexto = `${vigencias.slice(0, -1).join(', ')} o ${vigencias[vigencias.length - 1]} años`;
 const faqs = await getFaqs('inicio');
+
+const puntoPlazo = 'Listo en aprox. 1 hora, después de validar tu identidad';
+const puntoNube = 'Vive en la nube: no hay archivo ni token que instalar';
 
 const comprar = { label: 'Comprar', href: whatsappUrl() };
 
 // Certificado: 2 titulares × 2 vigencias (spec 004). Todo sale de la collection.
 const certificado: PiezaCertificado = {
-	numero: '01',
-	etiqueta: 'Certificado digital',
-	titulo: 'Tu identidad para firmar',
+	icono: 'identidad',
+	titulo: 'Certificado digital',
+	lema: 'Tu identidad para firmar.',
+	bajada: `Demuestra que el documento lo firmaste tú, o tu empresa, con validez legal. Lo pagas una vez y dura ${vigenciasTexto}.`,
 	nota: notaIgv(planes[0]!.incluyeIgv),
 	notaSr: notaIgvAccesible(planes[0]!.incluyeIgv),
-	puntos: ['Dos certificados: persona natural y persona jurídica', `Vigencia de ${vigenciasTexto}`, 'Vive en la nube: no hay archivo que instalar'],
 	ctaLabel: 'Comprar certificado',
-	enlace: { label: `Ver los ${planes.length} planes`, href: '/certificado-digital/' },
-	enlacesTitular: [
-		{ label: 'Persona natural', href: '/certificado-digital/persona-natural/' },
-		{ label: 'Persona jurídica', href: '/certificado-digital/persona-juridica/' },
-	],
-	leyendaTitular: 'Titular',
-	leyendaVigencia: 'Vigencia',
-	titulares: (['natural', 'juridica'] as const).map((t) => ({
-		value: t,
-		label: titularLabel[t].replace(/^persona/, 'Persona'),
-	})),
-	vigencias: vigencias.map((v) => ({ value: v, label: vigenciaLabel(v) })),
+	leyendaTitular: '¿A nombre de quién?',
+	leyendaVigencia: '¿Por cuánto tiempo?',
+	titulares: ([
+		{
+			value: 'natural' as const,
+			icono: 'persona' as const,
+			corta: 'A tu nombre',
+			puntos: [puntoPlazo, 'Necesitas tu DNI o CE vigente', puntoNube],
+			enlace: { label: 'Ver requisitos de persona natural', href: '/certificado-digital/persona-natural/' },
+		},
+		{
+			value: 'juridica' as const,
+			icono: 'edificio' as const,
+			corta: 'En nombre de tu empresa',
+			puntos: [puntoPlazo, 'Necesitas tu DNI o CE, el RUC de la empresa y una vigencia de poder', puntoNube],
+			enlace: { label: 'Ver requisitos de persona jurídica', href: '/certificado-digital/persona-juridica/' },
+		},
+	]).map((t) => ({ ...t, label: titularLabel[t.value].replace(/^persona/, 'Persona') })),
+	vigencias: vigencias.map((v) => {
+		// Ahorro frente a comprar de a 1 año: se compara el precio por año (misma función que las bolsas).
+		const base = planes.find((p) => p.tipo === 'certificado' && p.vigenciaAnios === vigencias[0]);
+		const plan = planes.find((p) => p.tipo === 'certificado' && p.vigenciaAnios === v);
+		const ahorro = base && plan ? ahorroDe(plan.precio / v, base.precio / vigencias[0]!) : 0;
+		return { value: v, label: vigenciaLabel(v), chip: ahorro > 0 ? `Ahorras ${ahorro} %` : undefined };
+	}),
 	planes: planes.flatMap((p) =>
 		p.tipo === 'certificado'
 			? [
@@ -63,6 +81,11 @@ const certificado: PiezaCertificado = {
 						precio: p.precio,
 						precioTexto: formatPrice(p.precio, p.moneda),
 						simbolo: formatPrice(0, p.moneda).split(' ')[0]!,
+						lineaCorta: `${titularLabel[p.titular].replace(/^persona/, 'Persona')} · ${vigenciaLabel(p.vigenciaAnios)}`,
+						lineaBajo:
+							p.vigenciaAnios > 1
+								? `Equivale a ${precioPorAnio(p.precio, p.vigenciaAnios, p.moneda)} por año.`
+								: 'Un solo pago por toda la vigencia.',
 						href: productWhatsappUrl(p),
 					},
 				]
@@ -70,21 +93,74 @@ const certificado: PiezaCertificado = {
 	),
 };
 
+// Bolsas seleccionables: las cantidades se eligen aquí; precio, ahorro y formato salen de la collection.
+const bolsasElegidas = ([10, 1000, 20000] as const).map((cantidad) => {
+	const b = bolsas.find((x) => x.cantidad === cantidad);
+	if (!b) throw new Error(`Bolsas de firmas: no existe la bolsa de ${cantidad} firmas en productos.yaml`);
+	return b;
+});
+const unitarioMinimo = firmas.precioUnitario; // la bolsa mínima, igual que en /firmas/
+
 const piezaFirmas: PiezaFirmas = {
-	numero: '02',
-	etiqueta: 'Firmas',
-	titulo: 'El saldo que usas al firmar',
-	precio: formatPrice(firmas.precio, firmas.moneda),
-	cantidad: firmas.cantidad,
+	icono: 'contrato',
+	titulo: 'Firmas',
+	lema: 'El saldo que usas al firmar.',
+	bajada: 'Cada vez que firmas un documento se descuenta 1 firma de tu bolsa. Si un documento lleva 3 firmas, se descuentan 3.',
+	leyenda: 'Mientras más compras, menos pagas por firma',
+	simbolo: formatPrice(0, firmas.moneda).split(' ')[0]!,
 	nota: notaIgv(firmas.incluyeIgv),
+	notaSr: notaIgvAccesible(firmas.incluyeIgv),
+	bolsas: bolsasElegidas.map((b) => {
+		const ahorro = ahorroDe(b.precioUnitario, unitarioMinimo);
+		return {
+			id: String(b.cantidad),
+			cantidadTexto: `${formatCantidad(b.cantidad)} firmas`,
+			total: b.precio,
+			totalTexto: formatPrice(b.precio, b.moneda),
+			unitarioTexto: `${formatPrice(b.precioUnitario, b.moneda)} c/u`,
+			ahorroTexto: ahorro > 0 ? `Ahorras ${ahorro} %` : undefined,
+			lineaPlan: `Bolsa de ${formatCantidad(b.cantidad)} firmas`,
+			lineaBajo: `${formatPrice(b.precioUnitario, b.moneda)} por firma · no vencen.`,
+			ctaLabel: `Comprar ${formatCantidad(b.cantidad)} firmas`,
+			href: productWhatsappUrl(b),
+		};
+	}),
 	puntos: [
-		`Desde ${formatCantidad(firmas.cantidad)} firmas`,
-		`Hasta ${formatCantidad(masGrande.cantidad)} firmas, desde ${formatPrice(masBarata.precioUnitario, masBarata.moneda)} c/u ${notaIgv(masBarata.incluyeIgv)}`,
-		'Las firmas no vencen',
-		'Sirven con tu certificado comprado a nosotros',
+		'Las firmas no vencen: las usas a tu ritmo',
+		'Funcionan con tu certificado, aunque sea de otro proveedor',
+		'Si también compras tu certificado aquí, un mismo asesor te ayuda con los dos',
 	],
-	cta: { label: 'Comprar firmas', href: productWhatsappUrl(firmas) },
-	enlace: { label: 'Ver bolsas de firmas', href: '/firmas/' },
+	enlace: { label: `Ver las ${bolsas.length} bolsas de firmas`, href: '/firmas/' },
+};
+
+// Compra conjunta: suma el plan y la bolsa elegidos en las tarjetas; el mensaje se arma en la isla con esta plantilla.
+const conjunta: PropsCompraConjunta = {
+	titulo: '¿Necesitas los dos? Pídelos juntos',
+	planes: planes.flatMap((p) =>
+		p.tipo === 'certificado'
+			? [
+					{
+						id: `${p.titular}-${p.vigenciaAnios}`,
+						titular: titularLabel[p.titular],
+						vigencia: vigenciaLabel(p.vigenciaAnios),
+						precioTexto: formatPrice(p.precio, p.moneda),
+						resumen: `Certificado ${titularLabel[p.titular]} · ${vigenciaLabel(p.vigenciaAnios)}`,
+					},
+				]
+			: [],
+	),
+	bolsas: bolsasElegidas.map((b) => ({
+		id: String(b.cantidad),
+		cantidad: b.cantidad,
+		precioTexto: formatPrice(b.precio, b.moneda),
+		resumen: `Bolsa de ${formatCantidad(b.cantidad)} firmas`,
+		resumenSr: `bolsa de ${formatCantidad(b.cantidad)} firmas`,
+	})),
+	union: '+',
+	ctaLabel: 'Comprar los dos',
+	anuncio: '{plan} y {bolsa}',
+	plantilla: site.whatsappMessages.combo,
+	urlBase: `https://wa.me/${site.whatsapp.number}?text=`,
 };
 
 const description =
@@ -138,9 +214,10 @@ const description =
 			etiqueta="Productos"
 			titulo="Dos piezas,"
 			acento="una firma."
-			intro="Son productos distintos y los compras por separado, pero para firmar necesitas los dos."
+			intro="El certificado es tu identidad: dice quién firma. Las firmas son el saldo para usarla: cada vez que firmas, se descuenta una. Se compran por separado y necesitas los dos."
 			certificado={certificado}
 			firmas={piezaFirmas}
+				conjunta={conjunta}
 		/>
 
 		<NecesitasLosDos {...necesitasLosDos} />

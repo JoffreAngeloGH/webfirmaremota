@@ -32,13 +32,15 @@ export const site = {
 
 	/**
 	 * Mensajes prellenados de WhatsApp, según lo que el cliente elige.
-	 * Variables: {titular}, {vigencia}, {cantidad}, {total}.
+	 * Variables: {titular}, {vigencia}, {cantidad}, {total}. El combo no suma: da el precio de cada producto ({precioCertificado}, {precioFirmas}).
 	 */
 	whatsappMessages: {
 		general: 'Hola, quiero información sobre la firma remota.',
 		certificadoGeneral: 'Hola, quiero comprar un certificado digital para firma remota.',
 		certificado: 'Hola, quiero comprar el certificado digital para {titular} con vigencia de {vigencia}.',
+		certificadoTitular: 'Hola, quiero información sobre el certificado digital para {titular}.',
 		firmas: 'Hola, quiero comprar una bolsa de {cantidad} firmas ({total} + IGV).',
+		combo: 'Hola, quiero comprar el certificado digital para {titular} con vigencia de {vigencia} ({precioCertificado} + IGV) y una bolsa de {cantidad} firmas ({precioFirmas} + IGV).',
 	},
 } as const;
 

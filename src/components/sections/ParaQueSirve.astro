@@ -1,6 +1,12 @@
 ---
-/** Para qué sirve el certificado de un titular (spec 008): un texto y una lista de usos. Todo llega por props. */
+/**
+ * Para qué sirve el certificado de un titular (specs 008 y 012): texto, usos con ícono, "también es válido para"
+ * (solo natural) y el dibujo de un PDF firmado. Todo llega por props.
+ */
 import SectionHeading from '@/components/sections/SectionHeading.astro';
+import Icono from '@/components/icons/Icono.astro';
+import PdfFirmado from '@/components/illustrations/PdfFirmado.astro';
+import type { NombreIcono } from '@/lib/iconos';
 
 interface Props {
 	id: string;
@@ -8,25 +14,63 @@ interface Props {
 	titulo: string;
 	acento?: string;
 	texto: string;
-	usos: string[];
+	usos: { texto: string; icono: NombreIcono }[];
+	validoParaTitulo?: string;
+	validoPara?: { texto: string; icono: NombreIcono }[];
+	ejemplo: {
+		documento: string;
+		pagina: string;
+		firmadoPor: string;
+		nombre: string;
+		datos: string;
+		validez: string;
+		nota: { antes: string; destacado: string; despues: string };
+	};
 }
-const { id, etiqueta, titulo, acento, texto, usos } = Astro.props;
+const { id, etiqueta, titulo, acento, texto, usos, validoParaTitulo, validoPara = [], ejemplo } = Astro.props;
+const pildora = 'inline-flex items-center gap-2 rounded-full border border-fr-line bg-fr-sheet py-1.5 pr-4 pl-2 text-sm font-semibold text-fr-navy';
 ---
 
 <section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
-	<div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start lg:gap-16">
-		<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={texto} />
-		<ul data-reveal="stagger" class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+	<div class="grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:gap-16">
+		<div>
+			<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={texto} />
+			<p class="sr-only">{ejemplo.nota.antes}{ejemplo.nota.destacado}{ejemplo.nota.despues}</p>
+
+			<ul data-reveal="stagger" class="mt-8 mb-0 flex list-none flex-wrap gap-2.5 p-0">
+				{
+					usos.map((u) => (
+						<li class={pildora}>
+							<span class="grid size-7 shrink-0 place-items-center rounded-full bg-fr-paper-2 text-fr-navy">
+								<Icono nombre={u.icono} class="size-4" />
+							</span>
+							{u.texto}
+						</li>
+					))
+				}
+			</ul>
+
 			{
-				usos.map((uso) => (
-					<li class="flex items-center gap-3 rounded-fr-card border border-fr-line bg-fr-sheet p-5 font-semibold text-fr-navy shadow-fr-sheet">
-						<svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-							<path d="M5 12.5l4.5 4.5L19 7.5" />
-						</svg>
-						{uso}
-					</li>
-				))
+				validoPara.length > 0 && (
+					<div class="mt-8 border-t border-dashed border-fr-line-strong pt-6">
+						{validoParaTitulo && <p class="m-0 mb-3 text-[13px] font-semibold text-fr-navy">{validoParaTitulo}</p>}
+						<ul class="m-0 flex list-none flex-wrap gap-2.5 p-0">
+							{validoPara.map((v) => (
+								<li class={pildora}>
+									<span class="grid size-7 shrink-0 place-items-center rounded-full bg-fr-paper-2 text-fr-navy">
+										<Icono nombre={v.icono} class="size-4" />
+									</span>
+									{v.texto}
+								</li>
+							))}
+						</ul>
+					</div>
+				)
 			}
-		</ul>
+		</div>
+
+		<div data-reveal class="pb-8 lg:pb-10">
+			<PdfFirmado {...ejemplo} />
+		</div>
 	</div>
 </section>

@@ -7,6 +7,7 @@ export const ICONOS = {
 	'documento-sello': '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><circle cx="12" cy="14.5" r="3"/><path d="M10.8 14.6l.9.9 1.6-1.8"/>',
 	contrato: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 10h6"/><path d="M9 17c1-2 2-2 3 0s2 1 3-1"/>',
 	identidad: '<circle cx="10" cy="8" r="4"/><path d="M3 21c0-4 3-7 7-7 1.2 0 2.3.3 3.3.8"/><circle cx="18" cy="17" r="4"/><path d="M16.2 17l1.4 1.4 2.4-2.8"/>',
+	reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 	lista: '<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',
 	escudo: '<path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
 	candado: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3M12 15v2"/>',

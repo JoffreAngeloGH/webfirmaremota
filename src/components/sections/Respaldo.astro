@@ -1,0 +1,57 @@
+---
+/**
+ * Respaldo de las páginas por titular (spec 012): une la acreditación y la normativa. A la izquierda, el sello, el
+ * título, la intro y el enlace al registro de INDECOPI; a la derecha, una línea de tiempo con las acreditaciones.
+ * No toca Acreditacion.astro (que sigue en el inicio). Los textos llegan por props.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+import Sello from '@/components/brand/Sello.astro';
+
+interface Props {
+	id: string;
+	etiqueta: string;
+	titulo: string;
+	acento?: string;
+	intro: string;
+	/** Texto que da la vuelta al sello. */
+	selloTexto: string;
+	enlace: { label: string; href: string };
+	hitos: { anio: string; titulo: string; detalle: string }[];
+}
+const { id, etiqueta, titulo, acento, intro, selloTexto, enlace, hitos } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
+	<div class="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-20">
+		<div>
+			<Sello texto={selloTexto} class="mb-8 size-[150px] text-fr-navy" />
+			<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={intro} />
+			<a href={enlace.href} target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex min-h-12 items-center gap-2 font-semibold text-fr-tinta underline-offset-4 hover:underline">
+				{enlace.label}
+				<svg aria-hidden="true" viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8" /></svg>
+			</a>
+		</div>
+
+		<ol data-reveal="stagger" class="relative m-0 list-none space-y-8 p-0">
+			<span aria-hidden="true" class="absolute top-4 bottom-4 left-[2.1rem] border-l-2 border-dashed border-fr-line-strong"></span>
+			{
+				hitos.map((h, i) => (
+					<li class="relative flex gap-5">
+						<span
+							class:list={[
+								'relative z-10 h-8 w-[4.25rem] shrink-0 rounded-full text-center font-fr-mono text-sm leading-8 font-medium',
+								i === hitos.length - 1 ? 'bg-fr-navy text-white' : 'border border-fr-line-strong bg-fr-sheet text-fr-navy',
+							]}
+						>
+							{h.anio}
+						</span>
+						<div class="min-w-0">
+							<h3 class="m-0 text-lg font-bold tracking-tight text-fr-navy">{h.titulo}</h3>
+							<p class="mt-1.5 mb-0 text-sm text-fr-muted">{h.detalle}</p>
+						</div>
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>

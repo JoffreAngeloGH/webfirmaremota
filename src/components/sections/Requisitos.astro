@@ -1,7 +1,9 @@
 ---
 /**
- * Requisitos por titular como checklist ilustrado (spec 005 y 006): un ícono grande por columna y uno pequeño por
- * requisito. Las listas y el nombre de cada ícono salen de la collection `requisitos`.
+ * Requisitos de un titular como recorrido de pasos (specs 005 y 012): un paso por requisito, en el orden de la
+ * collection, y un paso final (navy) con el plazo de entrega. Desde `lg` los pasos van en una rejilla de 4 columnas
+ * unidos por una línea punteada; en móvil, en lista vertical con la línea a la izquierda. La línea es decorativa
+ * (`aria-hidden`, dentro de cada paso). Los textos llegan por props.
  */
 import SectionHeading from '@/components/sections/SectionHeading.astro';
 import Icono from '@/components/icons/Icono.astro';
@@ -9,58 +11,55 @@ import type { NombreIcono } from '@/lib/iconos';
 
 interface Props {
 	id: string;
+	etiqueta?: string;
 	titulo: string;
 	acento?: string;
-	/** Frase común bajo el título. */
 	intro?: string;
-	columnas: {
-		titulo: string;
-		icono: NombreIcono;
-		/** Frase propia de la columna (si no es la misma para todas). */
-		intro?: string;
-		items: { texto: string; detalle?: string; icono: NombreIcono; condicion?: string }[];
-	}[];
-	/** Línea bajo las listas. */
+	pasos: { texto: string; detalle?: string; icono: NombreIcono; condicion?: string }[];
+	/** Paso final: "{destacado} {resto}" en el título (el destacado va en serif cursiva). */
+	final: { icono: NombreIcono; destacado: string; resto: string; texto: string };
+	/** CTA discreto bajo el recorrido. */
 	nota?: string;
 }
-const { id, titulo, acento, intro, columnas, nota } = Astro.props;
+const { id, etiqueta, titulo, acento, intro, pasos, final, nota } = Astro.props;
+const conector =
+	'pointer-events-none absolute border-dashed border-fr-tinta/30 max-lg:top-14 max-lg:-bottom-6 max-lg:left-7 max-lg:border-l-2 lg:top-7 lg:-right-6 lg:left-14 lg:border-t-2';
 ---
 
-<section id={id} aria-labelledby={`${id}-titulo`} class="gs-container gs-section">
-	<SectionHeading id={`${id}-titulo`} titulo={titulo} acento={acento} intro={intro} />
+<section id={id} aria-labelledby={`${id}-titulo`} class="border-y border-fr-line bg-fr-paper-2">
+	<div class="gs-container gs-section">
+		<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={intro} />
 
-	<div data-reveal="stagger" class:list={['mt-10 grid gap-6', columnas.length > 1 && 'md:grid-cols-2']}>
-		{
-			columnas.map((col) => (
-				<div class="rounded-fr-card border border-fr-line bg-fr-sheet p-7 shadow-fr-sheet sm:p-8">
-					<div class="flex items-center gap-4">
-						<span class="grid size-14 shrink-0 place-items-center rounded-fr-control bg-fr-navy text-white">
-							<Icono nombre={col.icono} class="size-8" />
+		<ol data-reveal="stagger" class="mt-12 mb-0 grid list-none gap-x-6 gap-y-6 p-0 lg:grid-cols-4 lg:gap-y-12">
+			{
+				pasos.map((p, i) => (
+					<li class="relative flex gap-4 lg:block">
+						<span aria-hidden="true" class:list={[conector, i % 4 === 3 && 'lg:hidden']} />
+						<span class="relative z-10 grid size-14 shrink-0 place-items-center rounded-fr-control border border-fr-line bg-fr-sheet text-fr-navy shadow-fr-sheet">
+							<Icono nombre={p.icono} class="size-7" />
 						</span>
-						<h3 class="m-0 text-xl font-bold tracking-tight">{col.titulo}</h3>
-					</div>
-					{col.intro && <p class="mt-4 mb-0 text-sm text-fr-muted">{col.intro}</p>}
-					<ul class="mt-6 mb-0 list-none space-y-4 border-t border-dashed border-fr-line-strong p-0 pt-6">
-						{col.items.map((item) => (
-							<li class="flex items-start gap-4 text-fr-text">
-								<span class="grid size-10 shrink-0 place-items-center rounded-full border border-fr-line bg-fr-paper text-fr-navy">
-									<Icono nombre={item.icono} class="size-5" />
-								</span>
-								<div class="min-w-0 pt-1.5">
-									<p class="m-0 flex flex-wrap items-center gap-x-3 gap-y-1">
-										{item.texto}
-										{item.condicion && (
-											<span class="rounded-full border border-fr-line px-2.5 py-0.5 font-fr-mono text-xs text-fr-muted">{item.condicion}</span>
-										)}
-									</p>
-									{item.detalle && <p class="mt-1 mb-0 text-sm text-fr-muted">{item.detalle}</p>}
-								</div>
-							</li>
-						))}
-					</ul>
-				</div>
-			))
-		}
+						<div class="min-w-0 lg:mt-4">
+							<p class="m-0 font-fr-mono text-xs text-fr-muted">{String(i + 1).padStart(2, '0')}</p>
+							<h3 class="mt-1 mb-0 text-base font-bold text-fr-navy">{p.texto}</h3>
+							{p.condicion && (
+								<span class="mt-1.5 inline-block rounded-md border border-fr-line-strong bg-fr-sheet px-2.5 py-0.5 font-fr-mono text-xs text-fr-muted">{p.condicion}</span>
+							)}
+							{p.detalle && <p class="mt-1.5 mb-0 text-sm text-fr-muted">{p.detalle}</p>}
+						</div>
+					</li>
+				))
+			}
+			<li class="rounded-fr-card bg-fr-navy p-5 text-white lg:p-6">
+				<span class="grid size-11 place-items-center rounded-fr-control bg-white/10 text-white">
+					<Icono nombre={final.icono} class="size-6" />
+				</span>
+				<h3 class="mt-4 mb-0 text-xl leading-tight font-bold text-white">
+					<span class="font-fr-serif text-[1.6rem] font-normal text-fr-girasol italic">{final.destacado}</span>{' '}{final.resto}
+				</h3>
+				<p class="mt-2 mb-0 text-sm text-white/75">{final.texto}</p>
+			</li>
+		</ol>
+
+		{nota && <p class="mt-10 mb-0 inline-block rounded-fr-control border border-fr-line-strong bg-fr-sheet px-4 py-3 text-sm text-fr-text">{nota}</p>}
 	</div>
-	{nota && <p class="mt-6 mb-0 font-fr-mono text-xs text-fr-muted">{nota}</p>}
 </section>

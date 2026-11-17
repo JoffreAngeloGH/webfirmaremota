@@ -332,3 +332,18 @@
 		scroll-behavior: smooth;
 	}
 }
+
+/* Entrada corta de la ficha al cambiar de pestaña en /certificado-digital/ (spec 011). Sin movimiento si se pide menos. */
+@media (prefers-reduced-motion: no-preference) {
+	@keyframes ficha-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	.animar-ficha {
+		animation: ficha-in 180ms ease-out;
+	}
+}

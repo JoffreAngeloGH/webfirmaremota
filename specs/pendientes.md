@@ -35,6 +35,7 @@ Aplicados en el código con el **spec 007** (2026-11-16). En el código ya no qu
 | P04 | Cada firma se descuenta al usarse: **un documento con 3 firmas gasta 3 firmas**. **Aplicado en el código (spec 007).** |
 | P05 | Depende del certificado. **Persona natural:** firma a tu nombre contratos, solicitudes y cualquier documento PDF, con validez legal. **Persona jurídica (y vinculado a empresa):** firma contratos, actas y documentos legales como persona jurídica, con plena validez legal ante entidades públicas y privadas. **Aplicado en el código (spec 007).** |
 | P06 | Pago: trabajamos con el **BCP** y aceptamos **tarjetas de crédito y débito**. También se puede pagar en línea con **Izipay, Culqi o Yape**. **Aplicado en el código (spec 007).** |
+| P26 | Las firmas funcionan con certificados de otro proveedor (confirmado el 2026-11-17). La web lo dice sin rodeos, pero invita a comprar los dos aquí. **Aplicado en el código (spec 010).** |
 
 ### Proceso de compra y entrega
 

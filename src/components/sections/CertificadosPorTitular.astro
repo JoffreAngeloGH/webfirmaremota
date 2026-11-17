@@ -1,0 +1,200 @@
+---
+/**
+ * "¿Cuál necesitas?" (spec 011): selector de titular + ficha con su descripción, usos y requisitos completos.
+ * - Sin JS se ven las dos fichas, una debajo de la otra, y el selector queda oculto.
+ * - El script muestra el selector y oculta (`hidden`) la ficha no elegida; patrón ARIA tabs con flechas, Inicio y Fin.
+ * - `#persona-natural` / `#persona-juridica` en la URL abren esa ficha.
+ * Todos los textos llegan por props desde la página.
+ */
+import SectionHeading from '@/components/sections/SectionHeading.astro';
+import Icono from '@/components/icons/Icono.astro';
+import { buttonVariants } from '@/components/ui/button';
+import { opcion, punto } from '@/lib/opcion-clases';
+import type { NombreIcono } from '@/lib/iconos';
+
+interface Requisito {
+	texto: string;
+	detalle?: string;
+	icono: NombreIcono;
+	condicion?: string;
+}
+interface Ficha {
+	/** Id del panel y ancla: "persona-natural". */
+	id: string;
+	icono: NombreIcono;
+	nombre: string;
+	/** Línea corta de la pestaña: "A tu nombre". */
+	corta: string;
+	descripcion: string;
+	/** "Sirve para" / "Pensado para" */
+	etiquetaUsos: string;
+	usos: string[];
+	cta: { label: string; href: string };
+	enlace: { label: string; href: string };
+	/** Subtítulo de la columna derecha: "Lo que necesitas". */
+	requisitosTitulo: string;
+	requisitosIntro?: string;
+	requisitos: Requisito[];
+	nota?: string;
+}
+interface Props {
+	id: string;
+	etiqueta?: string;
+	titulo: string;
+	acento?: string;
+	intro?: string;
+	/** Nombre accesible del selector. */
+	selectorLabel: string;
+	fichas: Ficha[];
+}
+const { id, etiqueta, titulo, acento, intro, selectorLabel, fichas } = Astro.props;
+---
+
+<section id={id} data-por-titular aria-labelledby={`${id}-titulo`} class="gs-container gs-section-tras-hero">
+	<SectionHeading id={`${id}-titulo`} etiqueta={etiqueta} titulo={titulo} acento={acento} intro={intro} />
+
+	<!-- Selector: oculto hasta que el script lo muestra (sin JS se ven las dos fichas). -->
+	<div role="tablist" aria-label={selectorLabel} data-tablist class="mt-8 hidden max-w-[560px] grid-cols-2 gap-3">
+		{
+			fichas.map((f, i) => (
+				<button
+					type="button"
+					role="tab"
+					id={`tab-${f.id}`}
+					aria-controls={f.id}
+					aria-selected={i === 0 ? 'true' : 'false'}
+					tabindex={i === 0 ? 0 : -1}
+					data-tab={f.id}
+					class:list={[opcion.base, opcion.tab, 'flex-col gap-2.5']}
+				>
+					<span class="flex w-full items-start justify-between">
+						<Icono nombre={f.icono} class="size-5 text-fr-navy" />
+						<span aria-hidden="true" class:list={[punto.base, punto.tab]}>
+							<span class:list={[punto.interior, punto.interiorTab]} />
+						</span>
+					</span>
+					<span>
+						<span class="block text-sm font-semibold text-fr-navy">{f.nombre}</span>
+						<span class="mt-0.5 block text-[13px] leading-snug text-fr-muted">{f.corta}</span>
+					</span>
+				</button>
+			))
+		}
+	</div>
+
+	<div class="mt-6 grid gap-6 sm:mt-8">
+		{
+			fichas.map((f) => (
+				<div role="tabpanel" id={f.id} aria-labelledby={`tab-${f.id}`} data-panel={f.id} class="scroll-mt-28">
+					<div class="animar-ficha rounded-fr-card border border-fr-line bg-fr-sheet p-6 shadow-fr-sheet sm:p-8 lg:grid lg:grid-cols-[1fr_1.3fr] lg:p-10">
+						<div class="flex flex-col lg:pr-8">
+							<div class="flex items-center gap-3.5">
+								<span class="grid size-11 shrink-0 place-items-center rounded-fr-control bg-fr-paper-2 text-fr-navy">
+									<Icono nombre={f.icono} class="size-[22px]" />
+								</span>
+								<h3 class="m-0 text-2xl font-bold tracking-tight">{f.nombre}</h3>
+							</div>
+							<p class="mt-4 mb-0 text-[15px] leading-relaxed text-fr-text">{f.descripcion}</p>
+							<p class="mt-5 mb-2.5 text-[13px] font-semibold text-fr-navy">{f.etiquetaUsos}</p>
+							<ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+								{f.usos.map((uso) => (
+									<li class="rounded-full border border-fr-line bg-fr-paper px-3 py-1 text-[13px] text-fr-navy">{uso}</li>
+								))}
+							</ul>
+							<div class="mt-8 flex flex-wrap gap-3 lg:mt-auto lg:pt-8">
+								<a href={f.cta.href} target="_blank" rel="noopener noreferrer" class={buttonVariants()}>
+									{f.cta.label}
+								</a>
+								<a href={f.enlace.href} class={buttonVariants({ variant: 'outline' })}>
+									{f.enlace.label}
+									<svg aria-hidden="true" viewBox="0 0 24 24" class="size-4 transition-transform duration-150 ease-gs-out motion-safe:group-hover/button:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+										<path d="M5 12h14M13 6l6 6-6 6" />
+									</svg>
+								</a>
+							</div>
+						</div>
+
+						<div class="mt-8 flex flex-col border-t border-fr-line pt-8 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+							<h4 class="m-0 text-lg font-bold text-fr-navy">{f.requisitosTitulo}</h4>
+							{f.requisitosIntro && <p class="mt-2 mb-0 text-sm text-fr-muted">{f.requisitosIntro}</p>}
+							<ul class="mt-6 mb-0 grid list-none gap-x-6 gap-y-6 p-0 sm:grid-cols-2">
+								{f.requisitos.map((r) => (
+									<li class="flex items-start gap-3.5 text-fr-text">
+										<span class="grid size-10 shrink-0 place-items-center rounded-full border border-fr-line bg-fr-paper text-fr-navy">
+											<Icono nombre={r.icono} class="size-5" />
+										</span>
+										<div class="min-w-0 pt-1.5">
+											<p class="m-0 font-semibold text-fr-navy">{r.texto}</p>
+											{r.condicion && (
+												<span class="mt-1.5 inline-block rounded-md border border-fr-line px-2.5 py-0.5 font-fr-mono text-xs text-fr-muted">{r.condicion}</span>
+											)}
+											{r.detalle && <p class="mt-1 mb-0 text-sm text-fr-muted">{r.detalle}</p>}
+										</div>
+									</li>
+								))}
+							</ul>
+							{f.nota && <p class="mt-6 mb-0 font-fr-mono text-xs text-fr-muted lg:mt-auto lg:pt-6">{f.nota}</p>}
+						</div>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<script>
+	// Pestañas de las fichas por titular. Con el ClientRouter el módulo solo se evalúa una vez, así que se inicializa en
+	// `astro:page-load` (también en la primera carga) y cada raíz se marca con data-iniciado. Busca por [data-por-titular].
+	function activar(raiz: HTMLElement, id: string, enfocar = false) {
+		raiz.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((t) => {
+			const activa = t.dataset.tab === id;
+			t.setAttribute('aria-selected', String(activa));
+			t.tabIndex = activa ? 0 : -1;
+			if (activa && enfocar) t.focus();
+		});
+		raiz.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => {
+			p.hidden = p.dataset.panel !== id;
+		});
+	}
+
+	// Abre la ficha del hash (#persona-juridica) y baja a la sección; devuelve false si el hash no es de este componente.
+	function desdeHash(raiz: HTMLElement): boolean {
+		const id = decodeURIComponent(location.hash.slice(1));
+		if (!id || !raiz.querySelector(`[data-panel="${CSS.escape(id)}"]`)) return false;
+		activar(raiz, id);
+		raiz.scrollIntoView();
+		return true;
+	}
+
+	function iniciar(raiz: HTMLElement) {
+		if (raiz.dataset.iniciado) return;
+		const lista = raiz.querySelector<HTMLElement>('[data-tablist]');
+		const tabs = [...raiz.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+		if (!lista || tabs.length === 0) return;
+		raiz.dataset.iniciado = 'true';
+
+		// Con JS el selector aparece y solo se ve la ficha elegida.
+		lista.classList.remove('hidden');
+		lista.classList.add('grid');
+		if (!desdeHash(raiz)) activar(raiz, tabs[0]!.dataset.tab!);
+
+		tabs.forEach((tab, i) => {
+			tab.addEventListener('click', () => activar(raiz, tab.dataset.tab!));
+			tab.addEventListener('keydown', (e) => {
+				const ultimo = tabs.length - 1;
+				const destino =
+					e.key === 'ArrowRight' ? (i + 1) % tabs.length : e.key === 'ArrowLeft' ? (i + ultimo) % tabs.length : e.key === 'Home' ? 0 : e.key === 'End' ? ultimo : -1;
+				if (destino < 0) return;
+				e.preventDefault();
+				activar(raiz, tabs[destino]!.dataset.tab!, true);
+			});
+		});
+	}
+
+	function iniciarFichas() {
+		document.querySelectorAll<HTMLElement>('[data-por-titular]').forEach(iniciar);
+	}
+	document.addEventListener('astro:page-load', iniciarFichas);
+	// Un solo listener a nivel de módulo: busca las raíces del DOM actual cada vez que cambia el hash.
+	window.addEventListener('hashchange', () => document.querySelectorAll<HTMLElement>('[data-por-titular]').forEach(desdeHash));
+</script>

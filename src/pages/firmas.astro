@@ -17,6 +17,7 @@ import NecesitasLosDos from '@/components/sections/NecesitasLosDos.astro';
 import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
 import { ctaCierre, mediosPago, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
+import { ahorroDe } from '@/lib/bolsas';
 import { getFaqs } from '@/lib/faqs';
 import { formatCantidad, formatPrice, notaIgv, notaIgvAccesible } from '@/lib/format';
 import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
@@ -34,15 +35,14 @@ const masGrande = bolsas[bolsas.length - 1]!;
 const masBarata = bolsas.reduce((a, b) => (b.precioUnitario < a.precioUnitario ? b : a), minima);
 const baseUnitario = minima.precioUnitario;
 
-// Ahorro frente al precio por firma de la bolsa mínima, en % entero.
-const ahorroDe = (unitario: number) => Math.round((1 - unitario / baseUnitario) * 100);
+
 
 const filas: FilaBolsa[] = bolsas.map((b) => ({
 	id: `bolsa-${b.cantidad}`,
 	cantidad: formatCantidad(b.cantidad),
 	unitario: formatPrice(b.precioUnitario, b.moneda),
 	total: formatPrice(b.precio, b.moneda),
-	ahorro: ahorroDe(b.precioUnitario),
+	ahorro: ahorroDe(b.precioUnitario, baseUnitario),
 	nombre: b.nombre,
 	href: productWhatsappUrl(b),
 }));

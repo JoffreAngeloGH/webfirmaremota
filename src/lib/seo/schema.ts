@@ -60,6 +60,23 @@ export function breadcrumbSchema(items: { name: string; path: string }[]): Bread
 	};
 }
 
+type Producto = CollectionEntry<'productos'>['data'];
+
+/** Precio base de una oferta, indicando si incluye IGV (spec 009). */
+function precioOferta(p: Producto) {
+	const price = p.precio.toFixed(2);
+	return {
+		price,
+		priceCurrency: p.moneda,
+		priceSpecification: {
+			'@type': 'UnitPriceSpecification' as const,
+			price,
+			priceCurrency: p.moneda,
+			valueAddedTaxIncluded: p.incluyeIgv,
+		},
+	};
+}
+
 /** Product + Offer generado desde la collection de productos. */
 export function productSchema(producto: CollectionEntry<'productos'>['data'], pagePath: string): Product {
 	return {
@@ -69,8 +86,7 @@ export function productSchema(producto: CollectionEntry<'productos'>['data'], pa
 		url: absoluteUrl(pagePath),
 		offers: {
 			'@type': 'Offer',
-			price: producto.precio.toFixed(2),
-			priceCurrency: producto.moneda,
+			...precioOferta(producto),
 			availability: 'https://schema.org/InStock',
 			url: productWhatsappUrl(producto),
 			seller: { '@id': ORG_ID },
@@ -89,8 +105,7 @@ export function firmasSchema(bolsas: CollectionEntry<'productos'>['data'][], pag
 		offers: bolsas.map((b) => ({
 			'@type': 'Offer',
 			name: b.nombre,
-			price: b.precio.toFixed(2),
-			priceCurrency: b.moneda,
+			...precioOferta(b),
 			availability: 'https://schema.org/InStock',
 			url: productWhatsappUrl(b),
 			seller: { '@id': ORG_ID },
@@ -111,8 +126,7 @@ export function serviceSchema(productos: CollectionEntry<'productos'>['data'][],
 		offers: productos.map((p) => ({
 			'@type': 'Offer',
 			name: p.nombre,
-			price: p.precio.toFixed(2),
-			priceCurrency: p.moneda,
+			...precioOferta(p),
 			availability: 'https://schema.org/InStock',
 			url: productWhatsappUrl(p),
 		})),

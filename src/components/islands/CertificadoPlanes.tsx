@@ -27,7 +27,10 @@ interface Props {
 	numero: string;
 	etiqueta: string;
 	titulo: string;
+	/** "+ IGV": va en la misma línea que el precio, fuera del número animado. */
 	nota?: string;
+	/** Lo mismo para lectores de pantalla ("más IGV"). */
+	notaSr?: string;
 	puntos: string[];
 	ctaLabel: string;
 	/** Enlace de texto bajo el botón de compra. */
@@ -97,7 +100,7 @@ function Segmentado<T extends string | number>({
 }
 
 export default function CertificadoPlanes(props: Props) {
-	const { numero, etiqueta, titulo, nota, puntos, ctaLabel, enlace, enlacesTitular, planes, leyendaTitular, leyendaVigencia, titulares, vigencias } =
+	const { numero, etiqueta, titulo, nota, notaSr, puntos, ctaLabel, enlace, enlacesTitular, planes, leyendaTitular, leyendaVigencia, titulares, vigencias } =
 		props;
 	const uid = useId().replace(/:/g, '');
 	const [titular, setTitular] = useState<PlanCertificado['titular']>(titulares[0]!.value);
@@ -117,7 +120,6 @@ export default function CertificadoPlanes(props: Props) {
 					<p className="fr-eyebrow m-0 text-fr-muted">
 						{numero} · {etiqueta}
 					</p>
-					{nota && <span className="shrink-0 font-fr-mono text-xs whitespace-nowrap text-fr-muted">{nota}</span>}
 				</div>
 				<h3 className="mt-5 mb-0 text-2xl font-bold tracking-tight">{titulo}</h3>
 
@@ -142,7 +144,7 @@ export default function CertificadoPlanes(props: Props) {
 					<p className="m-0 font-fr-mono text-xs text-fr-muted" aria-hidden="true">
 						{plan.nombre}
 					</p>
-					<p className="mt-2 mb-0 font-fr-display text-[2.6rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums">
+					<p className="mt-2 mb-0 flex flex-wrap items-baseline gap-x-2 font-fr-display text-[2.6rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums">
 						{hidratado ? (
 							<span aria-hidden="true" className="inline-flex items-baseline">
 								{plan.simbolo}&nbsp;
@@ -151,9 +153,14 @@ export default function CertificadoPlanes(props: Props) {
 						) : (
 							<span aria-hidden="true">{plan.precioTexto}</span>
 						)}
+						{nota && (
+							<span aria-hidden="true" className="text-sm font-semibold tracking-normal text-fr-muted">
+								{nota}
+							</span>
+						)}
 					</p>
 					<p className="sr-only" aria-live="polite">
-						{plan.nombre}: {plan.precioTexto}
+						{plan.nombre}: {plan.precioTexto} {notaSr}
 					</p>
 				</div>
 

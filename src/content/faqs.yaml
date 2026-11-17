@@ -31,7 +31,7 @@
 # Los precios salen de la collection productos.
 - id: cuanto-cuesta
   pregunta: ¿Cuánto cuesta?
-  respuesta: "El certificado digital cuesta {precio_cert_1} por 1 año o {precio_cert_2} por 2 años. Las firmas se venden en bolsas desde {cantidad_bolsa_min} firmas ({precio_bolsa_min}), y el precio por firma baja hasta {precio_firma_min} en las bolsas más grandes. Todos los precios incluyen IGV."
+  respuesta: "El certificado digital cuesta {precio_cert_1} por 1 año o {precio_cert_2} por 2 años. Las firmas se venden en bolsas desde {cantidad_bolsa_min} firmas ({precio_bolsa_min}), y el precio por firma baja hasta {precio_firma_min} en las bolsas más grandes. Los precios no incluyen IGV."
   paginas: [inicio, certificado-digital, firmas]
   orden: 5
 

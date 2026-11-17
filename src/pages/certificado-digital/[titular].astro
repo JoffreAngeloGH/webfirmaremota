@@ -30,7 +30,7 @@ import {
 	verPlanes,
 } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
-import { formatPrice, vigenciaLabel } from '@/lib/format';
+import { formatPrice, notaIgv, vigenciaLabel } from '@/lib/format';
 import { celdasDe, vigenciasTexto } from '@/lib/planes';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { breadcrumbSchema, faqSchema, productSchema } from '@/lib/seo/schema';
@@ -60,7 +60,7 @@ const tituloH1 = datos.h1.slice(0, corte);
 const acentoH1 = datos.h1.slice(corte + 1);
 
 const migas = [{ label: 'Inicio', href: '/' }, { label: 'Certificado digital', href: '/certificado-digital/' }, { label: datos.nombre }];
-const chips = [vigenciasTexto(vigencias), `Desde ${desdeTexto}`, 'Entrega aprox. 1 hora'];
+const chips = [vigenciasTexto(vigencias), `Desde ${desdeTexto} ${notaIgv(desde.incluyeIgv)}`, 'Entrega aprox. 1 hora'];
 const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 ---
 

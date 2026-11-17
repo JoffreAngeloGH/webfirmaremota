@@ -14,7 +14,7 @@ export interface CeldaPlan {
 	precio: string;
 	/** "US$ 10.00 por año" */
 	porAnio: string;
-	/** "Incluye IGV" */
+	/** "+ IGV": va en la misma línea que el precio. */
 	nota?: string;
 	/** Nombre completo, para lectores de pantalla y el mensaje de WhatsApp. */
 	nombre: string;
@@ -113,10 +113,10 @@ const { id, etiqueta, titulo, acento, intro, caption, columnaTitular, vigencias,
 												)}
 											</p>
 											<p class="m-0 font-fr-display text-[2rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums max-lg:mt-1 lg:text-[2.1rem]">
-												{plan.precio}
+												{plan.precio}{' '}
+												{plan.nota && <span class="ml-1 text-sm font-semibold tracking-normal text-fr-muted">{plan.nota}</span>}
 											</p>
 											<p class="mt-2 mb-0 text-sm text-fr-muted">{plan.porAnio}</p>
-											{plan.nota && <p class="mt-0.5 mb-0 text-xs text-fr-muted">{plan.nota}</p>}
 										</div>
 										<a
 											href={plan.href}

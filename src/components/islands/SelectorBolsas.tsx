@@ -40,6 +40,10 @@ interface Props {
 	totalLabel: string;
 	ctaLabel: string;
 	nota?: string;
+	/** "+ IGV": va en la misma línea que el total, fuera del número animado. */
+	igv?: string;
+	/** Lo mismo para lectores de pantalla ("más IGV"). */
+	igvSr?: string;
 	/** Símbolo de moneda, p. ej. "US$". */
 	simbolo: string;
 	bolsas: BolsaSelector[];
@@ -50,7 +54,7 @@ const THUMB = 28; // px, debe coincidir con .fr-range en global.css
 const MARCAS_MOVIL = (n: number) => new Set([0, 3, 5, n - 1]);
 
 export default function SelectorBolsas(props: Props) {
-	const { etiqueta, leyenda, firmasLabel, porFirmaLabel, ahorraLabel, totalLabel, ctaLabel, nota, simbolo, bolsas } = props;
+	const { etiqueta, leyenda, firmasLabel, porFirmaLabel, ahorraLabel, totalLabel, ctaLabel, nota, igv, igvSr, simbolo, bolsas } = props;
 	const uid = useId().replace(/:/g, '');
 	const [indice, setIndice] = useState(0);
 	const [hidratado, setHidratado] = useState(false);
@@ -84,7 +88,7 @@ export default function SelectorBolsas(props: Props) {
 							step={1}
 							value={indice}
 							onChange={(e) => setIndice(Number(e.target.value))}
-							aria-valuetext={`${bolsa.cantidadTexto} ${firmasLabel}, ${bolsa.totalTexto}`}
+							aria-valuetext={`${bolsa.cantidadTexto} ${firmasLabel}, ${bolsa.totalTexto} ${igvSr ?? ''}`.trim()}
 							style={{ ['--fr-range-pct' as string]: `${pct}%` }}
 						/>
 						<div className="relative mt-3 h-5" aria-hidden="true">
@@ -105,7 +109,7 @@ export default function SelectorBolsas(props: Props) {
 
 				<div className="mt-8 border-t border-dashed border-fr-line-strong pt-6">
 					<p className="fr-eyebrow m-0 text-fr-muted">{totalLabel}</p>
-					<p className="mt-2 mb-0 font-fr-display text-[2.6rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums">
+					<p className="mt-2 mb-0 flex flex-wrap items-baseline gap-x-2 font-fr-display text-[1.9rem] leading-none font-extrabold tracking-tight text-fr-navy tabular-nums sm:text-[2.6rem]">
 						{hidratado ? (
 							<span aria-hidden="true" className="inline-flex items-baseline">
 								{simbolo}&nbsp;
@@ -114,9 +118,14 @@ export default function SelectorBolsas(props: Props) {
 						) : (
 							<span aria-hidden="true">{bolsa.totalTexto}</span>
 						)}
+						{igv && (
+							<span aria-hidden="true" className="text-sm font-semibold tracking-normal text-fr-muted">
+								{igv}
+							</span>
+						)}
 					</p>
 					<p className="sr-only" aria-live="polite">
-						{bolsa.cantidadTexto} {firmasLabel}: {bolsa.totalTexto}
+						{bolsa.cantidadTexto} {firmasLabel}: {bolsa.totalTexto} {igvSr}
 					</p>
 					<p className="mt-3 mb-0 flex flex-wrap items-center gap-x-4 gap-y-2 font-fr-mono text-xs text-fr-muted">
 						<span>

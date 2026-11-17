@@ -15,7 +15,7 @@ import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
 import { acreditacion, comoFunciona, ctaCierre, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
-import { formatCantidad, formatPrice, titularLabel, vigenciaLabel } from '@/lib/format';
+import { formatCantidad, formatPrice, notaIgv, notaIgvAccesible, titularLabel, vigenciaLabel } from '@/lib/format';
 import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
 import { faqSchema, serviceSchema } from '@/lib/seo/schema';
 
@@ -30,14 +30,14 @@ const vigenciasTexto = `${vigencias.slice(0, -1).join(', ')} o ${vigencias[vigen
 const faqs = await getFaqs('inicio');
 
 const comprar = { label: 'Comprar', href: whatsappUrl() };
-const iva = (incluye: boolean) => (incluye ? 'Incluye IGV' : undefined);
 
 // Certificado: 2 titulares × 2 vigencias (spec 004). Todo sale de la collection.
 const certificado: PiezaCertificado = {
 	numero: '01',
 	etiqueta: 'Certificado digital',
 	titulo: 'Tu identidad para firmar',
-	nota: iva(planes[0]!.incluyeIgv),
+	nota: notaIgv(planes[0]!.incluyeIgv),
+	notaSr: notaIgvAccesible(planes[0]!.incluyeIgv),
 	puntos: ['Dos certificados: persona natural y persona jurídica', `Vigencia de ${vigenciasTexto}`, 'Vive en la nube: no hay archivo que instalar'],
 	ctaLabel: 'Comprar certificado',
 	enlace: { label: `Ver los ${planes.length} planes`, href: '/certificado-digital/' },
@@ -76,10 +76,10 @@ const piezaFirmas: PiezaFirmas = {
 	titulo: 'El saldo que usas al firmar',
 	precio: formatPrice(firmas.precio, firmas.moneda),
 	cantidad: firmas.cantidad,
-	nota: iva(firmas.incluyeIgv),
+	nota: notaIgv(firmas.incluyeIgv),
 	puntos: [
 		`Desde ${formatCantidad(firmas.cantidad)} firmas`,
-		`Hasta ${formatCantidad(masGrande.cantidad)} firmas, desde ${formatPrice(masBarata.precioUnitario, masBarata.moneda)} c/u`,
+		`Hasta ${formatCantidad(masGrande.cantidad)} firmas, desde ${formatPrice(masBarata.precioUnitario, masBarata.moneda)} c/u ${notaIgv(masBarata.incluyeIgv)}`,
 		'Las firmas no vencen',
 		'Sirven con tu certificado comprado a nosotros',
 	],

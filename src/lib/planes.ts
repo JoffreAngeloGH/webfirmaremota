@@ -4,7 +4,7 @@
  */
 import type { CollectionEntry } from 'astro:content';
 import type { CeldaPlan } from '@/components/sections/MatrizPlanes.astro';
-import { formatPrice } from '@/lib/format';
+import { formatPrice, notaIgv } from '@/lib/format';
 import { productWhatsappUrl } from '@/lib/whatsapp';
 
 type Producto = CollectionEntry<'productos'>['data'];
@@ -20,7 +20,7 @@ export function celdasDe(planes: Certificado[], titular: 'natural' | 'juridica',
 				id: `${titular}-${anios}-${anios === 1 ? 'ano' : 'anos'}`,
 				precio: formatPrice(p.precio, p.moneda),
 				porAnio: `${formatPrice(porAnio, p.moneda)} por año`,
-				nota: p.incluyeIgv ? 'Incluye IGV' : undefined,
+				nota: notaIgv(p.incluyeIgv),
 				nombre: p.nombre,
 				href: productWhatsappUrl(p),
 			},

@@ -38,7 +38,7 @@ export const site = {
 		general: 'Hola, quiero información sobre la firma remota.',
 		certificadoGeneral: 'Hola, quiero comprar un certificado digital para firma remota.',
 		certificado: 'Hola, quiero comprar el certificado digital para {titular} con vigencia de {vigencia}.',
-		firmas: 'Hola, quiero comprar una bolsa de {cantidad} firmas ({total}).',
+		firmas: 'Hola, quiero comprar una bolsa de {cantidad} firmas ({total} + IGV).',
 	},
 } as const;
 

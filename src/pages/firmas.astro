@@ -18,7 +18,7 @@ import Preguntas from '@/components/sections/Preguntas.astro';
 import CtaCierre from '@/components/sections/CtaCierre.astro';
 import { ctaCierre, mediosPago, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
-import { formatCantidad, formatPrice } from '@/lib/format';
+import { formatCantidad, formatPrice, notaIgv, notaIgvAccesible } from '@/lib/format';
 import { productWhatsappUrl, whatsappUrl } from '@/lib/whatsapp';
 import { breadcrumbSchema, faqSchema, firmasSchema } from '@/lib/seo/schema';
 
@@ -66,7 +66,7 @@ const description =
 const chips = [
 	...(bolsas.every((b) => !b.vence) ? ['No vencen'] : []),
 	`De ${formatCantidad(minima.cantidad)} a ${formatCantidad(masGrande.cantidad)} firmas`,
-	`Desde ${formatPrice(masBarata.precioUnitario, masBarata.moneda)} por firma`,
+	`Desde ${formatPrice(masBarata.precioUnitario, masBarata.moneda)} por firma ${notaIgv(masBarata.incluyeIgv)}`,
 ];
 const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 ---
@@ -118,6 +118,8 @@ const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 				totalLabel="Total"
 				ctaLabel="Comprar"
 				nota={notaAtencion}
+				igv={notaIgv(minima.incluyeIgv)}
+				igvSr={notaIgvAccesible(minima.incluyeIgv)}
 				simbolo={formatPrice(0, minima.moneda).split(' ')[0]!}
 				bolsas={opciones}
 			/>
@@ -125,7 +127,7 @@ const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 			<Fragment slot="tabla">
 				<TablaBolsas
 					caption="Bolsas de firmas por volumen: cantidad, precio por firma, total y ahorro"
-					columnas={{ firmas: 'Firmas', porFirma: 'Precio por firma', total: 'Total', ahorro: 'Ahorro' }}
+					columnas={{ firmas: 'Firmas', porFirma: 'Precio por firma', total: `Total (${notaIgv(minima.incluyeIgv)})`, ahorro: 'Ahorro' }}
 					filas={filas}
 					ctaLabel="Comprar"
 					ahorraLabel="Ahorras"

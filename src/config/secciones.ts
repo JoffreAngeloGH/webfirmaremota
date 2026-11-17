@@ -5,7 +5,7 @@ import { site } from '@/config/site';
  * Viven aquí para que no se desincronicen; las secciones los reciben por props (constitución §4).
  */
 
-export const notaAtencion = 'Te atiende un asesor por WhatsApp · Precios con IGV incluido';
+export const notaAtencion = 'Te atiende un asesor por WhatsApp · Precios no incluyen IGV';
 
 export const necesitasLosDos = {
 	id: 'necesitas-los-dos',

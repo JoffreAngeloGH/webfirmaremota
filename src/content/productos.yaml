@@ -1,4 +1,4 @@
-# Productos de firmaremota.pe (specs/site.md §1 y spec 007). Precios en dólares, con IGV incluido.
+# Productos de firmaremota.pe (specs/site.md §1 y spec 007). Precios en dólares, sin IGV (se muestra "+ IGV").
 # En las bolsas, `precio` es el total y debe ser cantidad × precioUnitario (el build lo comprueba).
 
 - id: certificado-natural-1
@@ -8,7 +8,7 @@
   nombre: Certificado digital persona natural · 1 año
   precio: 20
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 1
 
 - id: certificado-natural-2
@@ -18,7 +18,7 @@
   nombre: Certificado digital persona natural · 2 años
   precio: 34
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 2
 
 - id: certificado-juridica-1
@@ -28,7 +28,7 @@
   nombre: Certificado digital persona jurídica · 1 año
   precio: 20
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 3
 
 - id: certificado-juridica-2
@@ -38,7 +38,7 @@
   nombre: Certificado digital persona jurídica · 2 años
   precio: 34
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 4
 
 - id: firmas-10
@@ -49,7 +49,7 @@
   precioUnitario: 1.00
   precio: 10.00
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 10
 
 - id: firmas-50
@@ -60,7 +60,7 @@
   precioUnitario: 1.00
   precio: 50.00
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 11
 
 - id: firmas-100
@@ -71,7 +71,7 @@
   precioUnitario: 0.95
   precio: 95.00
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 12
 
 - id: firmas-500
@@ -82,7 +82,7 @@
   precioUnitario: 0.90
   precio: 450.00
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 13
 
 - id: firmas-1000
@@ -93,7 +93,7 @@
   precioUnitario: 0.85
   precio: 850.00
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 14
 
 - id: firmas-5000
@@ -104,7 +104,7 @@
   precioUnitario: 0.75
   precio: 3750.00
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 15
 
 - id: firmas-10000
@@ -115,7 +115,7 @@
   precioUnitario: 0.65
   precio: 6500.00
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 16
 
 - id: firmas-20000
@@ -126,5 +126,5 @@
   precioUnitario: 0.50
   precio: 10000.00
   moneda: USD
-  incluyeIgv: true
+  incluyeIgv: false
   orden: 17

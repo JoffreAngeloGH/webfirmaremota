@@ -21,3 +21,13 @@ export function vigenciaLabel(anios: number): string {
 export function formatCantidad(n: number): string {
 	return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
+
+/** Nota que acompaña a cada precio: "+ IGV" cuando el precio es base (spec 009). Es la única fuente del texto. */
+export function notaIgv(incluyeIgv: boolean): string {
+	return incluyeIgv ? 'Incluye IGV' : '+ IGV';
+}
+
+/** La misma nota para lectores de pantalla: "US$ 20.00 más IGV". */
+export function notaIgvAccesible(incluyeIgv: boolean): string {
+	return incluyeIgv ? 'IGV incluido' : 'más IGV';
+}

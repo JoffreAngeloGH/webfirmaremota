@@ -19,7 +19,7 @@ import CtaCierre from '@/components/sections/CtaCierre.astro';
 import { acreditacion, comoFunciona, ctaCierre, mediosPago, necesitasLosDos, notaAtencion, preguntas } from '@/config/secciones';
 import { getFaqs } from '@/lib/faqs';
 import { celdasDe, vigenciasTexto } from '@/lib/planes';
-import { formatPrice, vigenciaLabel } from '@/lib/format';
+import { formatPrice, notaIgv, vigenciaLabel } from '@/lib/format';
 import { whatsappUrl } from '@/lib/whatsapp';
 import { breadcrumbSchema, faqSchema, productSchema } from '@/lib/seo/schema';
 
@@ -52,7 +52,7 @@ const description =
 	`Certificado digital para firma remota, persona natural o jurídica, de ${vigenciasTexto(vigencias)} desde ${formatPrice(desde.precio, desde.moneda)}. ` +
 	`Sin instalar nada. Te atiende un asesor por WhatsApp.`;
 
-const chips = [`${titulares.length} titulares`, `${vigencias.length} vigencias`, `Desde ${formatPrice(desde.precio, desde.moneda)}`];
+const chips = [`${titulares.length} titulares`, `${vigencias.length} vigencias`, `Desde ${formatPrice(desde.precio, desde.moneda)} ${notaIgv(desde.incluyeIgv)}`];
 const migas = [{ label: 'Inicio', href: '/' }, { label: 'Certificado digital' }];
 const comprar = { label: ctaCierre.ctaLabel, href: whatsappUrl() };
 // Si todas las columnas de requisitos comparten la misma frase, va una sola vez bajo el título.
